@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/11/02 17:22:59 by obounri          ###   ########.fr       */
+/*   Updated: 2021/11/05 11:38:32 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void    prompt(t_options *opts)
 	opts->input = readline("");
 }
 
-// void		catch(int sig)
-// {
-// 	printf("\n");
-// }
+void		catch(int sig)
+{
+	printf("%d\n", sig);
+}
 
 int main(void)
 {
@@ -37,7 +37,7 @@ int main(void)
 	opts.success = 1;
 	while (1)
 	{
-		// signal(SIGINT, &catch);
+		signal(SIGINT, &catch);
 		prompt(&opts);
 		if (opts.success)
 			opts.success = 0;
