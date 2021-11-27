@@ -3,6 +3,9 @@
         "minishell.h": "c",
         "readline.h": "c",
         "stdio.h": "c",
-        "history.h": "c"
+        "history.h": "c",
+        "wait.h": "c",
+        "dirent.h": "c",
+        "_types.h": "c"
     }
 }
