@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/11/27 20:03:47 by obounri          ###   ########.fr       */
+/*   Updated: 2021/11/29 16:26:46 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void    prompt(t_options *opts)
 {
-	if (opts->success)
-		printf("\033[0;32m");
-	else
+	if (WEXITSTATUS(opts->status) > 0)
 		printf("\033[0;31m");
+	else
+		printf("\033[0;32m");
 	printf("➤ ");
 	printf("\033[0m");
 	printf("%s / %s ~ ", opts->curr_dir, opts->user);
@@ -27,6 +27,7 @@ void    prompt(t_options *opts)
 void		catch(int sig)
 {
 	printf("%d\n", sig);
+	return ;
 }
 
 int	ft_strcmp(char *s1, char *s2)
@@ -61,22 +62,26 @@ char	*find_exec_path(t_options	*opts, char *name)
 	}
 	// look for executable
 	// segfault
-	// i = 0;
+	i = 0;
 	// while (path[i])
 	// 	printf("%s\n", path[i++]);
-	i = 0;
+	i = -1;
 	// exit(0);
-	while (path[i])
+	while (path[++i])
 	{
 		dp = opendir(path[i]);
+		if (!dp)
+			continue ;
 		while ((dirp = readdir(dp)) != NULL)
-		{
+		{	
 			// printf("%s\n", dirp->d_name);
-			if (ft_strcmp(dirp->d_name, name) == 0)
+			if (ft_strcmp(dirp->d_name, name) == 0){
+				
+				// printf("found %s\n", dirp->d_name);
 				return (ft_strjoin(ft_strjoin(path[i], "/"), name));
+			}
 		}
 		closedir(dp);
-		i++;
 	}
 	return (NULL);
 }
@@ -96,7 +101,6 @@ int	parse(t_options	*opts)
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
 	opts->cmd->scmds[0].impld = 0;
 	opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
-	// printf("%s\n", opts->cmd->scmds[0].exec_path);
 	opts->cmd->scmds[0].args = &splited[1];
 	return (1);
 }
@@ -105,11 +109,10 @@ int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t pid;
-	// t_cmd		*cmd;
 
 
 	opts.user = readline("Enter user name for prompt: ");
-	opts.success = 1;
+	opts.status = 0;
 	opts.curr_dir = getcwd(NULL, 0);
 	opts.env = env;
 	opts.cmd = malloc(sizeof(t_cmd));
@@ -117,6 +120,7 @@ int main(int ac,char ** av, char **env)
 	{
 		opts.cmd->scmds  = NULL;
 		signal(SIGINT, &catch);
+		// sigaction(SIGINT, )
 		prompt(&opts);
 		if (opts.input == NULL)
 			exit(0) ;
@@ -126,15 +130,15 @@ int main(int ac,char ** av, char **env)
 		pid = fork();
 		if (pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
 			if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
 			{
-				// printf("child_process cmd failed\n");
-				perror("Command failed ");
+				perror("fsh: command not found");
 				exit(1);
 			}
 		}
 		else
-			waitpid(pid, &opts.success, 0);
+			waitpid(pid, &opts.status, 0);
 		free(opts.cmd->scmds);
 	}
 	return (0);

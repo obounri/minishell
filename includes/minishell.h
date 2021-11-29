@@ -17,7 +17,7 @@ typedef struct s_options
     struct  s_cmd *cmd;
     char    *user;
     char    *input;
-    int     success;
+    int     status;
     char    *curr_dir;
     char    **env;
 }   t_options;
