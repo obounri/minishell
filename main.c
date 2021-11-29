@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/11/29 16:26:46 by obounri          ###   ########.fr       */
+/*   Updated: 2021/11/29 17:21:30 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,16 @@ char	*find_exec_path(t_options	*opts, char *name)
 		}
 		i++;
 	}
-	// look for executable
-	// segfault
-	i = 0;
-	// while (path[i])
-	// 	printf("%s\n", path[i++]);
 	i = -1;
-	// exit(0);
 	while (path[++i])
 	{
 		dp = opendir(path[i]);
 		if (!dp)
 			continue ;
 		while ((dirp = readdir(dp)) != NULL)
-		{	
-			// printf("%s\n", dirp->d_name);
-			if (ft_strcmp(dirp->d_name, name) == 0){
-				
-				// printf("found %s\n", dirp->d_name);
+		{
+			if (ft_strcmp(dirp->d_name, name) == 0)
 				return (ft_strjoin(ft_strjoin(path[i], "/"), name));
-			}
 		}
 		closedir(dp);
 	}
@@ -120,7 +110,6 @@ int main(int ac,char ** av, char **env)
 	{
 		opts.cmd->scmds  = NULL;
 		signal(SIGINT, &catch);
-		// sigaction(SIGINT, )
 		prompt(&opts);
 		if (opts.input == NULL)
 			exit(0) ;
