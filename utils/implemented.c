@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/02 17:38:00 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/02 18:39:53 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,19 @@ void    echo(char **args)
 		ft_putchar_fd('\n', 1);
 }
 
-void	exec_impld(t_scmd	*scmd)
+void	cd(char **args, t_options	*opts)
+{
+	if (chdir(args[1]) < 0)
+		perror(args[1]);
+	opts->curr_dir = getcwd(NULL, 0);
+}
+
+void	exec_impld(t_scmd	*scmd, t_options	*opts)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
 		echo(scmd->args);
+	else if (ft_strcmp(scmd->name, "cd") == 0)
+		cd(scmd->args, opts);
+	else if (ft_strcmp(scmd->name, "pwd") == 0)
+		printf("%s\n", opts->curr_dir);
 }

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/02 17:35:33 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/02 18:36:44 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ typedef struct s_scmd
 
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
-void	exec_impld(t_scmd	*scmd);
+void	exec_impld(t_scmd	*scmd, t_options *opts);
 
 #endif

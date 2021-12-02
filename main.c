@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/02 17:35:57 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/02 18:30:14 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int main(int ac,char ** av, char **env)
 		{
 			signal(SIGINT, SIG_DFL);
 			if (opts.cmd->scmds[0].impld >= 0)
-				exec_impld(&opts.cmd->scmds[0]);
+				exec_impld(&opts.cmd->scmds[0], &opts);
 			else if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
 			{
 				perror("fsh: command not found");
