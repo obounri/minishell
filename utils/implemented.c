@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/02 18:39:53 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/02 19:46:43 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,6 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts)
 		cd(scmd->args, opts);
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		printf("%s\n", opts->curr_dir);
+	else if (ft_strcmp(scmd->name, "exit") == 0)
+		exit(0);
 }

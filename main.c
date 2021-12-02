@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/02 18:30:14 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/02 19:46:17 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,11 @@ int main(int ac,char ** av, char **env)
 	opts.curr_dir = getcwd(NULL, 0);
 	opts.env = env;
 	opts.cmd = malloc(sizeof(t_cmd));
+	opts.cmd->scmds  = NULL;
 	while (1)
 	{
+		if (opts.cmd->scmds)
+			free(opts.cmd->scmds);
 		opts.cmd->scmds  = NULL;
 		signal(SIGINT, &catch);
 		prompt(&opts);
@@ -99,13 +102,16 @@ int main(int ac,char ** av, char **env)
 			exit(0) ;
 		if (parse(&opts) == 0)
 			continue ;
+		if (opts.cmd->scmds[0].impld >= 0)
+		{
+			exec_impld(&opts.cmd->scmds[0], &opts);
+			continue ;
+		}
 		pid = fork();
 		if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-			if (opts.cmd->scmds[0].impld >= 0)
-				exec_impld(&opts.cmd->scmds[0], &opts);
-			else if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
+			if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
 			{
 				perror("fsh: command not found");
 				exit(1);
@@ -113,7 +119,6 @@ int main(int ac,char ** av, char **env)
 		}
 		else
 			waitpid(pid, &opts.status, 0);
-		free(opts.cmd->scmds);
 	}
 	return (0);
 }
