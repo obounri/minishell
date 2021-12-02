@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/11/30 18:55:12 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/02 17:35:57 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@ void		catch(int sig)
 
 char	*find_exec_path(t_options	*opts, char *name)
 {
-	// free splited before return
 	int i;
 	DIR *dp;
 	struct dirent *dirp;
+	char *var; //
 
+	// move to init
+	var = getenv("PATH"); //
+	opts->path = ft_split(var, ':'); //
 	i = -1;
-	get_path(opts);
 	while (opts->path[++i])
 	{
 		dp = opendir(opts->path[i]);
@@ -68,8 +70,11 @@ int	parse(t_options	*opts)
 	opts->cmd->n_scmds = i;
 	// opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
-	opts->cmd->scmds[0].impld = 0;
-	opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
+	// opts->cmd->scmds[0].impld = 0;
+	opts->cmd->scmds[0].impld = is_impld(splited[0]);
+	if (opts->cmd->scmds[0].impld < 0)
+		opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
+	opts->cmd->scmds[0].name = splited[0];
 	opts->cmd->scmds[0].args = &splited[0];
 	return (1);
 }
@@ -77,7 +82,7 @@ int	parse(t_options	*opts)
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
-	pid_t pid;
+	pid_t		pid;
 
 
 	opts.user = readline("Enter user name for prompt: ");
@@ -98,7 +103,9 @@ int main(int ac,char ** av, char **env)
 		if (pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-			if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
+			if (opts.cmd->scmds[0].impld >= 0)
+				exec_impld(&opts.cmd->scmds[0]);
+			else if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
 			{
 				perror("fsh: command not found");
 				exit(1);

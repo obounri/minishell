@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
+/*   Updated: 2021/12/02 17:35:33 by obounri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -11,6 +24,7 @@
 # include <sys/wait.h>
 # include <dirent.h>
 
+static char impld[7][6] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 
 typedef struct s_options
 {
@@ -31,12 +45,14 @@ typedef struct s_cmd
 
 typedef struct s_scmd
 {
+	char *name;
 	char *exec_path;
 	char **args;
 	int   impld;
 }   t_scmd;
 
 int		ft_strcmp(char *s1, char *s2);
-void	get_path(t_options	*opts);
+int		is_impld(char *name);
+void	exec_impld(t_scmd	*scmd);
 
 #endif
