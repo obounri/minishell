@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/11/29 17:21:30 by obounri          ###   ########.fr       */
+/*   Updated: 2021/11/30 18:55:12 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,46 +30,25 @@ void		catch(int sig)
 	return ;
 }
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int i;
-
-	i = 0;
-	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
-		i++;
-	return (s1[i] - s2[i]);
-}
 
 char	*find_exec_path(t_options	*opts, char *name)
 {
 	// free splited before return
-	char **var;
-	int i = 0;
-	char **path;
+	int i;
 	DIR *dp;
-    struct dirent *dirp;
+	struct dirent *dirp;
 
-	// add path variable to t_options and initialize it like so :
-	while (opts->env[i])
-	{
-		var = ft_split(opts->env[i], '=');
-		if (ft_strcmp("PATH", var[0]) == 0)
-		{
-			path = ft_split(var[1], ':');
-			break ;
-		}
-		i++;
-	}
 	i = -1;
-	while (path[++i])
+	get_path(opts);
+	while (opts->path[++i])
 	{
-		dp = opendir(path[i]);
+		dp = opendir(opts->path[i]);
 		if (!dp)
 			continue ;
 		while ((dirp = readdir(dp)) != NULL)
 		{
 			if (ft_strcmp(dirp->d_name, name) == 0)
-				return (ft_strjoin(ft_strjoin(path[i], "/"), name));
+				return (ft_strjoin(ft_strjoin(opts->path[i], "/"), name));
 		}
 		closedir(dp);
 	}
@@ -91,7 +70,7 @@ int	parse(t_options	*opts)
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
 	opts->cmd->scmds[0].impld = 0;
 	opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
-	opts->cmd->scmds[0].args = &splited[1];
+	opts->cmd->scmds[0].args = &splited[0];
 	return (1);
 }
 
@@ -115,7 +94,6 @@ int main(int ac,char ** av, char **env)
 			exit(0) ;
 		if (parse(&opts) == 0)
 			continue ;
-		
 		pid = fork();
 		if (pid == 0)
 		{

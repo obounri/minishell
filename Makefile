@@ -3,7 +3,7 @@ CC = gcc
 # CFLAGS = -Wall -Wextra -Werror
 HEADER = includes/minishell.h
 
-# UTILS = utils/*.c
+UTILS = utils/init.c
 # remove wildcard 
 
 LIBFT_MAKEFILE_PATH = utils/libft/ 
