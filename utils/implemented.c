@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/06 21:41:03 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/06 22:40:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,9 @@ void    echo(char **args)
 void	cd(char **args, t_options	*opts)
 {
 	if (!args[1])
-	{
-		if (chdir("") < 0)
-			perror(args[0]);
-	}
+		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
-		perror(args[0]);
+		perror(args[1]);
 	opts->curr_dir = getcwd(NULL, 0);
 }
 

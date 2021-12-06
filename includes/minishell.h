@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/06 21:22:54 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/06 22:31:13 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_options
 	char    *curr_dir;
 	char    **env;
 	char    **path;
+	char	*home;
 }   t_options;
 
 typedef struct s_cmd

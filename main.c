@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/06 21:27:07 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/06 22:32:21 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int main(int ac,char ** av, char **env)
 	opts.user = readline("Enter user name for prompt: ");
 	opts.status = 0;
 	opts.curr_dir = getcwd(NULL, 0);
+	opts.home = getenv("HOME");
 	opts.env = env;
 	opts.cmd = malloc(sizeof(t_cmd));
 	opts.cmd->scmds  = NULL;
