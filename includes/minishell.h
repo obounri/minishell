@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/02 19:40:56 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/06 21:22:54 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <sys/wait.h>
 # include <dirent.h>
 
-static char impld[7][6] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
+static char impld[7][7] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 
 typedef struct s_options
 {
