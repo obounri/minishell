@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/06 22:32:21 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/09 00:48:19 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void		catch(int sig)
 	printf("sig $%d\n", sig);
 	return ;
 }
-
 
 char	*find_exec_path(t_options	*opts, char *name)
 {
@@ -79,12 +78,64 @@ int	parse(t_options	*opts)
 	return (1);
 }
 
+// void	new_quote(t_quote *quotes, int i, int on, int dq)
+// {
+// 	t_quote *quote, *tmp;
+
+// 	quote = malloc(sizeof(t_quote) * 1);
+// 	quote->i = i;
+// 	if (on >= 0)
+// 		quote->on = 1;
+// 	else
+// 		quote->on = 0;
+// 	quote->dq = dq;
+// 	quote->next = NULL;
+// 	if (!quotes)
+// 		quotes = quote;
+// 	else
+// 	{
+// 		while (quotes->next)
+// 			quotes = quotes->next;
+// 		quotes->next = quote;
+// 	}
+// }
+
+// int	parse(t_options	*opts)
+// {
+// 	int i = 0, j = 0, dq = -1;
+// 	t_quote *quotes;
+// 	int *split_here;
+
+// 	quotes = NULL;
+// 	while(opts->input[i])
+// 	{
+// 		if (opts->input[i] == '"')
+// 		{
+// 			if (dq == 1)
+// 				dq = -1;
+// 			else if (dq == -1)
+// 				dq == 1;
+// 			new_quote(quotes, i, dq, 1);
+// 		}
+// 		else if (opts->input[i] == '\'')
+// 		{
+// 			if (dq == 0)
+// 				dq = -1;
+// 			else if (dq == -1)
+// 				dq == 0;
+// 			new_quote(quotes, i, dq, 0);
+// 		}
+// 	}
+// 	return (1);
+// }
+
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
 
-
+	// if (<*n && arg) = arg | else if (< && <) = last_infile
+	// if (> & >> & >) = last_outfile
 	opts.user = readline("Enter user name for prompt: ");
 	opts.status = 0;
 	opts.curr_dir = getcwd(NULL, 0);
