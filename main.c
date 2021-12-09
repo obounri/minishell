@@ -100,7 +100,7 @@ int	parse(t_options	*opts)
 // 	}
 // }
 
-// int	parse(t_options	*opts)
+// int	parse_test(t_options	*opts)
 // {
 // 	int i = 0, j = 0, dq = -1;
 // 	t_quote *quotes;
@@ -109,7 +109,7 @@ int	parse(t_options	*opts)
 // 	quotes = NULL;
 // 	while(opts->input[i])
 // 	{
-// 		if (opts->input[i] == '"')
+// 		if (opts->input[i] == '"' && (dq != 0)) 
 // 		{
 // 			if (dq == 1)
 // 				dq = -1;
@@ -117,7 +117,7 @@ int	parse(t_options	*opts)
 // 				dq == 1;
 // 			new_quote(quotes, i, dq, 1);
 // 		}
-// 		else if (opts->input[i] == '\'')
+// 		else if (opts->input[i] == '\''  && (dq != 1))
 // 		{
 // 			if (dq == 0)
 // 				dq = -1;
@@ -136,6 +136,9 @@ int main(int ac,char ** av, char **env)
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
+	// if (| && < ) = infile
+	// if (| && << ) = readline / delimiter
+
 	opts.user = readline("Enter user name for prompt: ");
 	opts.status = 0;
 	opts.curr_dir = getcwd(NULL, 0);

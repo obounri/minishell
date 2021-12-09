@@ -13,7 +13,7 @@
 # _*_ Makefile _*_
 
 FLAGS = -Wall -Wextra -Werror
-HEADER = libft.h
+HEADER = .
 FCTS = ft_atoi.c \
 ft_bzero.c \
 ft_calloc.c \
