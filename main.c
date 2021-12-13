@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/09 00:48:19 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/13 19:42:33 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,78 +56,44 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-int	parse(t_options	*opts)
-{
-	int i = 0;
-	char **splited;
-
-	splited = ft_split(opts->input, ' ');
-	if (!splited[0])
-		return (0);
-	while (splited[i])
-		i++;
-	opts->cmd->n_scmds = i;
-	// opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
-	opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
-	// opts->cmd->scmds[0].impld = 0;
-	opts->cmd->scmds[0].impld = is_impld(splited[0]);
-	if (opts->cmd->scmds[0].impld < 0)
-		opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
-	opts->cmd->scmds[0].name = splited[0];
-	opts->cmd->scmds[0].args = &splited[0];
-	return (1);
-}
-
-// void	new_quote(t_quote *quotes, int i, int on, int dq)
+// int	parse(t_options	*opts)
 // {
-// 	t_quote *quote, *tmp;
+// 	int i = 0;
+// 	char **splited;
 
-// 	quote = malloc(sizeof(t_quote) * 1);
-// 	quote->i = i;
-// 	if (on >= 0)
-// 		quote->on = 1;
-// 	else
-// 		quote->on = 0;
-// 	quote->dq = dq;
-// 	quote->next = NULL;
-// 	if (!quotes)
-// 		quotes = quote;
-// 	else
-// 	{
-// 		while (quotes->next)
-// 			quotes = quotes->next;
-// 		quotes->next = quote;
-// 	}
-// }
-
-// int	parse_test(t_options	*opts)
-// {
-// 	int i = 0, j = 0, dq = -1;
-// 	t_quote *quotes;
-// 	int *split_here;
-
-// 	quotes = NULL;
-// 	while(opts->input[i])
-// 	{
-// 		if (opts->input[i] == '"' && (dq != 0)) 
-// 		{
-// 			if (dq == 1)
-// 				dq = -1;
-// 			else if (dq == -1)
-// 				dq == 1;
-// 			new_quote(quotes, i, dq, 1);
-// 		}
-// 		else if (opts->input[i] == '\''  && (dq != 1))
-// 		{
-// 			if (dq == 0)
-// 				dq = -1;
-// 			else if (dq == -1)
-// 				dq == 0;
-// 			new_quote(quotes, i, dq, 0);
-// 		}
-// 	}
+// 	splited = ft_split(opts->input, ' ');
+// 	if (!splited[0])
+// 		return (0);
+// 	while (splited[i])
+// 		i++;
+// 	opts->cmd->n_scmds = i;
+// 	// opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
+// 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
+// 	// opts->cmd->scmds[0].impld = 0;
+// 	opts->cmd->scmds[0].impld = is_impld(splited[0]);
+// 	if (opts->cmd->scmds[0].impld < 0)
+// 		opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
+// 	opts->cmd->scmds[0].name = splited[0];
+// 	opts->cmd->scmds[0].args = &splited[0];
 // 	return (1);
 // }
+
+int	parse_test(t_options	*opts)
+{
+	t_quote *quotes;
+	int *split_here;
+
+	if (!opts->input[0])
+		return (0);
+	quotes = NULL;
+	quotes = check_quotes_pipes(opts);
+	while (quotes)
+	{
+		printf("index %d, on = %d, dq = %d\n", quotes->i, quotes->on, quotes->dq);
+		quotes = quotes->next;
+	}
+	return (1);
+}
 
 int main(int ac,char ** av, char **env)
 {
@@ -148,32 +114,32 @@ int main(int ac,char ** av, char **env)
 	opts.cmd->scmds  = NULL;
 	while (1)
 	{
-		signal(SIGINT, &catch);
+		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
 			free(opts.cmd->scmds);
 		opts.cmd->scmds  = NULL;
 		prompt(&opts);
 		if (opts.input == NULL)
 			exit(0) ;
-		if (parse(&opts) == 0)
+		if (parse_test(&opts) == 0)
 			continue ;
-		if (opts.cmd->scmds[0].impld >= 0)
-		{
-			exec_impld(&opts.cmd->scmds[0], &opts);
-			continue ;
-		}
-		pid = fork();
-		if (pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
-			{
-				perror("fsh: command not found");
-				exit(1);
-			}
-		}
-		else
-			waitpid(pid, &opts.status, 0);
+		// if (opts.cmd->scmds[0].impld >= 0)
+		// {
+		// 	exec_impld(&opts.cmd->scmds[0], &opts);
+		// 	continue ;
+		// }
+		// pid = fork();
+		// if (pid == 0)
+		// {
+		// 	signal(SIGINT, SIG_DFL);
+		// 	if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
+		// 	{
+		// 		perror("fsh: command not found");
+		// 		exit(1);
+		// 	}
+		// }
+		// else
+		// 	waitpid(pid, &opts.status, 0);
 	}
 	return (0);
 }

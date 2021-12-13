@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/09 00:37:02 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/13 19:37:35 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,6 @@ typedef struct s_cmd
 	struct s_scmd *scmds;
 }   t_cmd;
 
-typedef	struct s_quote
-{
-	int	i;
-	int	on;
-	int dq;
-	struct s_quote	*next;
-}	t_quote;
-
 typedef struct s_scmd
 {
 	char *name;
@@ -62,8 +54,18 @@ typedef struct s_scmd
 	int fd_outfile;
 }   t_scmd;
 
+typedef	struct s_quote
+{
+	int	i;
+	int	on;
+	int dq;
+	struct s_quote	*next;
+}	t_quote;
+
+
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
 void	exec_impld(t_scmd	*scmd, t_options *opts);
+t_quote *check_quotes_pipes(t_options	*opts);
 
 #endif
