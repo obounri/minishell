@@ -24,6 +24,10 @@
 # include <sys/wait.h>
 # include <dirent.h>
 
+# define PIPE -30
+# define UNQSPACE -31
+# define EXPAND -32
+
 static char impld[7][7] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 
 typedef struct s_options
@@ -69,3 +73,14 @@ void	exec_impld(t_scmd	*scmd, t_options *opts);
 t_quote *check_quotes_pipes(t_options	*opts);
 
 #endif
+
+
+
+//if !p
+	// v 2
+// 
+// if p , if v 1 err
+	// v 1
+
+
+

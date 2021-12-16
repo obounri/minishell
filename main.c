@@ -76,17 +76,25 @@ char	*find_exec_path(t_options	*opts, char *name)
 // 	opts->cmd->scmds[0].name = splited[0];
 // 	opts->cmd->scmds[0].args = &splited[0];
 // 	return (1);
-// }
+//}
 
 int	parse_test(t_options	*opts)
 {
 	t_quote *quotes;
 	int *split_here;
-
+	char	**scmds = NULL;
+	int i =0;
 	if (!opts->input[0])
 		return (0);
 	quotes = NULL;
 	quotes = check_quotes_pipes(opts);
+	scmds = ft_split(opts->input,PIPE);
+	while (scmds && scmds[i])
+	{
+		printf("%s\n",scmds[i]);
+		i++;
+	}
+
 	while (quotes)
 	{
 		printf("index %d, on = %d, dq = %d\n", quotes->i, quotes->on, quotes->dq);

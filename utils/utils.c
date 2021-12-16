@@ -43,27 +43,46 @@ void    handle_quotes(t_quote  **quotes, char quote, int i, int *dq)
     }
 }
 
-void    handle_pipe(t_quote *quotes, int i)
+// void    handle_pipe(t_options *opts,t_quote *quotes, int i)
+// {
+//     t_quote *tmp;
+
+//     if (!quotes)
+//     {
+//         opts->input[i] = PIPE;
+//         return ;
+//     }
+//     tmp = quotes;
+//     while (tmp->next)
+//         tmp = tmp->next;
+//     if (tmp->on == 0)
+//         opts->input[i] = PIPE;
+// }
+
+int     quoted(t_quote *quotes, int i)
 {
     t_quote *tmp;
 
     if (!quotes)
-    {
-        printf("split pipe at %d\n", i);
-        return ;
-    }
+        return (0);
     tmp = quotes;
     while (tmp->next)
         tmp = tmp->next;
+    if (i)
+        if (tmp->on == 0 && tmp->dq == 1)
+            return (0);
     if (tmp->on == 0)
-        printf("split pipe at %d\n", i);
+        return (0);
+    return (1);
 }
 
+
+//fct checks if char 'x' is quoted or not. | ' ' < << > >> $
 t_quote *check_quotes_pipes(t_options	*opts)
 {
+	t_quote *quotes;
 	int i;
 	int dq;
-	t_quote *quotes;
 	
 	quotes = NULL;
 	dq = -1;
@@ -72,10 +91,15 @@ t_quote *check_quotes_pipes(t_options	*opts)
 	{
 		if (opts->input[i] == '"' || opts->input[i] == '\'')
             handle_quotes(&quotes, opts->input[i], i, &dq);
-        else if (opts->input[i] == '|')
-            handle_pipe(quotes, i);
-        // check for unclosed quote;
+        else if (opts->input[i] == '|' && !quoted(quotes, 0))
+            opts->input[i] = PIPE;
+        else if (opts->input[i] == ' ' && !quoted(quotes, 0))
+            opts->input[i] = UNQSPACE;
+        else if (opts->input[i] == '$' && !quoted(quotes, 1))
+            opts->input[i] = EXPAND;
 		i++;
 	}
+    if (quoted(quotes,0))
+        printf("unclosed quotes");
 	return (quotes);
 }
