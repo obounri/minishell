@@ -69,7 +69,7 @@ int     quoted(t_quote *quotes, int i)
     while (tmp->next)
         tmp = tmp->next;
     if (i)
-        if (tmp->on == 0 && tmp->dq == 1)
+        if (tmp->on == 1 && tmp->dq == 1)
             return (0);
     if (tmp->on == 0)
         return (0);
@@ -100,6 +100,9 @@ t_quote *check_quotes_pipes(t_options	*opts)
 		i++;
 	}
     if (quoted(quotes,0))
-        printf("unclosed quotes");
+    {
+        printf("Error: unclosed quotes\n");
+        opts->uncqu = 1;
+    }
 	return (quotes);
 }

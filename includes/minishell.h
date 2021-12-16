@@ -40,6 +40,7 @@ typedef struct s_options
 	char    **env;
 	char    **path;
 	char	*home;
+	int		uncqu;
 }   t_options;
 
 typedef struct s_cmd

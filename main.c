@@ -83,18 +83,22 @@ int	parse_test(t_options	*opts)
 	t_quote *quotes;
 	int *split_here;
 	char	**scmds = NULL;
-	int i =0;
+	int i = 0;
 	if (!opts->input[0])
 		return (0);
 	quotes = NULL;
 	quotes = check_quotes_pipes(opts);
-	scmds = ft_split(opts->input,PIPE);
+	if (opts->uncqu == 1)
+	{
+		opts->uncqu = 0;
+		return (0);
+	}
+	scmds = ft_split(opts->input, PIPE);
 	while (scmds && scmds[i])
 	{
 		printf("%s\n",scmds[i]);
 		i++;
 	}
-
 	while (quotes)
 	{
 		printf("index %d, on = %d, dq = %d\n", quotes->i, quotes->on, quotes->dq);
@@ -120,6 +124,7 @@ int main(int ac,char ** av, char **env)
 	opts.env = env;
 	opts.cmd = malloc(sizeof(t_cmd));
 	opts.cmd->scmds  = NULL;
+	opts.uncqu = 0;
 	while (1)
 	{
 		// signal(SIGINT, &catch);
