@@ -6,11 +6,12 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/17 19:02:15 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/17 21:58:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
 
 void    prompt(t_options *opts)
 {
