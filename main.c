@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/13 19:42:33 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/17 19:02:15 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,37 +56,39 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-// int	parse(t_options	*opts)
-// {
-// 	int i = 0;
-// 	char **splited;
+int	parse_scmds(t_options	*opts, char **scmds)
+{
+	int i;
+	int h; //
+	char **split_scmd;
 
-// 	splited = ft_split(opts->input, ' ');
-// 	if (!splited[0])
-// 		return (0);
-// 	while (splited[i])
-// 		i++;
-// 	opts->cmd->n_scmds = i;
-// 	// opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
-// 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (i + 1));
-// 	// opts->cmd->scmds[0].impld = 0;
-// 	opts->cmd->scmds[0].impld = is_impld(splited[0]);
-// 	if (opts->cmd->scmds[0].impld < 0)
-// 		opts->cmd->scmds[0].exec_path = find_exec_path(opts, splited[0]);
-// 	opts->cmd->scmds[0].name = splited[0];
-// 	opts->cmd->scmds[0].args = &splited[0];
-// 	return (1);
-//}
+	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds + 1));
+	i = 0;
+	while (i < opts->cmd->n_scmds)
+	{
+		split_scmd = ft_split(scmds[i], UNQSPACE);
+		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
+		if (opts->cmd->scmds[i].impld < 0)
+			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
+		opts->cmd->scmds[i].name = split_scmd[0];
+		opts->cmd->scmds[i].args = &split_scmd[0];
+		h = 0; //
+		while (split_scmd[h]) //
+			printf("[%s]", split_scmd[h++]); //
+		printf("\n"); //
+		i++;
+	}
+	return (1);
+}
 
-int	parse_test(t_options	*opts)
+int	parse_input(t_options	*opts)
 {
 	t_quote *quotes;
-	int *split_here;
 	char	**scmds = NULL;
-	int i = 0;
+	int i = 0; //
+	
 	if (!opts->input[0])
 		return (0);
-	quotes = NULL;
 	quotes = check_quotes_pipes(opts);
 	if (opts->uncqu == 1)
 	{
@@ -94,16 +96,8 @@ int	parse_test(t_options	*opts)
 		return (0);
 	}
 	scmds = ft_split(opts->input, PIPE);
-	while (scmds && scmds[i])
-	{
-		printf("%s\n",scmds[i]);
-		i++;
-	}
-	while (quotes)
-	{
-		printf("index %d, on = %d, dq = %d\n", quotes->i, quotes->on, quotes->dq);
-		quotes = quotes->next;
-	}
+	parse_scmds(opts, scmds);
+	// expand_redirect(opts);
 	return (1);
 }
 
@@ -127,6 +121,7 @@ int main(int ac,char ** av, char **env)
 	opts.uncqu = 0;
 	while (1)
 	{
+		opts.cmd->n_scmds = 1;
 		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
 			free(opts.cmd->scmds);
@@ -134,7 +129,7 @@ int main(int ac,char ** av, char **env)
 		prompt(&opts);
 		if (opts.input == NULL)
 			exit(0) ;
-		if (parse_test(&opts) == 0)
+		if (parse_input(&opts) == 0)
 			continue ;
 		// if (opts.cmd->scmds[0].impld >= 0)
 		// {

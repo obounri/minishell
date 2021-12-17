@@ -91,7 +91,7 @@ t_quote *check_quotes_pipes(t_options	*opts)
 	{
 		if (opts->input[i] == '"' || opts->input[i] == '\'')
             handle_quotes(&quotes, opts->input[i], i, &dq);
-        else if (opts->input[i] == '|' && !quoted(quotes, 0))
+        else if (opts->input[i] == '|' && !quoted(quotes, 0) && opts->cmd->n_scmds++)
             opts->input[i] = PIPE;
         else if (opts->input[i] == ' ' && !quoted(quotes, 0))
             opts->input[i] = UNQSPACE;
