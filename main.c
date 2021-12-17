@@ -81,7 +81,7 @@ int	parse_scmds(t_options	*opts, char **scmds)
 	}
 	return (1);
 }
-
+//This is just a test #REDIRECTIONS
 int	parse_input(t_options	*opts)
 {
 	t_quote *quotes;
