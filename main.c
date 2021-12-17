@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/17 19:02:15 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/17 19:50:38 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,33 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
+int	expand_redirect(char ***scmd)
+{
+	int i;
+	int j;
+	int tmp;
+	char *var;
+
+	i = 0;
+	while (*scmd[i])
+	{
+		j = 0;
+		// *scmd[i][0] == EXPAND
+		if (*scmd[i][0] == '"')
+		{
+			while (*scmd[i][j] != EXPAND)
+				j++;
+			tmp = j + 1;
+			while (*scmd[i][j] != ' ' && *scmd[i][j] != '"')
+				j++;
+			// var = substr(tmp, j - 1);
+			// getenv(var);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
@@ -67,6 +94,7 @@ int	parse_scmds(t_options	*opts, char **scmds)
 	while (i < opts->cmd->n_scmds)
 	{
 		split_scmd = ft_split(scmds[i], UNQSPACE);
+		// expand_redirect(&split_scmd);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)
 			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
@@ -97,7 +125,6 @@ int	parse_input(t_options	*opts)
 	}
 	scmds = ft_split(opts->input, PIPE);
 	parse_scmds(opts, scmds);
-	// expand_redirect(opts);
 	return (1);
 }
 
