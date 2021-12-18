@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/17 19:50:38 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/18 18:16:05 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,37 +56,6 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-int	expand_redirect(char ***scmd)
-{
-	int i;
-	int j;
-	int tmp;
-	char *var;
-	char **tmp_scmd;
-
-	tmp_scmd = *scmd;
-	i = 0;
-	while (tmp_scmd[i])
-	{
-		j = 0;
-		// if tmp_scmd[i][0] == EXPAND
-		if (tmp_scmd[i][0] == '"')
-		{
-			while (tmp_scmd[i][j] && tmp_scmd[i][j] != EXPAND)
-				j++;
-			if (!tmp_scmd[i][j])
-			{
-				i++;
-				continue ;
-			}
-			else
-				tmp_scmd[i] = expand(&tmp_scmd[i], j);
-		}
-		i++;
-	}
-	return (1);
-}
-
 int	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
@@ -117,7 +86,6 @@ int	parse_input(t_options	*opts)
 {
 	t_quote *quotes;
 	char	**scmds = NULL;
-	int i = 0; //
 	
 	if (!opts->input[0])
 		return (0);
