@@ -43,22 +43,6 @@ void    handle_quotes(t_quote  **quotes, char quote, int i, int *dq)
     }
 }
 
-// void    handle_pipe(t_options *opts,t_quote *quotes, int i)
-// {
-//     t_quote *tmp;
-
-//     if (!quotes)
-//     {
-//         opts->input[i] = PIPE;
-//         return ;
-//     }
-//     tmp = quotes;
-//     while (tmp->next)
-//         tmp = tmp->next;
-//     if (tmp->on == 0)
-//         opts->input[i] = PIPE;
-// }
-
 int     quoted(t_quote *quotes, int i)
 {
     t_quote *tmp;
@@ -106,3 +90,25 @@ t_quote *check_quotes_pipes(t_options	*opts)
     }
 	return (quotes);
 }
+
+char *expand(char **scmd, int j)
+{
+    char *var;
+    char *tmp_scmd;
+    char *first, *sec;
+    int tmp;
+
+    tmp = j + 1;
+    tmp_scmd = *scmd;
+    first = ft_substr(tmp_scmd, 1, j - 1);
+    while (tmp_scmd[j] && tmp_scmd[j] != ' ' && tmp_scmd[j] != '"')
+        j++;
+    var = ft_substr(tmp_scmd, tmp, j);
+    printf("[%s]\n", var);
+    sec = ft_substr(tmp_scmd, j, ft_strlen(tmp_scmd) - j - 1);
+    printf("[%s][%s][%s]\n", first, getenv(var), sec);
+    free(tmp_scmd);
+    tmp_scmd = NULL;
+
+}
+// "123$HOME456"

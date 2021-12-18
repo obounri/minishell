@@ -71,7 +71,8 @@ typedef	struct s_quote
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
 void	exec_impld(t_scmd	*scmd, t_options *opts);
-t_quote *check_quotes_pipes(t_options	*opts);
+t_quote	*check_quotes_pipes(t_options	*opts);
+char	*expand(char **scmd, int j);
 
 #endif
 

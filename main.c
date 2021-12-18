@@ -62,21 +62,25 @@ int	expand_redirect(char ***scmd)
 	int j;
 	int tmp;
 	char *var;
+	char **tmp_scmd;
 
+	tmp_scmd = *scmd;
 	i = 0;
-	while (*scmd[i])
+	while (tmp_scmd[i])
 	{
 		j = 0;
-		// *scmd[i][0] == EXPAND
-		if (*scmd[i][0] == '"')
+		// if tmp_scmd[i][0] == EXPAND
+		if (tmp_scmd[i][0] == '"')
 		{
-			while (*scmd[i][j] != EXPAND)
+			while (tmp_scmd[i][j] && tmp_scmd[i][j] != EXPAND)
 				j++;
-			tmp = j + 1;
-			while (*scmd[i][j] != ' ' && *scmd[i][j] != '"')
-				j++;
-			// var = substr(tmp, j - 1);
-			// getenv(var);
+			if (!tmp_scmd[i][j])
+			{
+				i++;
+				continue ;
+			}
+			else
+				tmp_scmd[i] = expand(&tmp_scmd[i], j);
 		}
 		i++;
 	}
@@ -94,7 +98,7 @@ int	parse_scmds(t_options	*opts, char **scmds)
 	while (i < opts->cmd->n_scmds)
 	{
 		split_scmd = ft_split(scmds[i], UNQSPACE);
-		// expand_redirect(&split_scmd);
+		expand_redirect(&split_scmd);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)
 			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
