@@ -6,11 +6,16 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/18 18:16:29 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/18 19:04:54 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void    redirect(char ***scmd)
+{
+    // redirecting here
+}
 
 char *expand(char **scmd, int j)
 {
@@ -43,7 +48,7 @@ char *expand(char **scmd, int j)
     return (tmp_scmd);
 }
 
-void	expand_redirect(char ***scmd)
+void	expand_vars(char ***scmd)
 {
 	int i;
 	int j;
