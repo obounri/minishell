@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/18 19:23:38 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/19 13:35:40 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	parse_scmds(t_options	*opts, char **scmds)
 	while (i < opts->cmd->n_scmds)
 	{
 		split_scmd = ft_split(scmds[i], UNQSPACE);
-		expand_vars(&split_scmd);
+		expand_vars(&split_scmd, opts->status);
 		redirect(&split_scmd);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)

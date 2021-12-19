@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/18 19:04:54 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/19 13:45:10 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,24 @@ void    redirect(char ***scmd)
     // redirecting here
 }
 
-char *expand(char **scmd, int j)
+char   *set_var(char **var, int status)
+{
+    char *tmp;
+
+    tmp = *var;
+    free(*var);
+    if (!ft_strcmp(tmp, "?"))
+        *var = ft_itoa(status);
+    else
+    {
+        *var = getenv(tmp);
+        if (!*var)
+            *var = ft_strdup("");
+    }
+    return (*var);
+}
+
+char *expand(char **scmd, int j, int status)
 {
     char *var;
     char *tmp_scmd;
@@ -27,28 +44,28 @@ char *expand(char **scmd, int j)
 
     tmp = j + 1;
     tmp_scmd = *scmd;
-    first = ft_substr(tmp_scmd, 0, j);
+    first = ft_substr(tmp_scmd, 0, j++);
     // printf("[DEBUG] first [%s]\n", first); //
-    j++;
-    while (tmp_scmd[j] && ft_isalnum(tmp_scmd[j]) == 1)
+    if (tmp_scmd[j] == '?')
         j++;
-    var = getenv(ft_substr(tmp_scmd, tmp, j - tmp));
+    else
+        while (tmp_scmd[j] && ft_isalnum(tmp_scmd[j]) == 1)
+            j++;
+    var = ft_substr(tmp_scmd, tmp, j - tmp);
+    var = set_var(&var, status);
     // printf("[DEBUG] var [%s]\n", var); //
     last = ft_substr(tmp_scmd, j, ft_strlen(tmp_scmd) - j);
     // printf("[DEBUG] last [%s]\n", last); //
     free(tmp_scmd);
     tmp_scmd = NULL;
-    if (!var)
-        tmp_scmd = ft_strjoin(first, "");
-    else
-        tmp_scmd = ft_strjoin(first, var);
+    tmp_scmd = ft_strjoin(first, var);
     tmp_scmd = ft_strjoin(tmp_scmd, last);
     free(first);
     free(last);
     return (tmp_scmd);
 }
 
-void	expand_vars(char ***scmd)
+void	expand_vars(char ***scmd, int status)
 {
 	int i;
 	int j;
@@ -69,7 +86,7 @@ void	expand_vars(char ***scmd)
 					break ;
 				else
 				{
-					tmp_scmd[i] = expand(&tmp_scmd[i], j++);
+					tmp_scmd[i] = expand(&tmp_scmd[i], j++, status);
 					continue ;
 				}
 			}
