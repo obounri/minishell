@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/17 21:58:48 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/19 13:35:40 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,19 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-int	parse_scmds(t_options	*opts, char **scmds)
+void	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
 	int h; //
 	char **split_scmd;
 
-	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds + 1));
+	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	i = 0;
 	while (i < opts->cmd->n_scmds)
 	{
 		split_scmd = ft_split(scmds[i], UNQSPACE);
+		expand_vars(&split_scmd, opts->status);
+		redirect(&split_scmd);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)
 			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
@@ -79,14 +81,13 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		printf("\n"); //
 		i++;
 	}
-	return (1);
+	return ;
 }
 //This is just a test #REDIRECTIONS
 int	parse_input(t_options	*opts)
 {
 	t_quote *quotes;
 	char	**scmds = NULL;
-	int i = 0; //
 	
 	if (!opts->input[0])
 		return (0);
@@ -97,8 +98,13 @@ int	parse_input(t_options	*opts)
 		return (0);
 	}
 	scmds = ft_split(opts->input, PIPE);
+	while (scmds[opts->cmd->n_scmds])
+		opts->cmd->n_scmds++;
+	// int h = 0; //
+	// while (scmds[h]) //
+	// 	printf("[%s]", scmds[h++]); //
+	// printf("\n"); //
 	parse_scmds(opts, scmds);
-	// expand_redirect(opts);
 	return (1);
 }
 

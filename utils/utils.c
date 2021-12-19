@@ -43,22 +43,6 @@ void    handle_quotes(t_quote  **quotes, char quote, int i, int *dq)
     }
 }
 
-// void    handle_pipe(t_options *opts,t_quote *quotes, int i)
-// {
-//     t_quote *tmp;
-
-//     if (!quotes)
-//     {
-//         opts->input[i] = PIPE;
-//         return ;
-//     }
-//     tmp = quotes;
-//     while (tmp->next)
-//         tmp = tmp->next;
-//     if (tmp->on == 0)
-//         opts->input[i] = PIPE;
-// }
-
 int     quoted(t_quote *quotes, int i)
 {
     t_quote *tmp;
@@ -86,18 +70,17 @@ t_quote *check_quotes_pipes(t_options	*opts)
 	
 	quotes = NULL;
 	dq = -1;
-	i = 0;
-	while(opts->input[i])
+	i = -1;
+	while(opts->input[++i])
 	{
 		if (opts->input[i] == '"' || opts->input[i] == '\'')
             handle_quotes(&quotes, opts->input[i], i, &dq);
-        else if (opts->input[i] == '|' && !quoted(quotes, 0) && opts->cmd->n_scmds++)
+        else if (opts->input[i] == '|' && !quoted(quotes, 0))
             opts->input[i] = PIPE;
         else if (opts->input[i] == ' ' && !quoted(quotes, 0))
             opts->input[i] = UNQSPACE;
-        else if (opts->input[i] == '$' && !quoted(quotes, 1))
+        else if (opts->input[i] == '$' && opts->input[i + 1] && (ft_isalnum(opts->input[i + 1]) || opts->input[i + 1] == '?') && !quoted(quotes, 1))
             opts->input[i] = EXPAND;
-		i++;
 	}
     if (quoted(quotes,0))
     {

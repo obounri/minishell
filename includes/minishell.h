@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/13 19:37:35 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/19 13:10:38 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,9 @@ typedef	struct s_quote
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
 void	exec_impld(t_scmd	*scmd, t_options *opts);
-t_quote *check_quotes_pipes(t_options	*opts);
+t_quote	*check_quotes_pipes(t_options	*opts);
+void	expand_vars(char ***scmd, int status);
+char	*expand(char **scmd, int j, int status);
+void    redirect(char ***scmd);
 
 #endif
-
-
-
-//if !p
-	// v 2
-// 
-// if p , if v 1 err
-	// v 1
-
-
-
