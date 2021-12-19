@@ -12,6 +12,7 @@
 
 #include "includes/minishell.h"
 
+
 void    prompt(t_options *opts)
 {
 	if (WEXITSTATUS(opts->status) > 0)
@@ -82,7 +83,7 @@ void	parse_scmds(t_options	*opts, char **scmds)
 	}
 	return ;
 }
-
+//This is just a test #REDIRECTIONS
 int	parse_input(t_options	*opts)
 {
 	t_quote *quotes;
