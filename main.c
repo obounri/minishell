@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/20 13:30:34 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/24 15:16:58 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 void    prompt(t_options *opts)
 {
 	if (WEXITSTATUS(opts->status) > 0)
-		printf("\033[0;31m");
+		opts->prompt = ft_strdup("\033[0;31m");
 	else
-		printf("\033[0;32m");
-	printf("➤ ");
-	printf("\033[0m");
-	printf("%s / %s ~ ", opts->curr_dir, opts->user);
-	opts->input = readline("");
+		opts->prompt = ft_strdup("\033[0;32m");
+	opts->prompt = ft_strjoin(opts->prompt, "➤ \033[0m");
+	opts->prompt = ft_strjoin(opts->prompt, opts->curr_dir);
+	opts->prompt = ft_strjoin(opts->prompt, " / ");
+	opts->prompt = ft_strjoin(opts->prompt, opts->user);
+	opts->prompt = ft_strjoin(opts->prompt, " ~ "); // free
+	opts->input = readline(opts->prompt); // free
 }
 
 void		catch(int sig)
@@ -83,7 +85,7 @@ void	parse_scmds(t_options	*opts, char **scmds)
 	}
 	return ;
 }
-//This is just a test #REDIRECTIONS
+
 int	parse_input(t_options	*opts)
 {
 	t_quote *quotes;
@@ -91,6 +93,7 @@ int	parse_input(t_options	*opts)
 	
 	if (!opts->input[0])
 		return (0);
+	add_history(opts->input);
 	quotes = check_quotes_pipes(opts);
 	if (opts->uncqu == 1)
 	{
@@ -112,22 +115,32 @@ int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
+	HISTORY_STATE *history_state;
+	HIST_ENTRY *history;
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
 	// if (| && < ) = infile
 	// if (| && << ) = readline / delimiter
 
-	opts.user = readline("Enter user name for prompt: ");
+	opts.user = readline("Enter user name for prompt: "); // free
 	opts.status = 0;
 	opts.curr_dir = getcwd(NULL, 0);
 	opts.home = getenv("HOME");
 	opts.env = env;
+	opts.prompt = NULL;
 	opts.cmd = malloc(sizeof(t_cmd));
 	opts.cmd->scmds  = NULL;
 	opts.uncqu = 0;
+	rl_line_buffer = "current";
+	using_history();
 	while (1)
 	{
+		int rl = rl_on_new_line ();
+		printf("rl %d\n", rl);
+		// rl_on_new_line();
+		// rl_redisplay();
+
 		opts.cmd->n_scmds = 1;
 		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
@@ -135,9 +148,11 @@ int main(int ac,char ** av, char **env)
 		opts.cmd->scmds  = NULL;
 		prompt(&opts);
 		if (opts.input == NULL)
-			exit(0) ;
+			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
+		// history = current_history();
+		// printf("hist %s\n", history->line);
 		// if (opts.cmd->scmds[0].impld >= 0)
 		// {
 		// 	exec_impld(&opts.cmd->scmds[0], &opts);
