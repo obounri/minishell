@@ -112,6 +112,7 @@ int	parse_input(t_options	*opts)
 	return (1);
 }
 
+// execute this cmd : "ls -la | grep main | wc -l"
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
