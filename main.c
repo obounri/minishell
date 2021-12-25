@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/25 11:40:52 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/25 11:45:09 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int	parse_input(t_options	*opts)
 }
 
 // execute this cmd : "ls -la | grep main | wc -l"
+// trim args from "" and ''
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
