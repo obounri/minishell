@@ -27,6 +27,10 @@
 # define PIPE -30
 # define UNQSPACE -31
 # define EXPAND -32
+# define IN -33
+# define OUT -34
+# define APPEND -35
+# define HEREDOC -36
 
 static char impld[7][7] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 
