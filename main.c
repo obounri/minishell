@@ -12,7 +12,8 @@
 
 #include "includes/minishell.h"
 
-// prompt disapearring problem was here, all prompt is given to readline now
+// prompt disapearring and not prompting new line on linux problem was here,
+// all prompt is given to readline now
 void    prompt(t_options *opts)
 {
 	if (WEXITSTATUS(opts->status) > 0)
@@ -146,8 +147,6 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		// history = current_history();
-		// printf("hist %s\n", history->line);
 		// if (opts.cmd->scmds[0].impld >= 0)
 		// {
 		// 	exec_impld(&opts.cmd->scmds[0], &opts);
