@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/24 15:16:58 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/25 11:40:52 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*find_exec_path(t_options	*opts, char *name)
 void	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
-	int h; //
+	// int h; //
 	char **split_scmd;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
@@ -78,10 +78,10 @@ void	parse_scmds(t_options	*opts, char **scmds)
 			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
 		opts->cmd->scmds[i].name = split_scmd[0];
 		opts->cmd->scmds[i].args = &split_scmd[0];
-		h = 0; //
-		while (split_scmd[h]) //
-			printf("[%s]", split_scmd[h++]); //
-		printf("\n"); //
+		// h = 0; //
+		// while (split_scmd[h]) //
+		// 	printf("[%s]", split_scmd[h++]); //
+		// printf("\n"); //
 		i++;
 	}
 	return ;
@@ -117,6 +117,7 @@ int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
+	int i = 0;
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
@@ -148,23 +149,31 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		// if (opts.cmd->scmds[0].impld >= 0)
-		// {
-		// 	exec_impld(&opts.cmd->scmds[0], &opts);
-		// 	continue ;
-		// }
-		// pid = fork();
-		// if (pid == 0)
-		// {
-		// 	signal(SIGINT, SIG_DFL);
-		// 	if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
-		// 	{
-		// 		perror("fsh: command not found");
-		// 		exit(1);
-		// 	}
-		// }
-		// else
-		// 	waitpid(pid, &opts.status, 0);
+		printf("n_cmds %d\n", opts.cmd->n_scmds);
+		i = 0;
+		while (i < opts.cmd->n_scmds)
+		{
+			printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
+			if (opts.cmd->scmds[i].impld >= 0)
+			{
+				exec_impld(&opts.cmd->scmds[i], &opts);
+				i++;
+				continue ;
+			}
+			pid = fork();
+			if (pid == 0)
+			{
+				// signal(SIGINT, SIG_DFL);
+				if (execve(opts.cmd->scmds[i].exec_path, opts.cmd->scmds[i].args, env) < 0)
+				{
+					perror("minishell: command not found");
+					exit(1);
+				}
+			}
+			else
+				waitpid(pid, &opts.status, 0);
+			i++;
+		}
 	}
 	return (0);
 }
