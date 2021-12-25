@@ -23,6 +23,7 @@
 # include "../utils/libft/libft.h"
 # include <sys/wait.h>
 # include <dirent.h>
+# include <fcntl.h>
 
 # define PIPE -30
 # define UNQSPACE -31
@@ -60,6 +61,7 @@ typedef struct s_scmd
 	char *exec_path;
 	char **args;
 	int   impld;
+	char *heredoc;
 	int	fd_infile;
 	int fd_outfile;
 }   t_scmd;
@@ -79,6 +81,5 @@ void	exec_impld(t_scmd	*scmd, t_options *opts);
 t_quote	*check_quotes_pipes(t_options	*opts);
 void	expand_vars(char ***scmd, int status);
 char	*expand(char **scmd, int j, int status);
-void    redirect(char ***scmd);
 
 #endif
