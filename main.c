@@ -12,7 +12,7 @@
 
 #include "includes/minishell.h"
 
-
+// prompt disapearring problem was here, all prompt is given to readline now
 void    prompt(t_options *opts)
 {
 	if (WEXITSTATUS(opts->status) > 0)
@@ -115,8 +115,6 @@ int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
-	HISTORY_STATE *history_state;
-	HIST_ENTRY *history;
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
@@ -132,15 +130,12 @@ int main(int ac,char ** av, char **env)
 	opts.cmd = malloc(sizeof(t_cmd));
 	opts.cmd->scmds  = NULL;
 	opts.uncqu = 0;
-	rl_line_buffer = "current";
 	using_history();
 	while (1)
 	{
-		int rl = rl_on_new_line ();
-		printf("rl %d\n", rl);
-		// rl_on_new_line();
-		// rl_redisplay();
-
+		// history is added before any modif in parse_input()
+		// to be given to signal a new line to readline
+		rl_on_new_line ();
 		opts.cmd->n_scmds = 1;
 		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
