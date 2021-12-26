@@ -71,6 +71,8 @@ void	parse_scmds(t_options	*opts, char **scmds)
 	while (i < opts->cmd->n_scmds)
 	{
 		split_scmd = ft_split(scmds[i], UNQSPACE);
+		if (!split_scmd)
+			break;
 		expand_vars(&split_scmd, opts->status);
 		redirect(&split_scmd,&opts->cmd->scmds[i],IN);
 		redirect(&split_scmd,&opts->cmd->scmds[i],OUT);
@@ -104,6 +106,8 @@ int	parse_input(t_options	*opts)
 		opts->uncqu = 0;
 		return (0);
 	}
+	if (!check_errors(opts))
+		return (0);
 	scmds = ft_split(opts->input, PIPE);
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;

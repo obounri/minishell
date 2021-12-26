@@ -9,7 +9,7 @@ int		in(char *red, t_scmd *scmd)
 {
 	int fd;
 	printf("--- Infile :%s\n",red);
-
+// close prev fd, open new one.
 	fd = open(red,O_RDONLY);
 	if (fd == -1)
 	{
@@ -24,7 +24,7 @@ int		out(char *red, t_scmd *scmd)
 {
 	int fd;
 
-	fd = open(red, O_WRONLY | O_CREAT, 0644);
+	fd = open(red, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	printf("--- Outfile :%s\n",red);
 	scmd->fd_outfile = fd;
 	return (0);
