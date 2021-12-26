@@ -112,13 +112,42 @@ int	parse_input(t_options	*opts)
 	return (1);
 }
 
+int the_process(int in, int out, t_options *opts, int i, char **env)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (out != 1)
+		{
+			dup2(out, 1);
+			close(out);
+		}
+		if (in != 0)
+		{
+			dup2(in, 0);
+			close(in);
+		}
+		if (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0)
+		{
+			perror("minishell: command not found");
+			exit(1);
+		}
+	}
+	else
+		waitpid(pid, &opts->status, 0);
+}
+
 // execute this cmd : "ls -la | grep main | wc -l"
 // trim args from "" and ''
+// set status to success or failure in builtins
+// builtings fork() or no ?
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
-	int i = 0;
+	int i = 0, fd[2], in = 0;
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
@@ -150,29 +179,24 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		printf("n_cmds %d\n", opts.cmd->n_scmds);
 		i = 0;
 		while (i < opts.cmd->n_scmds)
 		{
-			printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
-			if (opts.cmd->scmds[i].impld >= 0)
-			{
-				exec_impld(&opts.cmd->scmds[i], &opts);
-				i++;
-				continue ;
-			}
-			pid = fork();
-			if (pid == 0)
-			{
-				// signal(SIGINT, SIG_DFL);
-				if (execve(opts.cmd->scmds[i].exec_path, opts.cmd->scmds[i].args, env) < 0)
-				{
-					perror("minishell: command not found");
-					exit(1);
-				}
-			}
+			// printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
+			// if (opts.cmd->scmds[i].impld >= 0)
+			// {
+			// 	exec_impld(&opts.cmd->scmds[i], &opts);
+			// 	i++;
+			// 	continue ;
+			// }
+			// signal(SIGINT, SIG_DFL);
+			pipe(fd);
+			if (i == opts.cmd->n_scmds - 1)
+				the_process(in, 1, &opts, i, env);	
 			else
-				waitpid(pid, &opts.status, 0);
+				the_process(in, fd[1], &opts, i, env);	
+			close(fd[1]);
+			in = fd[0];
 			i++;
 		}
 	}
