@@ -82,4 +82,20 @@ t_quote	*check_quotes_pipes(t_options	*opts);
 void	expand_vars(char ***scmd, int status);
 char	*expand(char **scmd, int j, int status);
 
+//Redirection
+int		init_red(t_options *opts, char **split_scmd, int *i);
+int		redirect_type(char *red, t_scmd *scmd, int type);
+int		redirect(char ***scmd, t_scmd *cmd,int type);
+int		in(char *red, t_scmd *scmd);
+int		out(char *red, t_scmd *scmd);
+int 	heredoc(char *red, t_scmd *scmd);
+int 	append(char *red, t_scmd *scmd);
+
+//Error checking
+int		cmp(char c, int token);
+int		check_errors(t_options *opts);
+int		check_out_errors(t_options *opts);
+int		check_in_errors(t_options *opts);
+int		check_pipe_errors(t_options *opts);
+
 #endif
