@@ -116,4 +116,8 @@ int		check_pipe_errors(t_options *opts)
 	return (1);
 }
 
-// void    error_msd()
+void    error_msg(int err)
+{
+    if (err == 0)
+        printf("");
+}
