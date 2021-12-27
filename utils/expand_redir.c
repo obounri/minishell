@@ -21,7 +21,7 @@ char   *set_var(char **var, int status)
 {
     char *tmp;
 
-    tmp = *var;
+    tmp = ft_strdup(*var);
     free(*var);
     if (!ft_strcmp(tmp, "?"))
         *var = ft_itoa(status);
@@ -31,6 +31,7 @@ char   *set_var(char **var, int status)
         if (!*var)
             *var = ft_strdup("");
     }
+    free(tmp);
     return (*var);
 }
 
