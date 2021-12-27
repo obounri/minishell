@@ -74,11 +74,11 @@ void	parse_scmds(t_options	*opts, char **scmds)
 		if (!split_scmd)
 			break;
 		expand_vars(&split_scmd, opts->status);
+		init_red(opts,split_scmd,&i);
 		h = -1; 
 		while (split_scmd[++h])
 			if (split_scmd[h][0] == '"' || split_scmd[h][0] == '\'')
 				split_scmd[h] = trim_quotes(split_scmd[h]);
-		init_red(opts,split_scmd,&i);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)
 			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
