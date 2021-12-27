@@ -97,6 +97,8 @@ int		check_errors(t_options *opts);
 int		check_out_errors(t_options *opts);
 int		check_in_errors(t_options *opts);
 int		check_pipe_errors(t_options *opts);
+int		error_msg();
+int		check_scmds(char **scmds);
 
 char	*trim_quotes(char *red);
 

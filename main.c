@@ -76,7 +76,8 @@ void	parse_scmds(t_options	*opts, char **scmds)
 		expand_vars(&split_scmd, opts->status);
 		init_red(opts,split_scmd,&i);
 		h = -1; 
-		while (split_scmd[++h])
+		// exit(0);
+		while (split_scmd && split_scmd[++h])
 			if (split_scmd[h][0] == '"' || split_scmd[h][0] == '\'')
 				split_scmd[h] = trim_quotes(split_scmd[h]);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
@@ -110,6 +111,8 @@ int	parse_input(t_options	*opts)
 	if (!check_errors(opts))
 		return (0);
 	scmds = ft_split(opts->input, PIPE);
+	if (check_scmds(scmds) == 0)
+		return (0);
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;
 	// int h = 0; //
