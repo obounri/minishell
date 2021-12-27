@@ -23,6 +23,7 @@
 # include "../utils/libft/libft.h"
 # include <sys/wait.h>
 # include <dirent.h>
+# include <fcntl.h>
 
 # define PIPE -30
 # define UNQSPACE -31

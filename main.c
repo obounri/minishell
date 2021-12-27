@@ -65,6 +65,7 @@ void	parse_scmds(t_options	*opts, char **scmds)
 	int i;
 	// int h; //
 	char **split_scmd;
+	char **tmp;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	i = 0;
@@ -75,7 +76,12 @@ void	parse_scmds(t_options	*opts, char **scmds)
 		redirect(&split_scmd);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)
-			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
+		{
+			if (open(split_scmd[0], O_RDONLY) != -1)
+				opts->cmd->scmds[i].exec_path = split_scmd[0];
+			else
+				opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
+		}
 		opts->cmd->scmds[i].name = split_scmd[0];
 		opts->cmd->scmds[i].args = &split_scmd[0];
 		// h = 0; //
