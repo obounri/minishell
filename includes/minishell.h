@@ -98,4 +98,6 @@ int		check_out_errors(t_options *opts);
 int		check_in_errors(t_options *opts);
 int		check_pipe_errors(t_options *opts);
 
+char	*trim_quotes(char *red);
+
 #endif
