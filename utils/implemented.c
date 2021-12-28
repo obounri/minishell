@@ -47,6 +47,7 @@ void    echo(char **args)
 		printf("%s ", args[i++]);
 	if (!opt)
 		printf("\n");
+	exit(EXIT_SUCCESS);
 }
 
 void	cd(char **args, t_options	*opts)
@@ -54,8 +55,12 @@ void	cd(char **args, t_options	*opts)
 	if (!args[1])
 		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
+	{
 		perror(args[1]);
+		exit(EXIT_FAILURE);
+	}
 	opts->curr_dir = getcwd(NULL, 0);
+	exit(EXIT_SUCCESS);
 }
 
 void	env(char **env)
@@ -65,8 +70,10 @@ void	env(char **env)
 	i = 0;
 	while (env[i] != NULL)
 		printf("%s\n", env[i++]);
+	exit(EXIT_SUCCESS);
 }
 
+// 
 void	exec_impld(t_scmd	*scmd, t_options	*opts)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
