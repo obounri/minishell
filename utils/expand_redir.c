@@ -12,11 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void    redirect(char ***scmd)
-{
-    // redirecting here
-}
-
 char   *set_var(char **var, int status)
 {
     char *tmp;
@@ -76,8 +71,8 @@ void	expand_vars(char ***scmd, int status)
 	i = -1;
 	while (tmp_scmd[++i])
 	{
-		if (tmp_scmd[i][0] == '"' || tmp_scmd[i][0] == EXPAND)
-		{
+		// if (tmp_scmd[i][0] == '"' || tmp_scmd[i][0] == EXPAND)
+		// {
 			j = 0;
 			while (tmp_scmd[i][j]) 
 			{
@@ -91,6 +86,6 @@ void	expand_vars(char ***scmd, int status)
 					continue ;
 				}
 			}
-		}
+		// }
 	}
 }
