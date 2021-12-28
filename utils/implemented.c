@@ -28,20 +28,23 @@ int		is_impld(char *name)
 
 void    echo(char **args)
 {
-	int	i;
+	int	i, j;
 	int opt;
 
 	i = 1;
 	opt = 0;
-	if (args[1] && (ft_strcmp(args[1], "-n") == 0))
+	while (args[i] && (ft_strncmp(args[i], "-n", 2) == 0))
 	{
-		i = 2;
+		j = 2;
+		while (args[i][j] && args[i][j] == 'n')
+			j++;
+		if (args[i][j])
+			break ;
 		opt = 1;
+		i++;
 	}
-	while (args[i] && args[i + 1])
+	while (args[i])
 		printf("%s ", args[i++]);
-	if (args[i])
-		printf("%s", args[i]);
 	if (!opt)
 		printf("\n");
 }

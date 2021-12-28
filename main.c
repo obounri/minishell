@@ -169,7 +169,6 @@ int main(int ac,char ** av, char **env)
 	opts.cmd = malloc(sizeof(t_cmd));
 	opts.cmd->scmds  = NULL;
 	opts.uncqu = 0;
-	using_history();
 	while (1)
 	{
 		// history is added before any modif in parse_input()
@@ -189,12 +188,12 @@ int main(int ac,char ** av, char **env)
 		while (i < opts.cmd->n_scmds)
 		{
 			// printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
-			// if (opts.cmd->scmds[i].impld >= 0)
-			// {
-			// 	exec_impld(&opts.cmd->scmds[i], &opts);
-			// 	i++;
-			// 	continue ;
-			// }
+			if (opts.cmd->scmds[i].impld >= 0)
+			{
+				exec_impld(&opts.cmd->scmds[i], &opts);
+				i++;
+				continue ;
+			}
 			// signal(SIGINT, SIG_DFL);
 			pipe(fd);
 			if (i == opts.cmd->n_scmds - 1)
