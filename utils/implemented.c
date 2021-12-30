@@ -28,22 +28,26 @@ int		is_impld(char *name)
 
 void    echo(char **args)
 {
-	int	i;
+	int	i, j;
 	int opt;
 
 	i = 1;
 	opt = 0;
-	if (args[1] && (ft_strcmp(args[1], "-n") == 0))
+	while (args[i] && (ft_strncmp(args[i], "-n", 2) == 0))
 	{
-		i = 2;
+		j = 2;
+		while (args[i][j] && args[i][j] == 'n')
+			j++;
+		if (args[i][j])
+			break ;
 		opt = 1;
+		i++;
 	}
-	while (args[i] && args[i + 1])
+	while (args[i])
 		printf("%s ", args[i++]);
-	if (args[i])
-		printf("%s", args[i]);
 	if (!opt)
 		printf("\n");
+	exit(EXIT_SUCCESS);
 }
 
 void	cd(char **args, t_options	*opts)
@@ -51,8 +55,12 @@ void	cd(char **args, t_options	*opts)
 	if (!args[1])
 		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
+	{
 		perror(args[1]);
+		exit(EXIT_FAILURE);
+	}
 	opts->curr_dir = getcwd(NULL, 0);
+	exit(EXIT_SUCCESS);
 }
 
 void	env(char **env)
@@ -62,8 +70,10 @@ void	env(char **env)
 	i = 0;
 	while (env[i] != NULL)
 		printf("%s\n", env[i++]);
+	exit(EXIT_SUCCESS);
 }
 
+// 
 void	exec_impld(t_scmd	*scmd, t_options	*opts)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
