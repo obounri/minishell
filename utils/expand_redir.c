@@ -12,11 +12,6 @@
 
 #include "../includes/minishell.h"
 
-void    redirect(char ***scmd)
-{
-    // redirecting here
-}
-
 char   *set_var(char **var, int status)
 {
     char *tmp;

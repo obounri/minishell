@@ -28,6 +28,10 @@
 # define PIPE -30
 # define UNQSPACE -31
 # define EXPAND -32
+# define IN -33
+# define OUT -34
+# define APPEND -35
+# define HEREDOC -36
 
 static char impld[7][7] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 
@@ -57,6 +61,7 @@ typedef struct s_scmd
 	char *exec_path;
 	char **args;
 	int   impld;
+	char *heredoc;
 	int	fd_infile;
 	int fd_outfile;
 }   t_scmd;
@@ -76,6 +81,25 @@ void	exec_impld(t_scmd	*scmd, t_options *opts);
 t_quote	*check_quotes_pipes(t_options	*opts);
 void	expand_vars(char ***scmd, int status);
 char	*expand(char **scmd, int j, int status);
-void    redirect(char ***scmd);
+
+//Redirection
+int		init_red(t_options *opts, char **split_scmd, int *i);
+int		redirect_type(char *red, t_scmd *scmd, int type);
+int		redirect(char ***scmd, t_scmd *cmd,int type);
+int		in(char *red, t_scmd *scmd);
+int		out(char *red, t_scmd *scmd);
+int 	heredoc(char *red, t_scmd *scmd);
+int 	append(char *red, t_scmd *scmd);
+
+//Error checking
+int		cmp(char c, int token);
+int		check_errors(t_options *opts);
+int		check_out_errors(t_options *opts);
+int		check_in_errors(t_options *opts);
+int		check_pipe_errors(t_options *opts);
+int		error_msg();
+int		check_scmds(char **scmds);
+
+char	*trim_quotes(char *red);
 
 #endif
