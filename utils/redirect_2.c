@@ -90,12 +90,9 @@ int 	heredoc(char *red, t_scmd *scmd)
 
 		t = malloc(sizeof (char *) * 2);
 		t[1] = NULL;
-
 		while (scmd->heredoc[++i])
-		{
 			if (scmd->heredoc[i] == '$')
 				scmd->heredoc[i] = EXPAND;
-		}
 		t[0] = scmd->heredoc;
 		printf("BEFORE:----> \n%s",scmd->heredoc);
 		expand_vars(&t,0);

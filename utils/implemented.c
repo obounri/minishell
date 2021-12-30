@@ -63,6 +63,24 @@ void	cd(char **args, t_options	*opts)
 	exit(EXIT_SUCCESS);
 }
 
+void	pwd(char *path)
+{
+	printf("%s\n", path);
+	exit(EXIT_SUCCESS);
+}
+
+void	export(void)
+{
+	printf("export\n");
+	exit(EXIT_SUCCESS);
+}
+
+void	unset(void)
+{
+	printf("unset\n");
+	exit(EXIT_SUCCESS);
+}
+
 void	env(char **env)
 {
 	int i;
@@ -73,6 +91,7 @@ void	env(char **env)
 	exit(EXIT_SUCCESS);
 }
 
+
 // 
 void	exec_impld(t_scmd	*scmd, t_options	*opts)
 {
@@ -81,13 +100,13 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts)
 	else if (ft_strcmp(scmd->name, "cd") == 0)
 		cd(scmd->args, opts);
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
-		printf("%s\n", opts->curr_dir);
+		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		printf("export\n");
+		export();
 	else if (ft_strcmp(scmd->name, "unset") == 0)
-		printf("unset\n");
+		unset();
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
-	else if (ft_strcmp(scmd->name, "exit") == 0)
-		exit(0);
+	// else if (ft_strcmp(scmd->name, "exit") == 0)
+	// 	exit(0);
 }

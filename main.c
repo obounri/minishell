@@ -63,7 +63,7 @@ char	*find_exec_path(t_options	*opts, char *name)
 void	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
-	// int h; //
+	int h; //	
 	char **split_scmd;
 	char **tmp;
 
@@ -146,10 +146,12 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 			dup2(in, 0);
 			close(in);
 		}
-		if (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0)
+		if (opts->cmd->scmds[i].impld >= 0)
+			exec_impld(&opts->cmd->scmds[i], opts);
+		else (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0);
 		{
 			perror("minishell: command not found");
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else
@@ -199,12 +201,12 @@ int main(int ac,char ** av, char **env)
 		while (i < opts.cmd->n_scmds)
 		{
 			// printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
-			if (opts.cmd->scmds[i].impld >= 0)
-			{
-				exec_impld(&opts.cmd->scmds[i], &opts);
-				i++;
-				continue ;
-			}
+			// if (opts.cmd->scmds[i].impld >= 0)
+			// {
+			// 	exec_impld(&opts.cmd->scmds[i], &opts);
+			// 	i++;
+			// 	continue ;
+			// }
 			// signal(SIGINT, SIG_DFL);
 			pipe(fd);
 			if (i == opts.cmd->n_scmds - 1)
