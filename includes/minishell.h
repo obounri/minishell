@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # define PIPE -30
 # define UNQSPACE -31

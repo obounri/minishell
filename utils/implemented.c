@@ -57,12 +57,12 @@ void	cd(char **args, t_options	*opts, int cd_exit)
 	else if (chdir(args[1]) < 0)
 	{
 		perror(args[1]);
+		opts->status = 256;
 		if (cd_exit)
 			exit(EXIT_FAILURE);
 		return ;
 	}
 	opts->curr_dir = getcwd(NULL, 0);
-	printf("[%s]\n", opts->curr_dir);
 	if (cd_exit)
 		exit(EXIT_SUCCESS);
 }
