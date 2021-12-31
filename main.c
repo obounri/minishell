@@ -155,10 +155,7 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 		}
 	}
 	else
-	{
 		waitpid(pid, &opts->status, 0);
-		printf("exit code = [%d]\n", opts->status);
-	}
 }
 
 // execute this cmd : "ls -la | grep main | wc -l"
