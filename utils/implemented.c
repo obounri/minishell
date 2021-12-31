@@ -50,17 +50,21 @@ void    echo(char **args)
 	exit(EXIT_SUCCESS);
 }
 
-void	cd(char **args, t_options	*opts)
+void	cd(char **args, t_options	*opts, int cd_exit)
 {
 	if (!args[1])
 		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
 	{
 		perror(args[1]);
-		exit(EXIT_FAILURE);
+		if (cd_exit)
+			exit(EXIT_FAILURE);
+		return ;
 	}
 	opts->curr_dir = getcwd(NULL, 0);
-	exit(EXIT_SUCCESS);
+	printf("[%s]\n", opts->curr_dir);
+	if (cd_exit)
+		exit(EXIT_SUCCESS);
 }
 
 void	pwd(char *path)
@@ -93,12 +97,12 @@ void	env(char **env)
 
 
 // 
-void	exec_impld(t_scmd	*scmd, t_options	*opts)
+void	exec_impld(t_scmd	*scmd, t_options	*opts, int cd_exit)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
 		echo(scmd->args);
 	else if (ft_strcmp(scmd->name, "cd") == 0)
-		cd(scmd->args, opts);
+		cd(scmd->args, opts, cd_exit);
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
@@ -107,6 +111,6 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts)
 		unset();
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
-	// else if (ft_strcmp(scmd->name, "exit") == 0)
-	// 	exit(0);
+	else if (ft_strcmp(scmd->name, "exit") == 0)
+		exit(0);
 }
