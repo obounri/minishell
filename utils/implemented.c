@@ -28,31 +28,61 @@ int		is_impld(char *name)
 
 void    echo(char **args)
 {
-	int	i;
+	int	i, j;
 	int opt;
 
 	i = 1;
 	opt = 0;
-	if (args[1] && (ft_strcmp(args[1], "-n") == 0))
+	while (args[i] && (ft_strncmp(args[i], "-n", 2) == 0))
 	{
-		i = 2;
+		j = 2;
+		while (args[i][j] && args[i][j] == 'n')
+			j++;
+		if (args[i][j])
+			break ;
 		opt = 1;
+		i++;
 	}
-	while (args[i] && args[i + 1])
+	while (args[i])
 		printf("%s ", args[i++]);
-	if (args[i])
-		printf("%s", args[i]);
 	if (!opt)
 		printf("\n");
+	exit(EXIT_SUCCESS);
 }
 
-void	cd(char **args, t_options	*opts)
+void	cd(char **args, t_options	*opts, int cd_exit)
 {
 	if (!args[1])
 		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
+	{
 		perror(args[1]);
+		opts->status = 256;
+		if (cd_exit)
+			exit(EXIT_FAILURE);
+		return ;
+	}
 	opts->curr_dir = getcwd(NULL, 0);
+	if (cd_exit)
+		exit(EXIT_SUCCESS);
+}
+
+void	pwd(char *path)
+{
+	printf("%s\n", path);
+	exit(EXIT_SUCCESS);
+}
+
+void	export(void)
+{
+	printf("export\n");
+	exit(EXIT_SUCCESS);
+}
+
+void	unset(void)
+{
+	printf("unset\n");
+	exit(EXIT_SUCCESS);
 }
 
 void	env(char **env)
@@ -62,20 +92,23 @@ void	env(char **env)
 	i = 0;
 	while (env[i] != NULL)
 		printf("%s\n", env[i++]);
+	exit(EXIT_SUCCESS);
 }
 
-void	exec_impld(t_scmd	*scmd, t_options	*opts)
+
+// 
+void	exec_impld(t_scmd	*scmd, t_options	*opts, int cd_exit)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
 		echo(scmd->args);
 	else if (ft_strcmp(scmd->name, "cd") == 0)
-		cd(scmd->args, opts);
+		cd(scmd->args, opts, cd_exit);
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
-		printf("%s\n", opts->curr_dir);
+		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		printf("export\n");
+		export();
 	else if (ft_strcmp(scmd->name, "unset") == 0)
-		printf("unset\n");
+		unset();
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
 	else if (ft_strcmp(scmd->name, "exit") == 0)

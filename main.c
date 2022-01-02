@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/24 15:16:58 by obounri          ###   ########.fr       */
+/*   Updated: 2021/12/25 11:45:09 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ char	*find_exec_path(t_options	*opts, char *name)
 void	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
-	int h, j; //
+	int h; //	
 	char **split_scmd;
+	char **tmp;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	i = 0;
@@ -82,13 +83,18 @@ void	parse_scmds(t_options	*opts, char **scmds)
 				split_scmd[h] = trim_quotes(split_scmd[h]);
 		opts->cmd->scmds[i].impld = is_impld(split_scmd[0]);
 		if (opts->cmd->scmds[i].impld < 0)
-			opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
+		{
+			if (open(split_scmd[0], O_RDONLY) != -1)
+				opts->cmd->scmds[i].exec_path = split_scmd[0];
+			else
+				opts->cmd->scmds[i].exec_path = find_exec_path(opts, split_scmd[0]);
+		}
 		opts->cmd->scmds[i].name = split_scmd[0];
 		opts->cmd->scmds[i].args = &split_scmd[0];
-		h = 0; //
-		while (split_scmd[h]) //
-			printf("[%s]", split_scmd[h++]); //
-		printf("\n"); //
+		// h = 0; //
+		// while (split_scmd[h]) //
+		// 	printf("[%s]", split_scmd[h++]); //
+		// printf("\n"); //
 		i++;
 	}
 	return ;
@@ -123,10 +129,43 @@ int	parse_input(t_options	*opts)
 	return (1);
 }
 
+int the_process(int in, int out, t_options *opts, int i, char **env)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (out != 1)
+		{
+			dup2(out, 1);
+			close(out);
+		}
+		if (in != 0)
+		{
+			dup2(in, 0);
+			close(in);
+		}
+		if (opts->cmd->scmds[i].impld >= 0)
+			exec_impld(&opts->cmd->scmds[i], opts, 1);
+		else (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0);
+		{
+			perror("minishell: command not found");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+		waitpid(pid, &opts->status, 0);
+}
+
+// execute this cmd : "ls -la | grep main | wc -l"
+// trim args from "" and ''
+// set status to success or failure in builtins
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
+	int i = 0, fd[2], in = 0;
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
@@ -142,7 +181,6 @@ int main(int ac,char ** av, char **env)
 	opts.cmd = malloc(sizeof(t_cmd));
 	opts.cmd->scmds  = NULL;
 	opts.uncqu = 0;
-	using_history();
 	while (1)
 	{
 		// history is added before any modif in parse_input()
@@ -158,23 +196,25 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		// if (opts.cmd->scmds[0].impld >= 0)
-		// {
-		// 	exec_impld(&opts.cmd->scmds[0], &opts);
-		// 	continue ;
-		// }
-		// pid = fork();
-		// if (pid == 0)
-		// {
-		// 	signal(SIGINT, SIG_DFL);
-		// 	if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
-		// 	{
-		// 		perror("fsh: command not found");
-		// 		exit(1);
-		// 	}
-		// }
-		// else
-		// 	waitpid(pid, &opts.status, 0);
+		i = 0;
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 4)
+		{
+			exec_impld(&opts.cmd->scmds[i], &opts, 0);
+			continue ;
+		}
+		while (i < opts.cmd->n_scmds)
+		{
+			// printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
+			// signal(SIGINT, SIG_DFL);
+			pipe(fd);
+			if (i == opts.cmd->n_scmds - 1)
+				the_process(in, 1, &opts, i, env);	
+			else
+				the_process(in, fd[1], &opts, i, env);	
+			close(fd[1]);
+			in = fd[0];
+			i++;
+		}
 	}
 	return (0);
 }

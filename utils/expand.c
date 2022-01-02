@@ -71,21 +71,18 @@ void	expand_vars(char ***scmd, int status)
 	i = -1;
 	while (tmp_scmd[++i])
 	{
-		// if (tmp_scmd[i][0] == '"' || tmp_scmd[i][0] == EXPAND)
-		// {
-			j = 0;
-			while (tmp_scmd[i][j]) 
-			{
-				while (tmp_scmd[i][j] && tmp_scmd[i][j] != EXPAND)
-					j++;
-				if (!tmp_scmd[i][j])
-					break ;
-				else
-				{
-					tmp_scmd[i] = expand(&tmp_scmd[i], j++, status);
-					continue ;
-				}
-			}
-		// }
+        j = 0;
+        while (tmp_scmd[i][j]) 
+        {
+            while (tmp_scmd[i][j] && tmp_scmd[i][j] != EXPAND)
+                j++;
+            if (!tmp_scmd[i][j])
+                break ;
+            else
+            {
+                tmp_scmd[i] = expand(&tmp_scmd[i], j++, status);
+                continue ;
+            }
+        }
 	}
 }
