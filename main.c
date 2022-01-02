@@ -129,6 +129,7 @@ int	parse_input(t_options	*opts)
 	return (1);
 }
 
+// redirect input and output from and to infiles and outfiles here
 int the_process(int in, int out, t_options *opts, int i, char **env)
 {
 	pid_t pid;
