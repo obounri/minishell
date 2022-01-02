@@ -74,7 +74,7 @@ void	parse_scmds(t_options	*opts, char **scmds)
 		if (!split_scmd)
 			break;
 		expand_vars(&split_scmd, opts->status);
-		init_red(opts,split_scmd,&i);
+		init_red(opts, split_scmd, &i);
 		h = -1; 
 		// exit(0);
 		while (split_scmd && split_scmd[++h])
