@@ -23,13 +23,76 @@ int		redirect_type(char *red, t_scmd *scmd, int type)
 	return (0);
 }
 
+int		new_alloc_size(char **cmd)
+{
+	int i;
+	int new_size;
 
-int		redirect(char ***scmd, t_scmd *cmd,int type)
+	i = 0;
+	new_size = 0;
+	while (cmd && cmd[i])
+	{
+		if (is_empty(cmd[i]))
+			new_size++;
+		i++;
+	}
+	return (new_size);
+}
+
+int		tab_len(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab && tab[i])
+		i++;
+	return (i);
+}
+
+void	free_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	if (tab){
+	while (tab && tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	}
+}
+
+void	new_alloc(char ***cmd)
+{
+	int i;
+	char **new;
+	int size;
+
+	i = -1;
+	int j = -1;
+	size = new_alloc_size(*cmd);
+	new = malloc(sizeof(char *) * size + 1);
+	while ((*cmd)[++i])
+	{
+		if (ft_strcmp((*cmd)[i],""))
+			new[++j] = (*cmd)[i];
+		else
+			free((*cmd)[i]);
+	}
+	new[++j] = NULL;
+	free(*cmd);
+	*cmd = new;
+}
+
+int		redirect(char ***scmd, t_scmd *cmd, int type)
 {
 	char *red;
 	char **tmp_cmd;
 	int i;
 	int infile;
+	int d = 0;
 
 	tmp_cmd = *scmd;
 	i = -1;
@@ -56,7 +119,5 @@ int		redirect(char ***scmd, t_scmd *cmd,int type)
 				tmp_cmd[i][red - tmp_cmd[i]] = '\0';
 		}
 	}
-	if (infile)
-		printf("Error, no infile provided");
 	return (0);
 }
