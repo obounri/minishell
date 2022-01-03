@@ -161,23 +161,23 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		// if (opts.cmd->scmds[0].impld >= 0)
-		// {
-		// 	exec_impld(&opts.cmd->scmds[0], &opts);
-		// 	continue ;
-		// }
-		// pid = fork();
-		// if (pid == 0)
-		// {
-		// 	signal(SIGINT, SIG_DFL);
-		// 	if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
-		// 	{
-		// 		perror("fsh: command not found");
-		// 		exit(1);
-		// 	}
-		// }
-		// else
-		// 	waitpid(pid, &opts.status, 0);
+		if (opts.cmd->scmds[0].impld >= 0)
+		{
+			exec_impld(&opts.cmd->scmds[0], &opts);
+			continue ;
+		}
+		pid = fork();
+		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			if (execve(opts.cmd->scmds[0].exec_path, opts.cmd->scmds[0].args, env) < 0)
+			{
+				perror("fsh: command not found");
+				exit(1);
+			}
+		}
+		else
+			waitpid(pid, &opts.status, 0);
 	}
 	return (0);
 }
