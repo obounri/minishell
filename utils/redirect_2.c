@@ -101,7 +101,7 @@ int 	heredoc(char *red, t_scmd *scmd)
 		expand_vars(&t,0);
 		scmd->heredoc = t[0];
 		// while (*t)
-		// 	free(*t++);
+			// free(*t++);
 		free(t);
 		printf("AFTER :----> \n%s",scmd->heredoc);
 	}

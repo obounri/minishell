@@ -90,6 +90,8 @@ int		in(char *red, t_scmd *scmd);
 int		out(char *red, t_scmd *scmd);
 int 	heredoc(char *red, t_scmd *scmd);
 int 	append(char *red, t_scmd *scmd);
+int		new_alloc_size(char **cmd);
+void	new_alloc(char ***cmd);
 
 //Error checking
 int		cmp(char c, int token);
@@ -99,6 +101,7 @@ int		check_in_errors(t_options *opts);
 int		check_pipe_errors(t_options *opts);
 int		error_msg();
 int		check_scmds(char **scmds);
+int		is_empty(char *input);
 
 char	*trim_quotes(char *red);
 
