@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # define PIPE -30
 # define UNQSPACE -31
@@ -33,7 +34,7 @@
 # define APPEND -35
 # define HEREDOC -36
 
-static char impld[7][7] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
+static char impld[7][7] = {"echo", "env", "pwd", "export", "unset", "cd", "exit"};
 
 typedef struct s_options
 {
@@ -77,7 +78,7 @@ typedef	struct s_quote
 
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
-void	exec_impld(t_scmd	*scmd, t_options *opts);
+void	exec_impld(t_scmd	*scmd, t_options *opts, int cd_exit);
 t_quote	*check_quotes_pipes(t_options	*opts);
 void	expand_vars(char ***scmd, int status);
 char	*expand(char **scmd, int j, int status);
