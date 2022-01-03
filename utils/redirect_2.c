@@ -9,7 +9,7 @@ int		in(char *red, t_scmd *scmd)
 	fd = open(red,O_RDONLY);
 	if (fd == -1)
 	{
-		printf("no such file or directory: %s",red);
+		printf("%s: no such file or directory\n",red);
 		return (0);
 	}
 	scmd->fd_infile = fd;
