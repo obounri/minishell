@@ -9,7 +9,7 @@ int		in(char *red, t_scmd *scmd)
 	fd = open(red,O_RDONLY);
 	if (fd == -1)
 	{
-		printf("no such file or directory: %s\n",red);
+		printf("%s: no such file or directory\n",red);
 		return (0);
 	}
 	scmd->fd_infile = fd;
@@ -98,7 +98,7 @@ int 	heredoc(char *red, t_scmd *scmd)
 		expand_vars(&t,0);
 		scmd->heredoc = t[0];
 		// while (*t)
-		// 	free(*t++);
+			// free(*t++);
 		free(t);
 		printf("AFTER :----> \n%s",scmd->heredoc);
 	}
