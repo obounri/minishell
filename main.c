@@ -207,6 +207,7 @@ int main(int ac,char ** av, char **env)
 		{
 			// printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
 			// signal(SIGINT, SIG_DFL);
+			printf("fd_infile = [%d], fd_outfile = [%d]\n", opts.cmd->scmds[i].fd_infile, opts.cmd->scmds[i].fd_outfile);
 			pipe(fd);
 			if (i == opts.cmd->n_scmds - 1)
 				the_process(in, 1, &opts, i, env);	
