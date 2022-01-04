@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/25 11:45:09 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/04 17:41:55 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,35 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-void	parse_scmds(t_options	*opts, char **scmds)
+int		*order_red(char *scmd)
+{
+	int i;
+	int j;
+	int count_tokens;
+	int *sorted_tokens;
+
+	i = -1;
+	count_tokens = 0;
+	while (scmd && scmd[++i])
+		if (scmd[i] <= -33)
+			count_tokens++;
+	sorted_tokens = (int *)malloc(sizeof(int) * count_tokens + 1);
+	i = -1;
+	j = -1;
+	while (scmd && scmd[++i])
+		if (scmd[i] <= -33)
+			sorted_tokens[++j] = scmd[i];
+	sorted_tokens[++j] = 0;
+	return (sorted_tokens);
+}
+
+int	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
 	int h; //	
 	char **split_scmd;
 	char **tmp;
+	int 	*order;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	i = 0;
@@ -75,7 +98,9 @@ void	parse_scmds(t_options	*opts, char **scmds)
 		if (!split_scmd)
 			break;
 		expand_vars(&split_scmd, opts->status);
-		init_red(opts,split_scmd,&i);
+		order = order_red(scmds[i]);
+		if (!init_red(opts, split_scmd, &i, order))
+			return (0);
 		new_alloc(&split_scmd);
 		if (!split_scmd)
 			break;
@@ -100,7 +125,7 @@ void	parse_scmds(t_options	*opts, char **scmds)
 		// printf("\n"); //
 		i++;
 	}
-	return ;
+	return (1);
 }
 
 int	parse_input(t_options	*opts)
@@ -128,12 +153,13 @@ int	parse_input(t_options	*opts)
 	// while (scmds[h]) //
 	// 	printf("[%s]", scmds[h++]); //
 	// printf("\n"); //
-	parse_scmds(opts, scmds);
+	if (!parse_scmds(opts, scmds))
+		return (0);
 	return (1);
 }
 
 // redirect input and output from and to infiles and outfiles here
-int the_process(int in, int out, t_options *opts, int i, char **env)
+void the_process(int in, int out, t_options *opts, int i, char **env)
 {
 	pid_t pid;
 
@@ -152,7 +178,7 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 		}
 		if (opts->cmd->scmds[i].impld >= 0)
 			exec_impld(&opts->cmd->scmds[i], opts, 1);
-		else (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0);
+		else if (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0)
 		{
 			perror("minishell: command not found");
 			exit(EXIT_FAILURE);
@@ -169,7 +195,7 @@ int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
 	pid_t		pid;
-	int i = 0, fd[2], in = 0;
+	int i = 0, fd[2], in = 0, out;
 
 	// if (<*n && arg) = arg | else if (< && <) = last_infile
 	// if (> & >> & >) = last_outfile
@@ -208,14 +234,17 @@ int main(int ac,char ** av, char **env)
 		}
 		while (i < opts.cmd->n_scmds)
 		{
-			// printf("\n----- name = %s, impld = %d, exec_path = %s -----\n", opts.cmd->scmds[i].name, opts.cmd->scmds[i].impld, opts.cmd->scmds[i].exec_path);
 			// signal(SIGINT, SIG_DFL);
 			printf("fd_infile = [%d], fd_outfile = [%d]\n", opts.cmd->scmds[i].fd_infile, opts.cmd->scmds[i].fd_outfile);
 			pipe(fd);
-			if (i == opts.cmd->n_scmds - 1)
-				the_process(in, 1, &opts, i, env);	
-			else
-				the_process(in, fd[1], &opts, i, env);	
+			out = fd[1];
+			if (opts.cmd->scmds[i].fd_infile != -10)
+				in = opts.cmd->scmds[i].fd_infile;
+			if (opts.cmd->scmds[i].fd_outfile != -10)
+				out = opts.cmd->scmds[i].fd_outfile;
+			else if (i == opts.cmd->n_scmds - 1)
+				out = 1;
+			the_process(in, out, &opts, i, env);	
 			close(fd[1]);
 			in = fd[0];
 			i++;
