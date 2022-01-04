@@ -20,10 +20,10 @@ int		out(char *red, t_scmd *scmd)
 {
 	int fd;
 
-	// if (scmd->fd_outfile != -10)
-	// 	close(scmd->fd_outfile);
+	if (scmd->fd_outfile != -10)
+		close(scmd->fd_outfile);
 	fd = open(red, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	printf("TRUNC fd %d of file %s\n", fd, red);
+	// printf("TRUNC fd %d of file %s\n", fd, red);
 	scmd->fd_outfile = fd;
 	return (0);
 }
@@ -110,10 +110,10 @@ int 	append(char *red, t_scmd *scmd)
 {
 	int fd;
 
-	// if (scmd->fd_outfile != -10)
-	// 	close(scmd->fd_outfile);
+	if (scmd->fd_outfile != -10)
+		close(scmd->fd_outfile);
 	fd = open(red, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	printf("append fd %d of file %s\n", fd, red);
+	// printf("append fd %d of file %s\n", fd, red);
 	scmd->fd_outfile = fd;
 	return (0);
 }

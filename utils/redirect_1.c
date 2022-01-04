@@ -9,7 +9,7 @@ int		init_red(t_options *opts, char **split_scmd, int *i, int *order)
 	opts->cmd->scmds[*i].fd_outfile= -10;
 	while (order[++j])
 	{
-		printf("token %d = %d\n", j, order[j]);
+		// printf("token %d = %d\n", j, order[j]);
 		if (order[j] == IN)
 		{
 			if (!redirect(&split_scmd,&opts->cmd->scmds[*i],IN))
@@ -27,6 +27,7 @@ int		init_red(t_options *opts, char **split_scmd, int *i, int *order)
 
 int		redirect_type(char *red, t_scmd *scmd, int type)
 {
+	printf("red %s\n", red);
 	if (type == IN)
 	{
 		if (!in(red,scmd))
@@ -133,6 +134,7 @@ int		redirect(char ***scmd, t_scmd *cmd, int type)
 			{
 				if (!redirect_type(red + 1,cmd,type))
 					return (0);
+				tmp_cmd[i] = ft_strdup("");
 				return (1);
 			}
 			else

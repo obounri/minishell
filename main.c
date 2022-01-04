@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/04 17:41:55 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/04 18:26:03 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ int main(int ac,char ** av, char **env)
 		while (i < opts.cmd->n_scmds)
 		{
 			// signal(SIGINT, SIG_DFL);
-			printf("fd_infile = [%d], fd_outfile = [%d]\n", opts.cmd->scmds[i].fd_infile, opts.cmd->scmds[i].fd_outfile);
+			// printf("fd_infile = [%d], fd_outfile = [%d]\n", opts.cmd->scmds[i].fd_infile, opts.cmd->scmds[i].fd_outfile);
 			pipe(fd);
 			out = fd[1];
 			if (opts.cmd->scmds[i].fd_infile != -10)
