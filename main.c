@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/04 18:26:03 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/04 18:54:20 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,10 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		}
 		opts->cmd->scmds[i].name = split_scmd[0];
 		opts->cmd->scmds[i].args = &split_scmd[0];
-		// h = 0; //
-		// while (split_scmd[h]) //
-		// 	printf("[%s]", split_scmd[h++]); //
-		// printf("\n"); //
+		h = 0; //
+		while (split_scmd[h]) //
+			printf("[%s]", split_scmd[h++]); //
+		printf("\n"); //
 		i++;
 	}
 	return (1);

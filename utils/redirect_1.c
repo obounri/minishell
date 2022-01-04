@@ -133,7 +133,10 @@ int		redirect(char ***scmd, t_scmd *cmd, int type)
 			{
 				if (!redirect_type(red + 1,cmd,type))
 					return (0);
-				tmp_cmd[i] = ft_strdup("");
+				if (red == tmp_cmd[i])
+					tmp_cmd[i] = ft_strdup("");
+				else
+					tmp_cmd[i][red - tmp_cmd[i]] = '\0';
 				return (1);
 			}
 			else

@@ -1,0 +1,6 @@
+Makefile
+includes
+main.c
+minishell
+out
+utils
