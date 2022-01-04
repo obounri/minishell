@@ -111,7 +111,6 @@ int		redirect(char ***scmd, t_scmd *cmd, int type)
 	char **tmp_cmd;
 	int i;
 	int infile;
-	int d = 0;
 
 	tmp_cmd = *scmd;
 	i = -1;
