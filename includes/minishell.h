@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/24 14:51:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/04 16:53:19 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	expand_vars(char ***scmd, int status);
 char	*expand(char **scmd, int j, int status);
 
 //Redirection
-int		init_red(t_options *opts, char **split_scmd, int *i);
+int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
 int		redirect_type(char *red, t_scmd *scmd, int type);
 int		redirect(char ***scmd, t_scmd *cmd,int type);
 int		in(char *red, t_scmd *scmd);
