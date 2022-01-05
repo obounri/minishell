@@ -73,12 +73,6 @@ void	pwd(char *path)
 	exit(EXIT_SUCCESS);
 }
 
-void	export(void)
-{
-	printf("export\n");
-	exit(EXIT_SUCCESS);
-}
-
 void	unset(void)
 {
 	printf("unset\n");
@@ -104,7 +98,7 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int cd_exit)
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		export();
+		export(scmd->args,opts->env);
 	else if (ft_strcmp(scmd->name, "unset") == 0)
 		unset();
 	else if (ft_strcmp(scmd->name, "env") == 0)
