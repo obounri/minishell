@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:58:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/05 19:09:40 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,12 @@ char	*find_exec_path(t_options	*opts, char *name)
 	int i;
 	DIR *dp;
 	struct dirent *dirp;
-	char *var; //
+	char *var;
 
-	// move to init
-	var = ft_getenv(opts->env, "PATH"); //
+	var = ft_getenv(opts->env, "PATH");
 	if (!var)
 		return (NULL);
-	opts->path = ft_split(var, ':'); //
+	opts->path = ft_split(var, ':');
 	i = -1;
 	while (opts->path[++i])
 	{
