@@ -7,11 +7,11 @@
         // if (!equal_address || equal_address = args[i])
             // return;//print corresponding error (bash: export: `=': not a valid identifier) $? = 1
 
-int     already_exist(char *key, t_env *env)
+int     already_exist(char *key, t_env **env)
 {
     t_env *tmp;
 
-    tmp = env;
+    tmp = *env;
     while (tmp->next)
     {
         if (!ft_strcmp(tmp->key,key))
@@ -33,23 +33,26 @@ void    add_var(char *key, char *value, t_env *env)
     tmp->next = NULL;
 }
 
-void    modify_var(char *key, char *value, t_env *env)
+void    modify_var(char *key, char *value, t_env **env)
 {
     t_env *tmp;
 
-    tmp = env;
+    tmp = *env;
     while (tmp)
     {
         if (!ft_strcmp(tmp->key,key))
         {
+            printf("old value : %s\n",tmp->value);
             free(tmp->value);
             tmp->value = value;
+            printf("new value : %s\n",tmp->value);
+            break;
         }
         tmp = tmp->next;
     }
 }
 
-void	export(char **args, t_env *env)
+void	export(char **args, t_env **env)
 {
     int i;
     int j;
@@ -70,14 +73,14 @@ void	export(char **args, t_env *env)
                     printf("ERROR");
                 key = ft_substr(args[i],0,j); // free
                 value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
+                printf("KEY %s VALUE %s\n",key,value);
                 if (!already_exist(key,env))
                     modify_var(key,value,env);
-                else
-                    add_var(key,value,env);
+                // else
+                //     add_var(key,value,env);
             }
             j++;
         }
-
     }
 	printf("export\n");
 	exit(EXIT_SUCCESS);

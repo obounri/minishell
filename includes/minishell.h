@@ -92,6 +92,11 @@ char	*expand(char **scmd, int j, t_env *env, int status);
 void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
 
+void	export(char **args, t_env **env);
+void    add_var(char *key, char *value, t_env *env);
+void    modify_var(char *key, char *value, t_env **env);
+int     already_exist(char *key, t_env **env);
+
 //Redirection
 int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
 int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env);
