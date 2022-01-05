@@ -8,19 +8,11 @@ int		init_red(t_options *opts, char **split_scmd, int *i, int *order)
 	opts->cmd->scmds[*i].fd_infile= -10;
 	opts->cmd->scmds[*i].fd_outfile= -10;
 	while (order[++j])
-	{
-		if (order[j] == IN)
+		if (!redirect(&split_scmd, &opts->cmd->scmds[*i], order[j], opts->env))
 		{
-			if (!redirect(&split_scmd,&opts->cmd->scmds[*i],IN, 0))
-				return (0);
+			// set exit status
+			return (0);
 		}
-		else if (order[j] == HEREDOC)
-			redirect(&split_scmd,&opts->cmd->scmds[*i],HEREDOC, opts->env);
-		else if (order[j] == APPEND)
-			redirect(&split_scmd,&opts->cmd->scmds[*i],APPEND, 0);
-		else if (order[j] == OUT)
-			redirect(&split_scmd,&opts->cmd->scmds[*i],OUT, 0);
-	}
 	return (1);
 }
 
@@ -32,11 +24,17 @@ int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env)
 			return (0);
 	}
 	else if (type == OUT)
-		out(red,scmd);
+	{
+		if (!out(red,scmd))
+			return (0);
+	}
 	else if (type == HEREDOC)
 		heredoc(red,scmd, env);
 	else if (type == APPEND)
-		append(red,scmd);
+	{
+		if (!append(red,scmd))
+			return (0);
+	}
 	return (1);
 }
 

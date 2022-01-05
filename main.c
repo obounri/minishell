@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:58:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/05 22:38:20 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,12 @@ char	*find_exec_path(t_options	*opts, char *name)
 	int i;
 	DIR *dp;
 	struct dirent *dirp;
-	char *var; //
+	char *var;
 
-	// move to init
-	var = ft_getenv(opts->env, "PATH"); //
+	var = ft_getenv(opts->env, "PATH");
 	if (!var)
 		return (NULL);
-	opts->path = ft_split(var, ':'); //
+	opts->path = ft_split(var, ':');
 	i = -1;
 	while (opts->path[++i])
 	{
@@ -91,8 +90,8 @@ int	parse_scmds(t_options	*opts, char **scmds)
 	int 	*order;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
-	i = 0;
-	while (i < opts->cmd->n_scmds)
+	i = -1;
+	while (++i < opts->cmd->n_scmds)
 	{
 		split_scmd = ft_split(scmds[i], UNQSPACE);
 		if (!split_scmd) // ??
@@ -100,7 +99,7 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		expand_vars(&split_scmd, opts->env, opts->status);
 		order = order_red(scmds[i]);
 		if (!init_red(opts, split_scmd, &i, order))
-			return (0);
+			continue ;
 		new_alloc(&split_scmd);
 		if (!split_scmd) // ??
 			break; // ??
@@ -122,7 +121,6 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		// while (split_scmd[h]) //
 		// 	printf("[%s]", split_scmd[h++]); //
 		// printf("\n"); //
-		i++;
 	}
 	return (1);
 }
@@ -178,7 +176,9 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 			exec_impld(&opts->cmd->scmds[i], opts, 1);
 		else if (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0)
 		{
-			perror("minishell: command not found");
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(opts->cmd->scmds[i].args[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -186,6 +186,7 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 		waitpid(pid, &opts->status, 0);
 }
 
+// print exit when ctrl-D ?
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
@@ -223,7 +224,7 @@ int main(int ac,char ** av, char **env)
 				out = opts.cmd->scmds[i].fd_outfile;
 			else if (i == opts.cmd->n_scmds - 1)
 				out = 1;
-			the_process(in, out, &opts, i, env);	
+			the_process(in, out, &opts, i, env);
 			close(fd[1]);
 			in = fd[0];
 			i++;
