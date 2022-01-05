@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:34:49 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/05 16:58:19 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char	*find_exec_path(t_options	*opts, char *name)
 
 	// move to init
 	var = ft_getenv(opts->env, "PATH"); //
+	if (!var)
+		return (NULL);
 	opts->path = ft_split(var, ':'); //
 	i = -1;
 	while (opts->path[++i])
