@@ -9,25 +9,23 @@ int		init_red(t_options *opts, char **split_scmd, int *i, int *order)
 	opts->cmd->scmds[*i].fd_outfile= -10;
 	while (order[++j])
 	{
-		// printf("token %d = %d\n", j, order[j]);
 		if (order[j] == IN)
 		{
-			if (!redirect(&split_scmd,&opts->cmd->scmds[*i],IN))
+			if (!redirect(&split_scmd,&opts->cmd->scmds[*i],IN, 0))
 				return (0);
 		}
 		else if (order[j] == HEREDOC)
-			redirect(&split_scmd,&opts->cmd->scmds[*i],HEREDOC);
+			redirect(&split_scmd,&opts->cmd->scmds[*i],HEREDOC, opts->env);
 		else if (order[j] == APPEND)
-			redirect(&split_scmd,&opts->cmd->scmds[*i],APPEND);
+			redirect(&split_scmd,&opts->cmd->scmds[*i],APPEND, 0);
 		else if (order[j] == OUT)
-			redirect(&split_scmd,&opts->cmd->scmds[*i],OUT);
+			redirect(&split_scmd,&opts->cmd->scmds[*i],OUT, 0);
 	}
 	return (1);
 }
 
-int		redirect_type(char *red, t_scmd *scmd, int type)
+int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env)
 {
-	printf("red %s\n", red);
 	if (type == IN)
 	{
 		if (!in(red,scmd))
@@ -36,7 +34,7 @@ int		redirect_type(char *red, t_scmd *scmd, int type)
 	else if (type == OUT)
 		out(red,scmd);
 	else if (type == HEREDOC)
-		heredoc(red,scmd);
+		heredoc(red,scmd, env);
 	else if (type == APPEND)
 		append(red,scmd);
 	return (1);
@@ -105,7 +103,7 @@ void	new_alloc(char ***cmd)
 	*cmd = new;
 }
 
-int		redirect(char ***scmd, t_scmd *cmd, int type)
+int		redirect(char ***scmd, t_scmd *cmd, int type, t_env *env)
 {
 	char *red;
 	char **tmp_cmd;
@@ -120,7 +118,7 @@ int		redirect(char ***scmd, t_scmd *cmd, int type)
 	{
 		if (infile)
 		{
-			if (!redirect_type(tmp_cmd[i],cmd,type))
+			if (!redirect_type(tmp_cmd[i],cmd,type, env))
 				return (0);
 			tmp_cmd[i] = ft_strdup("");
 			return (1);
@@ -131,7 +129,7 @@ int		redirect(char ***scmd, t_scmd *cmd, int type)
 		{
 			if (ft_strlen(red) != 1)
 			{
-				if (!redirect_type(red + 1,cmd,type))
+				if (!redirect_type(red + 1,cmd,type, env))
 					return (0);
 				if (red == tmp_cmd[i])
 					tmp_cmd[i] = ft_strdup("");
