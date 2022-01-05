@@ -23,7 +23,6 @@ int		out(char *red, t_scmd *scmd)
 	if (scmd->fd_outfile != -10)
 		close(scmd->fd_outfile);
 	fd = open(red, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// printf("TRUNC fd %d of file %s\n", fd, red);
 	scmd->fd_outfile = fd;
 	return (0);
 }
@@ -70,7 +69,7 @@ char	*trim_quotes(char *red)
 	return (trim_red);
 }
 
-int 	heredoc(char *red, t_scmd *scmd)
+int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 {
 	char *new_red;
 	int q;
@@ -83,7 +82,7 @@ int 	heredoc(char *red, t_scmd *scmd)
 	}
 	else
 		new_red = red;
-	prompt_heredoc(new_red,scmd);
+	prompt_heredoc(new_red, scmd);
 	if (!q)
 	{
 		int i = -1;
@@ -96,10 +95,8 @@ int 	heredoc(char *red, t_scmd *scmd)
 				scmd->heredoc[i] = EXPAND;
 		t[0] = scmd->heredoc;
 		printf("BEFORE:----> \n%s",scmd->heredoc);
-		expand_vars(&t,0);
+		expand_vars(&t, env, 0);
 		scmd->heredoc = t[0];
-		// while (*t)
-			// free(*t++);
 		free(t);
 		printf("AFTER :----> \n%s",scmd->heredoc);
 	}
@@ -113,7 +110,6 @@ int 	append(char *red, t_scmd *scmd)
 	if (scmd->fd_outfile != -10)
 		close(scmd->fd_outfile);
 	fd = open(red, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	// printf("append fd %d of file %s\n", fd, red);
 	scmd->fd_outfile = fd;
 	return (0);
 }

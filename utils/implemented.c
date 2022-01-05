@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2021/12/07 18:43:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/05 15:59:19 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,16 @@ void	unset(void)
 	exit(EXIT_SUCCESS);
 }
 
-void	env(char **env)
+void	env(t_env *env)
 {
-	int i;
-
-	i = 0;
-	while (env[i] != NULL)
-		printf("%s\n", env[i++]);
+	while (env)
+	{
+		printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
 	exit(EXIT_SUCCESS);
 }
 
-
-// 
 void	exec_impld(t_scmd	*scmd, t_options	*opts, int cd_exit)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)

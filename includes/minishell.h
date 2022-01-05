@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/04 16:53:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/05 16:28:26 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ static char impld[7][7] = {"echo", "env", "pwd", "export", "unset", "cd", "exit"
 typedef struct s_options
 {
 	struct  s_cmd *cmd;
+	struct	s_env *env;
 	char    *user;
 	char	*prompt;
 	char    *input;
 	int     status;
 	char    *curr_dir;
-	char    **env;
 	char    **path;
 	char	*home;
 	int		uncqu;
@@ -75,21 +75,30 @@ typedef	struct s_quote
 	struct s_quote	*next;
 }	t_quote;
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	struct s_env *next;
+}	t_env;
+
 
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
 void	exec_impld(t_scmd	*scmd, t_options *opts, int cd_exit);
 t_quote	*check_quotes_pipes(t_options	*opts);
-void	expand_vars(char ***scmd, int status);
-char	*expand(char **scmd, int j, int status);
+void	expand_vars(char ***scmd, t_env *env, int status);
+char	*expand(char **scmd, int j, t_env *env, int status);
+void	init(t_options *opts, char **env);
+char	*ft_getenv(t_env *env, char *key);
 
 //Redirection
 int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
-int		redirect_type(char *red, t_scmd *scmd, int type);
-int		redirect(char ***scmd, t_scmd *cmd,int type);
+int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env);
+int		redirect(char ***scmd, t_scmd *cmd,int type, t_env *env);
 int		in(char *red, t_scmd *scmd);
 int		out(char *red, t_scmd *scmd);
-int 	heredoc(char *red, t_scmd *scmd);
+int 	heredoc(char *red, t_scmd *scmd, t_env *env);
 int 	append(char *red, t_scmd *scmd);
 int		new_alloc_size(char **cmd);
 void	new_alloc(char ***cmd);
