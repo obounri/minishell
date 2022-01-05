@@ -9,7 +9,9 @@
         "_types.h": "c",
         "types.h": "c",
         "fcntl.h": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "stat.h": "c",
+        "__config": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

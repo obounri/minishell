@@ -3,9 +3,16 @@
 int		in(char *red, t_scmd *scmd)
 {
 	int fd;
+	struct stat buffer;
 
 	if (scmd->fd_infile != -10)
 		close(scmd->fd_infile);
+	if (stat(red, &buffer) != -1)
+		if ((buffer.st_mode & S_IRUSR) == 0)
+			{
+				printf("minishell: %s: Permission denied\n", red);
+				return (0);
+			}
 	fd = open(red,O_RDONLY);
 	if (fd == -1)
 	{
@@ -19,12 +26,19 @@ int		in(char *red, t_scmd *scmd)
 int		out(char *red, t_scmd *scmd)
 {
 	int fd;
+	struct stat buffer;
 
 	if (scmd->fd_outfile != -10)
 		close(scmd->fd_outfile);
+	if (stat(red, &buffer) != -1)
+		if ((buffer.st_mode & S_IWUSR) == 0)
+		{
+			printf("minishell: %s: Permission denied\n", red);
+			return (0);
+		}
 	fd = open(red, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	scmd->fd_outfile = fd;
-	return (0);
+	return (1);
 }
 
 int		prompt_heredoc(char *red, t_scmd *scmd)
@@ -106,10 +120,17 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 int 	append(char *red, t_scmd *scmd)
 {
 	int fd;
+	struct stat buffer;
 
 	if (scmd->fd_outfile != -10)
 		close(scmd->fd_outfile);
+	if (stat(red, &buffer) != -1)
+		if ((buffer.st_mode & S_IWUSR) == 0)
+		{
+			printf("minishell: %s: Permission denied\n", red);
+			return (0);
+		}
 	fd = open(red, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	scmd->fd_outfile = fd;
-	return (0);
+	return (1);
 }
