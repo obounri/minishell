@@ -5,8 +5,6 @@ int		init_red(t_options *opts, char **split_scmd, int *i, int *order)
 	int j;
 
 	j = -1;
-	opts->cmd->scmds[*i].fd_infile= -10;
-	opts->cmd->scmds[*i].fd_outfile= -10;
 	while (order[++j])
 		if (!redirect(&split_scmd, &opts->cmd->scmds[*i], order[j], opts->env))
 		{
