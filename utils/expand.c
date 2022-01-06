@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:19:40 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 17:20:19 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ char *expand(char **scmd, int j, t_env *env, int status)
     if (tmp_scmd[j] == '?')
         j++;
     else
-        while (tmp_scmd[j] && ft_isalnum(tmp_scmd[j]) == 1)
+        while (tmp_scmd[j] && (ft_isalnum(tmp_scmd[j]) == 1 || tmp_scmd[j] == '_'))
             j++;
     var = ft_substr(tmp_scmd, tmp, j - tmp);
     var = set_var(&var, env, status);
-    // printf("[DEBUG] var [%s]\n", var); //
     last = ft_substr(tmp_scmd, j, ft_strlen(tmp_scmd) - j);
-    // printf("[DEBUG] last [%s]\n", last); //
     free(tmp_scmd);
     tmp_scmd = NULL;
     tmp_scmd = ft_strjoin(first, var);

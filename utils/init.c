@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:35:20 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 17:14:07 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,24 @@ void	init(t_options *opts, char **env)
 	{
 		tmp = ft_split(env[i], '=');
 		add_env(&opts->env, tmp); // free
+	}
+}
+
+void	init_scmds(t_scmd *scmds, int n_scmds)
+{
+	int i;
+
+	i = 0;
+	while (i < n_scmds)
+	{
+		scmds[i].name = NULL;
+		scmds[i].exec_path = NULL;
+		scmds[i].args = NULL;
+		scmds[i].impld = -10;
+		scmds[i].heredoc = NULL;
+		scmds[i].fd_infile = -10;
+		scmds[i].fd_outfile = -10;
+		scmds[i].err = 0;
+		i++;
 	}
 }
