@@ -208,7 +208,7 @@ int main(int ac,char ** av, char **env)
 		if (parse_input(&opts) == 0)
 			continue ;
 		i = 0;
-		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 4)
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 2)//except for export with no args child needs to be created
 		{
 			exec_impld(&opts.cmd->scmds[i], &opts, 0);
 			continue ;

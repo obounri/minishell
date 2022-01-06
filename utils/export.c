@@ -12,7 +12,7 @@ int     already_exist(char *key, t_env **env)
     t_env *tmp;
 
     tmp = *env;
-    while (tmp->next)
+    while (tmp)
     {
         if (!ft_strcmp(tmp->key,key))
             return (0);
@@ -21,16 +21,24 @@ int     already_exist(char *key, t_env **env)
     return (1);
 }
 
-void    add_var(char *key, char *value, t_env *env)
+void    add_var(char *key, char *value, t_env **env)
 {
     t_env *tmp;
+    t_env *new_var;
 
-    tmp = env;
-    while (tmp)
-        tmp = tmp->next;
-    tmp->key = key;
-    tmp->value = value;
-    tmp->next = NULL;
+    new_var = malloc(sizeof(t_env));
+    new_var->key = key;
+    new_var->value = value;
+    new_var->next = NULL;
+    if (!*env)
+        *env = new_var;
+    else
+    {
+        tmp = *env;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new_var;
+    }
 }
 
 void    modify_var(char *key, char *value, t_env **env)
@@ -42,17 +50,19 @@ void    modify_var(char *key, char *value, t_env **env)
     {
         if (!ft_strcmp(tmp->key,key))
         {
-            printf("old value : %s\n",tmp->value);
             free(tmp->value);
             tmp->value = value;
-            printf("new value : %s\n",tmp->value);
             break;
         }
         tmp = tmp->next;
     }
 }
+//export with no argument:\
+declare -x Key=value
 
-void	export(char **args, t_env **env)
+//export var (with no '=') -> Variable is exported. not added to env list.\
+but when export with no args is used "declare -x var" is printed
+void	export(char **args, t_env **env, int child)
 {
     int i;
     int j;
@@ -60,7 +70,7 @@ void	export(char **args, t_env **env)
     char *value;
 
     i = -1;
-    if (args == NULL)
+    if (args == NULL || !*env && child)
         exit(EXIT_FAILURE);
     while (args[++i])
     {
@@ -69,19 +79,24 @@ void	export(char **args, t_env **env)
         {
             if (args[i][j] == '=')
             {
-                if (j == 0 || args[i][j + 1] == '\0')//err
-                    printf("ERROR");
+                if (j == 0)//err
+                {
+                    ft_putstr_fd("minishell: ", 2);
+		        	ft_putstr_fd(args[i], 2);
+        			ft_putstr_fd(": not a valid identifier\n", 2);//set exit status to 1
+                }
                 key = ft_substr(args[i],0,j); // free
                 value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
-                printf("KEY %s VALUE %s\n",key,value);
                 if (!already_exist(key,env))
                     modify_var(key,value,env);
-                // else
-                //     add_var(key,value,env);
+                else
+                    add_var(key,value,env);
             }
             j++;
         }
+
     }
-	printf("export\n");
-	exit(EXIT_SUCCESS);
+    if (child)
+	    exit(EXIT_SUCCESS);
+	// printf("export\n");
 }
