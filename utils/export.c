@@ -75,16 +75,16 @@ void	export(char **args, t_env **env, int child)
     while (args[++i])
     {
         j = 0;
+        if (!check_export_args(args[i]))
+        {
+                ft_putstr_fd("minishell: `", 2);
+                ft_putstr_fd(args[i], 2);
+                ft_putstr_fd("': not a valid identifier\n", 2);//set exit status to 1
+        }
         while (args[i][j])
         {
             if (args[i][j] == '=')
             {
-                if (j == 0)//err
-                {
-                    ft_putstr_fd("minishell: ", 2);
-		        	ft_putstr_fd(args[i], 2);
-        			ft_putstr_fd(": not a valid identifier\n", 2);//set exit status to 1
-                }
                 key = ft_substr(args[i],0,j); // free
                 value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
                 if (!already_exist(key,env))
@@ -94,9 +94,30 @@ void	export(char **args, t_env **env, int child)
             }
             j++;
         }
-
     }
     if (child)
 	    exit(EXIT_SUCCESS);
 	// printf("export\n");
+}
+
+//check export_args
+//Variable names may only contain a-z A-Z 0-9 _
+//variable names may not begin with a number
+
+int     check_export_args(char *arg)
+{
+    int i;
+
+    i = 0;
+    if (arg && arg[0] == '=')
+        return (0);
+    while (arg && arg[i] && arg[i] != '=')
+    {
+        if (ft_isdigit(arg[i]) && i == 0)
+            return (0);
+        if (!ft_isdigit(arg[i]) && !ft_isalnum(arg[i]) && arg[i] != '_')
+            return (0);
+        i++;
+    }
+    return (1);
 }
