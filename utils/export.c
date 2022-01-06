@@ -21,7 +21,7 @@ int     already_exist(char *key, t_env **env)
     return (1);
 }
 
-void    add_var(char *key, char *value, t_env **env)
+void    add_var(char *key, char *value, t_env **env,int exp)
 {
     t_env *tmp;
     t_env *new_var;
@@ -29,6 +29,7 @@ void    add_var(char *key, char *value, t_env **env)
     new_var = malloc(sizeof(t_env));
     new_var->key = key;
     new_var->value = value;
+    new_var->exp = exp;
     new_var->next = NULL;
     if (!*env)
         *env = new_var;
@@ -68,10 +69,16 @@ void	export(char **args, t_env **env, int child)
     int j;
     char *key;
     char *value;
+    int equal = 0;
 
     i = -1;
-    if (args == NULL || !*env && child)
+    if (!*env && child)
         exit(EXIT_FAILURE);
+    if (!args[1])
+    {
+        export_no_args(env);
+        // exit(EXIT_SUCCESS);
+    }
     while (args[++i])
     {
         j = 0;
@@ -85,15 +92,18 @@ void	export(char **args, t_env **env, int child)
         {
             if (args[i][j] == '=')
             {
+                equal = 1;
                 key = ft_substr(args[i],0,j); // free
                 value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
                 if (!already_exist(key,env))
                     modify_var(key,value,env);
                 else
-                    add_var(key,value,env);
+                    add_var(key,value,env,0);
             }
             j++;
         }
+        if (!equal)
+            add_var(args[i],"",env,1);
     }
     if (child)
 	    exit(EXIT_SUCCESS);

@@ -80,6 +80,7 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
+	int		exp;
 	struct s_env *next;
 }	t_env;
 
@@ -94,7 +95,7 @@ void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
 
 void	export(char **args, t_env **env,int exit);
-void    add_var(char *key, char *value, t_env **env);
+void    add_var(char *key, char *value, t_env **env,int exp);
 void    modify_var(char *key, char *value, t_env **env);
 int     already_exist(char *key, t_env **env);
 

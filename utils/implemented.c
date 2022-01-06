@@ -83,7 +83,8 @@ void	env(t_env *env)
 {
 	while (env)
 	{
-		printf("%s=%s\n", env->key, env->value);
+		if (!env->exp)
+			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
 	exit(EXIT_SUCCESS);
