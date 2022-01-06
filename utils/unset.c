@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 18:58:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 19:46:43 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 19:52:18 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void    unset(t_env **env, char **args, int *status, int child)
             ft_putstr_fd("minishell: unset: `", 2);
             ft_putstr_fd(args[i], 2);
             ft_putstr_fd("': not a valid identifier\n", 2);
+            // status setting here is wrong
             *status = 1;
             continue ;
         }
