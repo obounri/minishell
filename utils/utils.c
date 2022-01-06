@@ -60,8 +60,6 @@ int     quoted(t_quote *quotes, int i)
     return (1);
 }
 
-
-//fct checks if char 'x' is quoted or not. | ' ' < << > >> $
 t_quote *check_quotes_pipes(t_options	*opts)
 {
 	t_quote *quotes;

@@ -1,0 +1,13 @@
+total 96
+drwxr-xr-x  12 obounri  candidate    408 Jan  6 17:21 .
+drwxr-xr-x  11 obounri  candidate    374 Jan  5 17:04 ..
+drwxr-xr-x  15 obounri  candidate    510 Jan  5 22:42 .git
+drwxr-xr-x   3 obounri  candidate    102 Jan  5 17:04 .vscode
+-rw-r--r--   1 obounri  candidate    494 Jan  5 17:04 Makefile
+drwxr-xr-x   3 obounri  candidate    102 Jan  5 17:04 includes
+-rw-r--r--   1 obounri  candidate   5776 Jan  6 17:17 main.c
+-rwxr-xr-x   1 obounri  candidate  29032 Jan  6 17:19 minishell
+-rw-r--r--   1 obounri  candidate      0 Jan  6 17:21 out
+-rw-r--r--   1 obounri  candidate      0 Jan  6 17:21 out1
+-r--r--r--   1 obounri  candidate     61 Jan  6 15:25 out2
+drwxr-xr-x  10 obounri  candidate    340 Jan  5 17:04 utils

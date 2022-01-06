@@ -10,7 +10,7 @@ int		init_red(t_options *opts, char **split_scmd, int *i, int *order)
 	while (order[++j])
 		if (!redirect(&split_scmd, &opts->cmd->scmds[*i], order[j], opts->env))
 		{
-			// set exit status
+			opts->cmd->scmds[*i].err = 1;
 			return (0);
 		}
 	return (1);

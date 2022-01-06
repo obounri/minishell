@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 17:58:18 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 17:13:49 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_scmd
 	char *heredoc;
 	int	fd_infile;
 	int fd_outfile;
+	int err;
 }   t_scmd;
 
 typedef	struct s_quote
@@ -92,6 +93,7 @@ void	expand_vars(char ***scmd, t_env *env, int status);
 char	*expand(char **scmd, int j, t_env *env, int status);
 void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
+void	init_scmds(t_scmd *scmds, int n_scmds);
 
 //Redirection
 int		init_red(t_options *opts, char **split_scmd, int *i, int *order);

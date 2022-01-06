@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 22:38:20 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 17:24:15 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	parse_scmds(t_options	*opts, char **scmds)
 	int 	*order;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
+	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
 	i = -1;
 	while (++i < opts->cmd->n_scmds)
 	{
@@ -174,6 +175,8 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 		}
 		if (opts->cmd->scmds[i].impld >= 0)
 			exec_impld(&opts->cmd->scmds[i], opts, 1);
+		else if (opts->cmd->scmds[i].err)
+			exit(EXIT_FAILURE);
 		else if (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0)
 		{
 			ft_putstr_fd("minishell: ", 2);
