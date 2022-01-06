@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 17:35:13 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 19:34:14 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ int main(int ac,char ** av, char **env)
 		if (parse_input(&opts) == 0)
 			continue ;
 		i = 0;
-		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 4)
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 3)
 		{
 			exec_impld(&opts.cmd->scmds[i], &opts, 0);
 			continue ;

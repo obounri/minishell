@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 22:35:28 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 19:33:15 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void    echo(char **args)
 	exit(EXIT_SUCCESS);
 }
 
-void	cd(char **args, t_options	*opts, int cd_exit)
+void	cd(char **args, t_options	*opts, int child)
 {
 	if (!args[1])
 		chdir(opts->home);
@@ -58,12 +58,12 @@ void	cd(char **args, t_options	*opts, int cd_exit)
 	{
 		perror(args[1]);
 		opts->status = 256;
-		if (cd_exit)
+		if (child)
 			exit(EXIT_FAILURE);
 		return ;
 	}
 	opts->curr_dir = getcwd(NULL, 0);
-	if (cd_exit)
+	if (child)
 		exit(EXIT_SUCCESS);
 }
 
@@ -79,11 +79,11 @@ void	export(void)
 	exit(EXIT_SUCCESS);
 }
 
-void	unset(void)
-{
-	printf("unset\n");
-	exit(EXIT_SUCCESS);
-}
+// void	unset(void)
+// {
+// 	printf("unset\n");
+// 	exit(EXIT_SUCCESS);
+// }
 
 void	env(t_env *env)
 {
@@ -95,18 +95,18 @@ void	env(t_env *env)
 	exit(EXIT_SUCCESS);
 }
 
-void	exec_impld(t_scmd	*scmd, t_options	*opts, int cd_exit)
+void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
 		echo(scmd->args);
 	else if (ft_strcmp(scmd->name, "cd") == 0)
-		cd(scmd->args, opts, cd_exit);
+		cd(scmd->args, opts, child);
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
 		export();
 	else if (ft_strcmp(scmd->name, "unset") == 0)
-		unset();
+		unset(&opts->env, &scmd->args[1], &opts->status, child);
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
 	else if (ft_strcmp(scmd->name, "exit") == 0)

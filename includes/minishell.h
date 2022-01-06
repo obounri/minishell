@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 17:13:49 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/06 19:32:20 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,16 @@ typedef struct s_env
 	struct s_env *next;
 }	t_env;
 
-
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
-void	exec_impld(t_scmd	*scmd, t_options *opts, int cd_exit);
+void	exec_impld(t_scmd	*scmd, t_options *opts, int child);
 t_quote	*check_quotes_pipes(t_options	*opts);
 void	expand_vars(char ***scmd, t_env *env, int status);
 char	*expand(char **scmd, int j, t_env *env, int status);
 void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
 void	init_scmds(t_scmd *scmds, int n_scmds);
+void    unset(t_env **env, char **args, int *status, int child);
 
 //Redirection
 int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
