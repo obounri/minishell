@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 18:58:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 14:16:52 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 14:50:36 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ void    unset(t_options *opts, char **args, int child)
             j++;
         if (args[i][j])
         {
-            ft_putstr_fd("minishell: unset: `", 2);
-            ft_putstr_fd(args[i], 2);
-            ft_putstr_fd("': not a valid identifier\n", 2);
+            ft_error("minishell: unset: `", args[i], "': not a valid identifier");
             opts->status = 1;
             continue ;
         }
@@ -66,7 +64,7 @@ void    ft_exit(char **args, int *status)
         i++;
     if (args[0] && args[0][i])
     {
-        ft_putstr_fd("minishell: exit: fdv: numeric argument required\n", 2);
+        ft_error("minishell: exit: ", args[0], ": numeric argument required");
         exit(255);
     }
     i = 0;
@@ -76,9 +74,18 @@ void    ft_exit(char **args, int *status)
         exit(0);
     else if (i > 1)
     {
-        ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+        ft_error("minishell: exit", NULL, ": too many arguments");
         *status = 512;
     }
     else
         exit(ft_atoi(args[0]));
+}
+
+void    ft_error(char *prob, char *var, char *err)
+{
+    ft_putstr_fd(prob, 2);
+    if (var)
+        ft_putstr_fd(var, 2);
+    ft_putstr_fd(err, 2);
+    ft_putstr_fd("\n", 2);
 }

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 14:12:40 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 15:04:41 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int		check_pipe_errors(t_options *opts);
 int		error_msg();
 int		check_scmds(char **scmds);
 int		is_empty(char *input);
+void	ft_error(char *prob, char *var, char *err);
 
 char	*trim_quotes(char *red);
 

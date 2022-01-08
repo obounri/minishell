@@ -87,8 +87,9 @@ t_quote *check_quotes_pipes(t_options	*opts)
 	}
     if (quoted(quotes,0))
     {
-        printf("Error: unclosed quotes\n");
+        ft_error("minishell", NULL, ": Unclosed quotes");
         opts->uncqu = 1;
+        opts->status = 511;
     }
 	return (quotes);
 }
