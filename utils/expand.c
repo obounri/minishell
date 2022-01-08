@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 17:20:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 13:06:23 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char   *set_var(char **var, t_env *env, int status)
     tmp = ft_strdup(*var);
     free(*var);
     if (!ft_strcmp(tmp, "?"))
-        *var = ft_itoa(status);
+        *var = ft_itoa(WEXITSTATUS(status));
     else
     {
         *var = ft_getenv(env, tmp);

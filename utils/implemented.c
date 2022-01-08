@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 11:28:48 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 13:17:10 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ void	cd(char **args, t_options	*opts, int child)
 	else if (chdir(args[1]) < 0)
 	{
 		perror(args[1]);
-		opts->status = 256;
+		opts->status = 512;
 		if (child)
-			exit(EXIT_FAILURE);
+			exit(2);
 		return ;
 	}
 	opts->curr_dir = getcwd(NULL, 0);
@@ -78,12 +78,6 @@ void	export(void)
 	printf("export\n");
 	exit(EXIT_SUCCESS);
 }
-
-// void	unset(void)
-// {
-// 	printf("unset\n");
-// 	exit(EXIT_SUCCESS);
-// }
 
 void	env(t_env *env)
 {

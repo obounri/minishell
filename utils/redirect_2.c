@@ -16,7 +16,7 @@ int		in(char *red, t_scmd *scmd)
 	fd = open(red,O_RDONLY);
 	if (fd == -1)
 	{
-		printf("%s: no such file or directory\n",red);
+		printf("minishell: %s: no such file or directory\n",red);
 		return (0);
 	}
 	scmd->fd_infile = fd;

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 19:34:14 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 13:20:02 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(opts->cmd->scmds[i].args[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 	}
 	else
