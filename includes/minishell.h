@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 11:30:21 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 14:12:40 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
 void	init_scmds(t_scmd *scmds, int n_scmds);
 void    unset(t_options *opts, char **args, int child);
+void    ft_exit(char **args, int *status);
 
 //Redirection
 int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
