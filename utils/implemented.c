@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 19:33:15 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 11:28:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 	else if (ft_strcmp(scmd->name, "export") == 0)
 		export();
 	else if (ft_strcmp(scmd->name, "unset") == 0)
-		unset(&opts->env, &scmd->args[1], &opts->status, child);
+		unset(opts, &scmd->args[1], child);
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
 	else if (ft_strcmp(scmd->name, "exit") == 0)
