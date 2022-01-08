@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 13:06:23 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 15:12:27 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char *expand(char **scmd, int j, t_env *env, int status)
     tmp = j + 1;
     tmp_scmd = *scmd;
     first = ft_substr(tmp_scmd, 0, j++);
-    // printf("[DEBUG] first [%s]\n", first); //
     if (tmp_scmd[j] == '?')
         j++;
     else
