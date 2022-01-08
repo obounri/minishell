@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 14:19:37 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 18:00:29 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	cd(char **args, t_options	*opts, int child)
 		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		perror(args[1]);
 		opts->status = 512;
 		if (child)
