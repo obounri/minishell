@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 11:28:48 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/08 14:19:37 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,13 @@ void	cd(char **args, t_options	*opts, int child)
 	else if (chdir(args[1]) < 0)
 	{
 		perror(args[1]);
-		opts->status = 256;
+		opts->status = 512;
 		if (child)
-			exit(EXIT_FAILURE);
+			exit(2);
 		return ;
 	}
 	opts->curr_dir = getcwd(NULL, 0);
+	opts->status = 0;
 	if (child)
 		exit(EXIT_SUCCESS);
 }
@@ -78,12 +79,6 @@ void	export(void)
 	printf("export\n");
 	exit(EXIT_SUCCESS);
 }
-
-// void	unset(void)
-// {
-// 	printf("unset\n");
-// 	exit(EXIT_SUCCESS);
-// }
 
 void	env(t_env *env)
 {
@@ -110,5 +105,5 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
 	else if (ft_strcmp(scmd->name, "exit") == 0)
-		exit(0);
+		ft_exit(&scmd->args[1], &opts->status);
 }

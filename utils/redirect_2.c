@@ -10,13 +10,13 @@ int		in(char *red, t_scmd *scmd)
 	if (stat(red, &buffer) != -1)
 		if ((buffer.st_mode & S_IRUSR) == 0)
 			{
-				printf("minishell: %s: Permission denied\n", red);
+				ft_error("minishell: ", red, ": Permission denied");
 				return (0);
 			}
 	fd = open(red,O_RDONLY);
 	if (fd == -1)
 	{
-		printf("%s: no such file or directory\n",red);
+		ft_error("minishell: ", red, ": no such file or directory");
 		return (0);
 	}
 	scmd->fd_infile = fd;
@@ -33,7 +33,7 @@ int		out(char *red, t_scmd *scmd)
 	if (stat(red, &buffer) != -1)
 		if ((buffer.st_mode & S_IWUSR) == 0)
 		{
-			printf("minishell: %s: Permission denied\n", red);
+			ft_error("minishell: ", red, ": Permission denied");
 			return (0);
 		}
 	fd = open(red, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -108,11 +108,9 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 			if (scmd->heredoc[i] == '$')
 				scmd->heredoc[i] = EXPAND;
 		t[0] = scmd->heredoc;
-		printf("BEFORE:----> \n%s",scmd->heredoc);
 		expand_vars(&t, env, 0);
 		scmd->heredoc = t[0];
 		free(t);
-		printf("AFTER :----> \n%s",scmd->heredoc);
 	}
 	return (0);
 }
@@ -127,7 +125,7 @@ int 	append(char *red, t_scmd *scmd)
 	if (stat(red, &buffer) != -1)
 		if ((buffer.st_mode & S_IWUSR) == 0)
 		{
-			printf("minishell: %s: Permission denied\n", red);
+			ft_error("minishell: ", red, ": Permission denied");
 			return (0);
 		}
 	fd = open(red, O_WRONLY | O_CREAT | O_APPEND, 0644);
