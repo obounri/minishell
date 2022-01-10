@@ -44,7 +44,7 @@ void    export_print(t_env *env)
         if (!env->exp)
             printf("declare -x %s=\"%s\"\n",env->key,env->value);
         else
-            printf("declare -x %s\n",env->key,env->value);
+            printf("declare -x %s\n",env->key);
         env = env->next;
     }
 }

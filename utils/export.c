@@ -53,6 +53,8 @@ void    modify_var(char *key, char *value, t_env **env)
         {
             free(tmp->value);
             tmp->value = value;
+            if (tmp->exp == 1)
+                tmp->exp = 0;
             break;
         }
         tmp = tmp->next;
@@ -69,41 +71,50 @@ void	export(char **args, t_env **env, int child)
     int j;
     char *key;
     char *value;
-    int equal = 0;
+    int equal;
 
-    i = -1;
+    i = 0;
     if (!*env && child)
         exit(EXIT_FAILURE);
     if (!args[1])
     {
-        export_no_args(env);
+        export_print(*env);
+        // export_no_args(env);
         // exit(EXIT_SUCCESS);
     }
     while (args[++i])
     {
         j = 0;
+        equal = 0;
         if (!check_export_args(args[i]))
         {
-                ft_putstr_fd("minishell: `", 2);
-                ft_putstr_fd(args[i], 2);
-                ft_putstr_fd("': not a valid identifier\n", 2);//set exit status to 1
+            ft_putstr_fd("minishell: `", 2);
+            ft_putstr_fd(args[i], 2);
+            ft_putstr_fd("': not a valid identifier\n", 2);//set exit status to 1
         }
-        while (args[i][j])
+        else
         {
-            if (args[i][j] == '=')
+            while (args[i][j])
             {
-                equal = 1;
-                key = ft_substr(args[i],0,j); // free
-                value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
-                if (!already_exist(key,env))
-                    modify_var(key,value,env);
-                else
-                    add_var(key,value,env,0);
+                if (args[i][j] == '=')
+                {
+                    equal = 1;
+                    key = ft_substr(args[i],0,j); // free
+                    value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
+                    // value = trim_quotes(value);
+                    if (!already_exist(key,env))
+                        modify_var(key,value,env);
+                    else
+                        add_var(key,value,env,0);
+                }
+                j++;
             }
-            j++;
         }
         if (!equal)
-            add_var(args[i],"",env,1);
+        {
+            if (already_exist(args[i],env))
+                add_var(args[i],NULL,env,1);
+        }
     }
     if (child)
 	    exit(EXIT_SUCCESS);
