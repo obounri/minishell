@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 15:04:41 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/09 12:15:54 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void    unset(t_options *opts, char **args, int child);
 void    ft_exit(char **args, int *status);
 
 //Redirection
-int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
+// int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
 int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env);
-int		redirect(char ***scmd, t_scmd *cmd,int type, t_env *env);
+int		redirect(char ***scmd, t_scmd *cmd, t_env *env);
 int		in(char *red, t_scmd *scmd);
 int		out(char *red, t_scmd *scmd);
 int 	heredoc(char *red, t_scmd *scmd, t_env *env);
