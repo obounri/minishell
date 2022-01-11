@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/10 17:48:42 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/11 10:21:09 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	parse_scmds(t_options	*opts, char **scmds)
 	int i;
 	int h; //	
 	char **split_scmd;
-	char **tmp;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
@@ -162,9 +161,10 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
-	pid_t		pid;
 	int i = 0, fd[2], in = 0, out;
 
+	(void)ac;
+	(void)av;
 	init(&opts, env);
 	while (1)
 	{

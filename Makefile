@@ -1,6 +1,6 @@
 NAME = minishell
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 HEADER = includes/minishell.h
 
 UTILS = utils/*.c
