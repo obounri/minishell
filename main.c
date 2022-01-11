@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 14:53:50 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/11 10:21:09 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,35 +59,11 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-int		*order_red(char *scmd)
-{
-	int i;
-	int j;
-	int count_tokens;
-	int *sorted_tokens;
-
-	i = -1;
-	count_tokens = 0;
-	while (scmd && scmd[++i])
-		if (scmd[i] <= -33)
-			count_tokens++;
-	sorted_tokens = (int *)malloc(sizeof(int) * count_tokens + 1);
-	i = -1;
-	j = -1;
-	while (scmd && scmd[++i])
-		if (scmd[i] <= -33)
-			sorted_tokens[++j] = scmd[i];
-	sorted_tokens[++j] = 0;
-	return (sorted_tokens);
-}
-
 int	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
 	int h; //	
 	char **split_scmd;
-	char **tmp;
-	int 	*order;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
@@ -98,9 +74,11 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		if (!split_scmd) // ??
 			break; // ??
 		expand_vars(&split_scmd, opts->env, opts->status);
-		order = order_red(scmds[i]);
-		if (!init_red(opts, split_scmd, &i, order))
+		if (!redirect(&split_scmd, &opts->cmd->scmds[i], opts->env))
+		{
+			opts->cmd->scmds[i].err = 1;
 			continue ;
+		}
 		new_alloc(&split_scmd);
 		if (!split_scmd) // ??
 			break; // ??
@@ -118,10 +96,6 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		}
 		opts->cmd->scmds[i].name = split_scmd[0];
 		opts->cmd->scmds[i].args = &split_scmd[0];
-		// h = 0; //
-		// while (split_scmd[h]) //
-		// 	printf("[%s]", split_scmd[h++]); //
-		// printf("\n"); //
 	}
 	return (1);
 }
@@ -147,10 +121,6 @@ int	parse_input(t_options	*opts)
 		return (0);
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;
-	// int h = 0; //
-	// while (scmds[h]) //
-	// 	printf("[%s]", scmds[h++]); //
-	// printf("\n"); //
 	if (!parse_scmds(opts, scmds))
 		return (0);
 	return (1);
@@ -191,9 +161,10 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
-	pid_t		pid;
 	int i = 0, fd[2], in = 0, out;
 
+	(void)ac;
+	(void)av;
 	init(&opts, env);
 	while (1)
 	{
