@@ -1,12 +1,5 @@
 #include "../includes/minishell.h"
 
-//export key=value
-//export key
-//export key=value key2=value2
-//         equal_address = ft_strchr(args[1],'=');
-        // if (!equal_address || equal_address = args[i])
-            // return;//print corresponding error (bash: export: `=': not a valid identifier) $? = 1
-
 int     already_exist(char *key, t_env **env)
 {
     t_env *tmp;
@@ -60,11 +53,7 @@ void    modify_var(char *key, char *value, t_env **env)
         tmp = tmp->next;
     }
 }
-//export with no argument:\
-declare -x Key=value
 
-//export var (with no '=') -> Variable is exported. not added to env list.\
-but when export with no args is used "declare -x var" is printed
 void	export(char **args, t_env **env, int child)
 {
     int i;
@@ -77,11 +66,7 @@ void	export(char **args, t_env **env, int child)
     if (!*env && child)
         exit(EXIT_FAILURE);
     if (!args[1])
-    {
         export_print(*env);
-        // export_no_args(env);
-        // exit(EXIT_SUCCESS);
-    }
     while (args[++i])
     {
         j = 0;
@@ -90,7 +75,8 @@ void	export(char **args, t_env **env, int child)
         {
             ft_putstr_fd("minishell: `", 2);
             ft_putstr_fd(args[i], 2);
-            ft_putstr_fd("': not a valid identifier\n", 2);//set exit status to 1
+            ft_putstr_fd("': not a valid identifier\n", 2);
+            //set exit status to 1
         }
         else
         {
@@ -99,9 +85,10 @@ void	export(char **args, t_env **env, int child)
                 if (args[i][j] == '=')
                 {
                     equal = 1;
-                    key = ft_substr(args[i],0,j); // free
-                    value = ft_substr(args[i],j + 1, ft_strlen(args[i])); // free
-                    // value = trim_quotes(value);
+                    key = ft_substr(args[i],0,j);
+                    value = ft_substr(args[i],j + 1, ft_strlen(args[i]));
+                    if (value && value[0] == '"' || value[0] == '\'')
+                        value = trim_quotes(value);
                     if (!already_exist(key,env))
                         modify_var(key,value,env);
                     else
@@ -118,7 +105,6 @@ void	export(char **args, t_env **env, int child)
     }
     if (child)
 	    exit(EXIT_SUCCESS);
-	// printf("export\n");
 }
 
 //check export_args
