@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 18:00:29 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:59:05 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void    echo(char **args)
 
 void	cd(char **args, t_options	*opts, int child)
 {
+	char *tmp;
+
 	if (!args[1])
 		chdir(opts->home);
 	else if (chdir(args[1]) < 0)
@@ -63,7 +65,11 @@ void	cd(char **args, t_options	*opts, int child)
 			exit(2);
 		return ;
 	}
-	opts->curr_dir = getcwd(NULL, 0);
+	tmp = getcwd(NULL, 0);
+	if (!tmp)
+		ft_error("cd: error retrieving current directory:", NULL, "getcwd: cannot access parent directories: No such file or directory");
+	else
+		opts->curr_dir = tmp;
 	opts->status = 0;
 	if (child)
 		exit(EXIT_SUCCESS);
