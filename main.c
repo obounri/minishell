@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 12:37:58 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 14:52:25 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (out != 1)
 		{
 			dup2(out, 1);
@@ -177,10 +178,10 @@ int main(int ac,char ** av, char **env)
 	(void)ac;
 	(void)av;
 	init(&opts, env);
-	signal(SIGINT, &catch);
 	while (1)
 	{
 		signal(SIGINT, &catch);
+		signal(SIGQUIT, SIG_IGN);
 		rl_on_new_line ();
 		opts.cmd->n_scmds = 1;
 		if (opts.cmd->scmds)
