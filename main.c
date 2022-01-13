@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 14:52:25 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:13:27 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void    prompt(t_options *opts)
 		opts->prompt = ft_strdup("\033[0;32m");
 	opts->prompt = ft_strjoin(opts->prompt, "➤ \033[0m");
 	opts->prompt = ft_strjoin(opts->prompt, opts->curr_dir);
-	opts->prompt = ft_strjoin(opts->prompt, " / ");
-	opts->prompt = ft_strjoin(opts->prompt, opts->user);
 	opts->prompt = ft_strjoin(opts->prompt, " ~ "); // free
 	opts->input = readline(opts->prompt); // free
 }

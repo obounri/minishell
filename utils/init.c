@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 10:14:16 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:11:43 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ void	add_env(t_env **env, char **var)
 	
 	new_env = malloc(sizeof(t_env) * 1);
 	new_env->key = var[0];
-	new_env->value = var[1];
+	if (!var[1])
+		new_env->value = ft_strdup("");
+	else
+		new_env->value = var[1];
 	new_env->next = NULL;
 	if (!*env)
 		*env = new_env;
