@@ -6,15 +6,17 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/11 10:21:09 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 11:45:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
+t_options	opts;
+
 void    prompt(t_options *opts)
 {
-	if (WEXITSTATUS(opts->status) > 0)
+	if (WEXITSTATUS(opts->status) > 0 || WIFSIGNALED(opts->status))
 		opts->prompt = ft_strdup("\033[0;31m");
 	else
 		opts->prompt = ft_strdup("\033[0;32m");
@@ -28,8 +30,11 @@ void    prompt(t_options *opts)
 
 void		catch(int sig)
 {
-	printf("sig $%d\n", sig);
-	return ;
+	(void)sig;
+	printf("\n");
+	rl_on_new_line ();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 char	*find_exec_path(t_options	*opts, char *name)
@@ -131,8 +136,10 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 	pid_t pid;
 
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (out != 1)
 		{
 			dup2(out, 1);
@@ -155,22 +162,24 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 	}
 	else
 		waitpid(pid, &opts->status, 0);
+	if (WIFSIGNALED(opts->status))
+		printf("\n");
 }
 
 // print exit when ctrl-D ?
 int main(int ac,char ** av, char **env)
 {
-	t_options	opts;
-	int i = 0, fd[2], in = 0, out;
+	int i = 0, fd[2], in, out;
 
 	(void)ac;
 	(void)av;
 	init(&opts, env);
+	signal(SIGINT, &catch);
 	while (1)
 	{
+		signal(SIGINT, &catch);
 		rl_on_new_line ();
 		opts.cmd->n_scmds = 1;
-		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
 			free(opts.cmd->scmds);
 		opts.cmd->scmds  = NULL;
@@ -185,9 +194,9 @@ int main(int ac,char ** av, char **env)
 			exec_impld(&opts.cmd->scmds[i], &opts, 0);
 			continue ;
 		}
+		in = 0;
 		while (i < opts.cmd->n_scmds)
 		{
-			// signal(SIGINT, SIG_DFL);
 			pipe(fd);
 			out = fd[1];
 			if (opts.cmd->scmds[i].fd_infile != -10)

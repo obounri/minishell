@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/06 17:14:07 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 10:14:16 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	init(t_options *opts, char **env)
 	opts->cmd = malloc(sizeof(t_cmd));
 	opts->cmd->scmds  = NULL;
 	opts->uncqu = 0;
+	// rl_line_buffer = NULL;
 	while (env[++i])
 	{
 		tmp = ft_split(env[i], '=');

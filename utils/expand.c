@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 15:12:27 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/11 12:24:53 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ char   *set_var(char **var, t_env *env, int status)
     tmp = ft_strdup(*var);
     free(*var);
     if (!ft_strcmp(tmp, "?"))
-        *var = ft_itoa(WEXITSTATUS(status));
+    {
+        if (WIFSIGNALED(status))
+            *var = ft_itoa(128 + WTERMSIG(status));
+        else
+            *var = ft_itoa(WEXITSTATUS(status));
+    }
     else
     {
         *var = ft_getenv(env, tmp);
