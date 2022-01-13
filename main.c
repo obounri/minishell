@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 12:23:55 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 12:34:45 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 // print exit when ctrl-D ?
 int main(int ac,char ** av, char **env)
 {
-	int i = 0, fd[2], in, out;
+	int i, fd[2], in, out;
 
 	(void)ac;
 	(void)av;
@@ -192,12 +192,12 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		i = 0;
-		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 3)
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[0].impld > 3)
 		{
-			exec_impld(&opts.cmd->scmds[i], &opts, 0);
+			exec_impld(&opts.cmd->scmds[0], &opts, 0);
 			continue ;
 		}
+		i = 0;
 		in = 0;
 		while (i < opts.cmd->n_scmds)
 		{
