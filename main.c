@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 12:15:16 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 12:23:55 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	parse_input(t_options	*opts)
 	return (1);
 }
 
-void the_process(int in, int out, t_options *opts, int i, char **env)
+int the_process(int in, int out, t_options *opts, int i, char **env)
 {
 	pid_t pid;
 
@@ -163,7 +163,11 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 	else
 		waitpid(pid, &opts->status, 0);
 	if (WIFSIGNALED(opts->status))
+	{
 		printf("\n");
+		return (0);
+	}
+	return (1);
 }
 
 // print exit when ctrl-D ?
@@ -205,7 +209,8 @@ int main(int ac,char ** av, char **env)
 				out = opts.cmd->scmds[i].fd_outfile;
 			else if (i == opts.cmd->n_scmds - 1)
 				out = 1;
-			the_process(in, out, &opts, i, env);
+			if (!the_process(in, out, &opts, i, env))
+				break ;
 			close(fd[1]);
 			in = fd[0];
 			i++;
