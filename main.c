@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/11 10:21:09 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:13:27 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 
 void    prompt(t_options *opts)
 {
-	if (WEXITSTATUS(opts->status) > 0)
+	if (WEXITSTATUS(opts->status) > 0 || WIFSIGNALED(opts->status))
 		opts->prompt = ft_strdup("\033[0;31m");
 	else
 		opts->prompt = ft_strdup("\033[0;32m");
 	opts->prompt = ft_strjoin(opts->prompt, "➤ \033[0m");
 	opts->prompt = ft_strjoin(opts->prompt, opts->curr_dir);
-	opts->prompt = ft_strjoin(opts->prompt, " / ");
-	opts->prompt = ft_strjoin(opts->prompt, opts->user);
 	opts->prompt = ft_strjoin(opts->prompt, " ~ "); // free
 	opts->input = readline(opts->prompt); // free
 }
 
 void		catch(int sig)
 {
-	printf("sig $%d\n", sig);
-	return ;
+	(void)sig;
+	printf("\n");
+	rl_on_new_line ();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 char	*find_exec_path(t_options	*opts, char *name)
@@ -126,13 +127,16 @@ int	parse_input(t_options	*opts)
 	return (1);
 }
 
-void the_process(int in, int out, t_options *opts, int i, char **env)
+int the_process(int in, int out, t_options *opts, int i, char **env)
 {
 	pid_t pid;
 
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (out != 1)
 		{
 			dup2(out, 1);
@@ -155,22 +159,29 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 	}
 	else
 		waitpid(pid, &opts->status, 0);
+	if (WIFSIGNALED(opts->status))
+	{
+		printf("\n");
+		return (0);
+	}
+	return (1);
 }
 
 // print exit when ctrl-D ?
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
-	int i = 0, fd[2], in = 0, out;
+	int i, fd[2], in, out;
 
 	(void)ac;
 	(void)av;
 	init(&opts, env);
 	while (1)
 	{
+		signal(SIGINT, &catch);
+		signal(SIGQUIT, SIG_IGN);
 		rl_on_new_line ();
 		opts.cmd->n_scmds = 1;
-		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
 			free(opts.cmd->scmds);
 		opts.cmd->scmds  = NULL;
@@ -179,15 +190,15 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		i = 0;
-		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 3)
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[0].impld > 3)
 		{
-			exec_impld(&opts.cmd->scmds[i], &opts, 0);
+			exec_impld(&opts.cmd->scmds[0], &opts, 0);
 			continue ;
 		}
+		i = 0;
+		in = 0;
 		while (i < opts.cmd->n_scmds)
 		{
-			// signal(SIGINT, SIG_DFL);
 			pipe(fd);
 			out = fd[1];
 			if (opts.cmd->scmds[i].fd_infile != -10)
@@ -196,7 +207,8 @@ int main(int ac,char ** av, char **env)
 				out = opts.cmd->scmds[i].fd_outfile;
 			else if (i == opts.cmd->n_scmds - 1)
 				out = 1;
-			the_process(in, out, &opts, i, env);
+			if (!the_process(in, out, &opts, i, env))
+				break ;
 			close(fd[1]);
 			in = fd[0];
 			i++;

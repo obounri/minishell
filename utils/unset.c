@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 18:58:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/08 14:50:36 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:18:27 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void    unset(t_options *opts, char **args, int child)
         }
         unset_var(&opts->env, args[i]);
     }
+    opts->status = 0;
     if (child)
         exit(EXIT_SUCCESS);
 }
