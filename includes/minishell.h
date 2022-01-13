@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 11:14:26 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:29:36 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_options
 {
 	struct  s_cmd *cmd;
 	struct	s_env *env;
-	char    *user;
 	char	*prompt;
 	char    *input;
 	int     status;

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 15:11:43 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:29:26 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	init(t_options *opts, char **env)
 
 	i = -1;
 	opts->env = NULL;
-	opts->user = readline("Enter user name for prompt: "); // free
 	opts->status = 0;
 	opts->curr_dir = getcwd(NULL, 0);
 	opts->home = getenv("HOME");
