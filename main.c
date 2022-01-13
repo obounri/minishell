@@ -6,13 +6,11 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 12:34:45 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 12:37:58 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-t_options	opts;
 
 void    prompt(t_options *opts)
 {
@@ -173,6 +171,7 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 // print exit when ctrl-D ?
 int main(int ac,char ** av, char **env)
 {
+	t_options	opts;
 	int i, fd[2], in, out;
 
 	(void)ac;
