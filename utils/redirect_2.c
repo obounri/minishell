@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/10 16:45:04 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 16:56:42 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ int		in(char *red, t_scmd *scmd)
 
 	if (scmd->fd_infile != -10)
 		close(scmd->fd_infile);
+	if (scmd->heredoc)
+	{
+		free(scmd->heredoc);
+		scmd->heredoc = NULL;
+	}
 	if (stat(red, &buffer) != -1)
 		if ((buffer.st_mode & S_IRUSR) == 0)
 			{
@@ -79,6 +84,13 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 	char *new_red;
 	int q;
 
+	if (scmd->fd_infile != -10)
+		close(scmd->fd_infile);
+	if (scmd->heredoc)
+	{
+		free(scmd->heredoc);
+		scmd->heredoc = NULL;
+	}
 	q = 0;
 	if (red[0] == '\'' || red[0] == '"')
 	{
@@ -100,7 +112,7 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 				scmd->heredoc[i] = EXPAND;
 		t[0] = scmd->heredoc;
 		expand_vars(&t, env, 0);
-		scmd->heredoc = t[0];
+		scmd->heredoc = ft_strdup(t[0]);
 		free(t);
 	}
 	return (0);
