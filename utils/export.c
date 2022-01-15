@@ -118,11 +118,11 @@ void	export(char **args, t_env **env, int child)
                 }
                 j++;
             }
-        }
-        if (!equal)
-        {
-            if (already_exist(args[i],env))
-                add_var(args[i],NULL,env,1);
+            if (!equal)
+            {
+                if (already_exist(args[i],env))
+                    add_var(args[i],NULL,env,1);
+            }
         }
     }
     if (child)
