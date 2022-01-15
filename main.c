@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 15:53:21 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:13:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ int the_process(int in, int out, t_options *opts, int i, char **env)
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
-	int i, fd[2], in, out;
+	int i, fd[2], fd_hd[2], in, out;
 
 	(void)ac;
 	(void)av;
@@ -201,7 +201,14 @@ int main(int ac,char ** av, char **env)
 		{
 			pipe(fd);
 			out = fd[1];
-			if (opts.cmd->scmds[i].fd_infile != -10)
+			if (opts.cmd->scmds[i].heredoc)
+			{
+				pipe(fd_hd);
+				write(fd_hd[1], opts.cmd->scmds[i].heredoc, ft_strlen(opts.cmd->scmds[i].heredoc));
+				in = fd_hd[0];
+				close(fd_hd[1]);
+			}
+			else if (opts.cmd->scmds[i].fd_infile != -10)
 				in = opts.cmd->scmds[i].fd_infile;
 			if (opts.cmd->scmds[i].fd_outfile != -10)
 				out = opts.cmd->scmds[i].fd_outfile;
