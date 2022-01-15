@@ -54,6 +54,28 @@ void    modify_var(char *key, char *value, t_env **env)
     }
 }
 
+//check export_args
+//Variable names may only contain a-z A-Z 0-9 _
+//variable names may not begin with a number
+
+int     check_export_args(char *arg)
+{
+    int i;
+
+    i = 0;
+    if (arg && arg[0] == '=')
+        return (0);
+    while (arg && arg[i] && arg[i] != '=')
+    {
+        if (ft_isdigit(arg[i]) && i == 0)
+            return (0);
+        if (!ft_isdigit(arg[i]) && !ft_isalnum(arg[i]) && arg[i] != '_')
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
 void	export(char **args, t_env **env, int child)
 {
     int i;
@@ -105,26 +127,4 @@ void	export(char **args, t_env **env, int child)
     }
     if (child)
 	    exit(EXIT_SUCCESS);
-}
-
-//check export_args
-//Variable names may only contain a-z A-Z 0-9 _
-//variable names may not begin with a number
-
-int     check_export_args(char *arg)
-{
-    int i;
-
-    i = 0;
-    if (arg && arg[0] == '=')
-        return (0);
-    while (arg && arg[i] && arg[i] != '=')
-    {
-        if (ft_isdigit(arg[i]) && i == 0)
-            return (0);
-        if (!ft_isdigit(arg[i]) && !ft_isalnum(arg[i]) && arg[i] != '_')
-            return (0);
-        i++;
-    }
-    return (1);
 }

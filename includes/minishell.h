@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 17:58:18 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/15 15:35:31 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	export(char **args, t_env **env,int exit);
 void    add_var(char *key, char *value, t_env **env,int exp);
 void    modify_var(char *key, char *value, t_env **env);
 int     already_exist(char *key, t_env **env);
+void    export_print(t_env *env);
 
 //Redirection
 int		init_red(t_options *opts, char **split_scmd, int *i, int *order);

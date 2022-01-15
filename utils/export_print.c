@@ -1,19 +1,15 @@
 #include "../includes/minishell.h"
 
-void    export_no_args(t_env **en)
+void    export_print(t_env *env)
 {
-    t_env *new;
-    t_env *current;
-
-    new = NULL;
-    current = *en;
-    while(current)
+    while(env)
     {
-        add_var(current->key,current->value,&new,current->exp);
-        sort(&new);
-        current = current->next;
+        if (!env->exp)
+            printf("declare -x %s=\"%s\"\n",env->key,env->value);
+        else
+            printf("declare -x %s\n",env->key);
+        env = env->next;
     }
-    export_print(new);//free after.
 }
 
 void    sort(t_env **en)
@@ -37,14 +33,18 @@ void    sort(t_env **en)
     }
 }
 
-void    export_print(t_env *env)
+void    export_no_args(t_env **en)
 {
-    while(env)
+    t_env *new;
+    t_env *current;
+
+    new = NULL;
+    current = *en;
+    while(current)
     {
-        if (!env->exp)
-            printf("declare -x %s=\"%s\"\n",env->key,env->value);
-        else
-            printf("declare -x %s\n",env->key);
-        env = env->next;
+        add_var(current->key,current->value,&new,current->exp);
+        sort(&new);
+        current = current->next;
     }
+    export_print(new);//free after.
 }
