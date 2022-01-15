@@ -109,7 +109,7 @@ void	export(char **args, t_env **env, int child)
                     equal = 1;
                     key = ft_substr(args[i],0,j);
                     value = ft_substr(args[i],j + 1, ft_strlen(args[i]));
-                    if (value && value[0] == '"' || value[0] == '\'')
+                    if (value && (value[0] == '"' || value[0] == '\''))
                         value = trim_quotes(value);
                     if (!already_exist(key,env))
                         modify_var(key,value,env);
