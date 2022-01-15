@@ -78,20 +78,15 @@ void	cd(char **args, t_options	*opts, int child)
 void	pwd(char *path)
 {
 	printf("%s\n", path);
-	exit(EXIT_SUCCESS);
-}
-
-void	export(void)
-{
-	printf("export\n");
-	exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
 }
 
 void	env(t_env *env)
 {
 	while (env)
 	{
-		printf("%s=%s\n", env->key, env->value);
+		if (!env->exp)
+			printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
 	exit(EXIT_SUCCESS);
@@ -106,7 +101,7 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		export();
+		export(scmd->args,&opts->env,cd_exit);
 	else if (ft_strcmp(scmd->name, "unset") == 0)
 		unset(opts, &scmd->args[1], child);
 	else if (ft_strcmp(scmd->name, "env") == 0)

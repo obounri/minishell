@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 15:29:36 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/15 15:35:31 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
+	int		exp;
 	struct s_env *next;
 }	t_env;
 
@@ -94,6 +95,12 @@ char	*ft_getenv(t_env *env, char *key);
 void	init_scmds(t_scmd *scmds, int n_scmds);
 void    unset(t_options *opts, char **args, int child);
 void    ft_exit(char **args, int *status);
+
+void	export(char **args, t_env **env,int exit);
+void    add_var(char *key, char *value, t_env **env,int exp);
+void    modify_var(char *key, char *value, t_env **env);
+int     already_exist(char *key, t_env **env);
+void    export_print(t_env *env);
 
 //Redirection
 // int		init_red(t_options *opts, char **split_scmd, int *i, int *order);

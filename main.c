@@ -190,7 +190,8 @@ int main(int ac,char ** av, char **env)
 			exit(0);
 		if (parse_input(&opts) == 0)
 			continue ;
-		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[0].impld > 3)
+		i = 0;
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 2)
 		{
 			exec_impld(&opts.cmd->scmds[0], &opts, 0);
 			continue ;

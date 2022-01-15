@@ -31,6 +31,7 @@ void	add_env(t_env **env, char **var)
 	
 	new_env = malloc(sizeof(t_env) * 1);
 	new_env->key = var[0];
+	new_env->exp = 0;
 	if (!var[1])
 		new_env->value = ft_strdup("");
 	else
