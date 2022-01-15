@@ -11,7 +11,12 @@
         "fcntl.h": "c",
         "errno.h": "c",
         "stat.h": "c",
-        "__config": "c"
+        "__config": "c",
+        "rlstdc.h": "c",
+        "rltypedefs.h": "c",
+        "keymaps.h": "c",
+        "chardefs.h": "c",
+        "tilde.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

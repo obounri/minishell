@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:19:40 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/11 12:24:53 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ char   *set_var(char **var, t_env *env, int status)
     tmp = ft_strdup(*var);
     free(*var);
     if (!ft_strcmp(tmp, "?"))
-        *var = ft_itoa(status);
+    {
+        if (WIFSIGNALED(status))
+            *var = ft_itoa(128 + WTERMSIG(status));
+        else
+            *var = ft_itoa(WEXITSTATUS(status));
+    }
     else
     {
         *var = ft_getenv(env, tmp);
@@ -41,7 +46,6 @@ char *expand(char **scmd, int j, t_env *env, int status)
     tmp = j + 1;
     tmp_scmd = *scmd;
     first = ft_substr(tmp_scmd, 0, j++);
-    // printf("[DEBUG] first [%s]\n", first); //
     if (tmp_scmd[j] == '?')
         j++;
     else
@@ -49,9 +53,7 @@ char *expand(char **scmd, int j, t_env *env, int status)
             j++;
     var = ft_substr(tmp_scmd, tmp, j - tmp);
     var = set_var(&var, env, status);
-    // printf("[DEBUG] var [%s]\n", var); //
     last = ft_substr(tmp_scmd, j, ft_strlen(tmp_scmd) - j);
-    // printf("[DEBUG] last [%s]\n", last); //
     free(tmp_scmd);
     tmp_scmd = NULL;
     tmp_scmd = ft_strjoin(first, var);

@@ -146,6 +146,6 @@ int		check_scmds(char **scmds)
 
 int    error_msg()
 {
-	printf("Minishell : Parsing error.\n");
+	ft_error("minishell", NULL, ": Parsing error");
 	return (0);
 }

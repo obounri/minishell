@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 22:38:20 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:13:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 
 void    prompt(t_options *opts)
 {
-	if (WEXITSTATUS(opts->status) > 0)
+	if (WEXITSTATUS(opts->status) > 0 || WIFSIGNALED(opts->status))
 		opts->prompt = ft_strdup("\033[0;31m");
 	else
 		opts->prompt = ft_strdup("\033[0;32m");
 	opts->prompt = ft_strjoin(opts->prompt, "➤ \033[0m");
 	opts->prompt = ft_strjoin(opts->prompt, opts->curr_dir);
-	opts->prompt = ft_strjoin(opts->prompt, " / ");
-	opts->prompt = ft_strjoin(opts->prompt, opts->user);
 	opts->prompt = ft_strjoin(opts->prompt, " ~ "); // free
 	opts->input = readline(opts->prompt); // free
 }
 
 void		catch(int sig)
 {
-	printf("sig $%d\n", sig);
-	return ;
+	(void)sig;
+	printf("\n");
+	rl_on_new_line ();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 char	*find_exec_path(t_options	*opts, char *name)
@@ -59,37 +60,14 @@ char	*find_exec_path(t_options	*opts, char *name)
 	return (NULL);
 }
 
-int		*order_red(char *scmd)
-{
-	int i;
-	int j;
-	int count_tokens;
-	int *sorted_tokens;
-
-	i = -1;
-	count_tokens = 0;
-	while (scmd && scmd[++i])
-		if (scmd[i] <= -33)
-			count_tokens++;
-	sorted_tokens = (int *)malloc(sizeof(int) * count_tokens + 1);
-	i = -1;
-	j = -1;
-	while (scmd && scmd[++i])
-		if (scmd[i] <= -33)
-			sorted_tokens[++j] = scmd[i];
-	sorted_tokens[++j] = 0;
-	return (sorted_tokens);
-}
-
 int	parse_scmds(t_options	*opts, char **scmds)
 {
 	int i;
 	int h; //	
 	char **split_scmd;
-	char **tmp;
-	int 	*order;
 
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
+	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
 	i = -1;
 	while (++i < opts->cmd->n_scmds)
 	{
@@ -97,9 +75,11 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		if (!split_scmd) // ??
 			break; // ??
 		expand_vars(&split_scmd, opts->env, opts->status);
-		order = order_red(scmds[i]);
-		if (!init_red(opts, split_scmd, &i, order))
+		if (!redirect(&split_scmd, &opts->cmd->scmds[i], opts->env))
+		{
+			opts->cmd->scmds[i].err = 1;
 			continue ;
+		}
 		new_alloc(&split_scmd);
 		if (!split_scmd) // ??
 			break; // ??
@@ -117,10 +97,6 @@ int	parse_scmds(t_options	*opts, char **scmds)
 		}
 		opts->cmd->scmds[i].name = split_scmd[0];
 		opts->cmd->scmds[i].args = &split_scmd[0];
-		// h = 0; //
-		// while (split_scmd[h]) //
-		// 	printf("[%s]", split_scmd[h++]); //
-		// printf("\n"); //
 	}
 	return (1);
 }
@@ -146,22 +122,21 @@ int	parse_input(t_options	*opts)
 		return (0);
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;
-	// int h = 0; //
-	// while (scmds[h]) //
-	// 	printf("[%s]", scmds[h++]); //
-	// printf("\n"); //
 	if (!parse_scmds(opts, scmds))
 		return (0);
 	return (1);
 }
 
-void the_process(int in, int out, t_options *opts, int i, char **env)
+int the_process(int in, int out, t_options *opts, int i, char **env)
 {
 	pid_t pid;
 
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (out != 1)
 		{
 			dup2(out, 1);
@@ -174,31 +149,39 @@ void the_process(int in, int out, t_options *opts, int i, char **env)
 		}
 		if (opts->cmd->scmds[i].impld >= 0)
 			exec_impld(&opts->cmd->scmds[i], opts, 1);
+		else if (opts->cmd->scmds[i].err)
+			exit(EXIT_FAILURE);
 		else if (execve(opts->cmd->scmds[i].exec_path, opts->cmd->scmds[i].args, env) < 0)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(opts->cmd->scmds[i].args[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			exit(EXIT_FAILURE);
+			ft_error("minishell: ", opts->cmd->scmds[i].args[0], ": command not found");
+			exit(127);
 		}
 	}
 	else
 		waitpid(pid, &opts->status, 0);
+	if (WIFSIGNALED(opts->status))
+	{
+		printf("\n");
+		return (0);
+	}
+	return (1);
 }
 
 // print exit when ctrl-D ?
 int main(int ac,char ** av, char **env)
 {
 	t_options	opts;
-	pid_t		pid;
-	int i = 0, fd[2], in = 0, out;
+	int i, fd[2], fd_hd[2], in, out;
 
+	(void)ac;
+	(void)av;
 	init(&opts, env);
 	while (1)
 	{
+		signal(SIGINT, &catch);
+		signal(SIGQUIT, SIG_IGN);
 		rl_on_new_line ();
 		opts.cmd->n_scmds = 1;
-		// signal(SIGINT, &catch);
 		if (opts.cmd->scmds)
 			free(opts.cmd->scmds);
 		opts.cmd->scmds  = NULL;
@@ -208,23 +191,32 @@ int main(int ac,char ** av, char **env)
 		if (parse_input(&opts) == 0)
 			continue ;
 		i = 0;
-		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 2)//except for export with no args child needs to be created
+		if (opts.cmd->n_scmds == 1 && opts.cmd->scmds[i].impld > 2)
 		{
-			exec_impld(&opts.cmd->scmds[i], &opts, 0);
+			exec_impld(&opts.cmd->scmds[0], &opts, 0);
 			continue ;
 		}
+		i = 0;
+		in = 0;
 		while (i < opts.cmd->n_scmds)
 		{
-			// signal(SIGINT, SIG_DFL);
 			pipe(fd);
 			out = fd[1];
-			if (opts.cmd->scmds[i].fd_infile != -10)
+			if (opts.cmd->scmds[i].heredoc)
+			{
+				pipe(fd_hd);
+				write(fd_hd[1], opts.cmd->scmds[i].heredoc, ft_strlen(opts.cmd->scmds[i].heredoc));
+				in = fd_hd[0];
+				close(fd_hd[1]);
+			}
+			else if (opts.cmd->scmds[i].fd_infile != -10)
 				in = opts.cmd->scmds[i].fd_infile;
 			if (opts.cmd->scmds[i].fd_outfile != -10)
 				out = opts.cmd->scmds[i].fd_outfile;
 			else if (i == opts.cmd->n_scmds - 1)
 				out = 1;
-			the_process(in, out, &opts, i, env);
+			if (!the_process(in, out, &opts, i, env))
+				break ;
 			close(fd[1]);
 			in = fd[0];
 			i++;

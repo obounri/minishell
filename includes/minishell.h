@@ -15,11 +15,11 @@
 # define MINISHELL_H
 
 # include "../utils/libft/libft.h"
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
- #include <sys/stat.h>
-# include <stdio.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -41,7 +41,6 @@ typedef struct s_options
 {
 	struct  s_cmd *cmd;
 	struct	s_env *env;
-	char    *user;
 	char	*prompt;
 	char    *input;
 	int     status;
@@ -66,6 +65,7 @@ typedef struct s_scmd
 	char *heredoc;
 	int	fd_infile;
 	int fd_outfile;
+	int err;
 }   t_scmd;
 
 typedef	struct s_quote
@@ -84,15 +84,17 @@ typedef struct s_env
 	struct s_env *next;
 }	t_env;
 
-
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
-void	exec_impld(t_scmd	*scmd, t_options *opts, int cd_exit);
+void	exec_impld(t_scmd	*scmd, t_options *opts, int child);
 t_quote	*check_quotes_pipes(t_options	*opts);
 void	expand_vars(char ***scmd, t_env *env, int status);
 char	*expand(char **scmd, int j, t_env *env, int status);
 void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
+void	init_scmds(t_scmd *scmds, int n_scmds);
+void    unset(t_options *opts, char **args, int child);
+void    ft_exit(char **args, int *status);
 
 void	export(char **args, t_env **env,int exit);
 void    add_var(char *key, char *value, t_env **env,int exp);
@@ -101,9 +103,9 @@ int     already_exist(char *key, t_env **env);
 void    export_print(t_env *env);
 
 //Redirection
-int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
+// int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
 int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env);
-int		redirect(char ***scmd, t_scmd *cmd,int type, t_env *env);
+int		redirect(char ***scmd, t_scmd *cmd, t_env *env);
 int		in(char *red, t_scmd *scmd);
 int		out(char *red, t_scmd *scmd);
 int 	heredoc(char *red, t_scmd *scmd, t_env *env);
@@ -120,6 +122,7 @@ int		check_pipe_errors(t_options *opts);
 int		error_msg();
 int		check_scmds(char **scmds);
 int		is_empty(char *input);
+void	ft_error(char *prob, char *var, char *err);
 
 char	*trim_quotes(char *red);
 

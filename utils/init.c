@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/05 16:35:20 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/13 15:29:26 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ void	add_env(t_env **env, char **var)
 	
 	new_env = malloc(sizeof(t_env) * 1);
 	new_env->key = var[0];
-	new_env->value = var[1];
 	new_env->exp = 0;
+	if (!var[1])
+		new_env->value = ft_strdup("");
+	else
+		new_env->value = var[1];
 	new_env->next = NULL;
 	if (!*env)
 		*env = new_env;
@@ -63,7 +66,6 @@ void	init(t_options *opts, char **env)
 
 	i = -1;
 	opts->env = NULL;
-	opts->user = readline("Enter user name for prompt: "); // free
 	opts->status = 0;
 	opts->curr_dir = getcwd(NULL, 0);
 	opts->home = getenv("HOME");
@@ -71,9 +73,29 @@ void	init(t_options *opts, char **env)
 	opts->cmd = malloc(sizeof(t_cmd));
 	opts->cmd->scmds  = NULL;
 	opts->uncqu = 0;
+	// rl_line_buffer = NULL;
 	while (env[++i])
 	{
 		tmp = ft_split(env[i], '=');
 		add_env(&opts->env, tmp); // free
+	}
+}
+
+void	init_scmds(t_scmd *scmds, int n_scmds)
+{
+	int i;
+
+	i = 0;
+	while (i < n_scmds)
+	{
+		scmds[i].name = NULL;
+		scmds[i].exec_path = NULL;
+		scmds[i].args = NULL;
+		scmds[i].impld = -10;
+		scmds[i].heredoc = NULL;
+		scmds[i].fd_infile = -10;
+		scmds[i].fd_outfile = -10;
+		scmds[i].err = 0;
+		i++;
 	}
 }

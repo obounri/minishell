@@ -60,8 +60,6 @@ int     quoted(t_quote *quotes, int i)
     return (1);
 }
 
-
-//fct checks if char 'x' is quoted or not. | ' ' < << > >> $
 t_quote *check_quotes_pipes(t_options	*opts)
 {
 	t_quote *quotes;
@@ -89,8 +87,30 @@ t_quote *check_quotes_pipes(t_options	*opts)
 	}
     if (quoted(quotes,0))
     {
-        printf("Error: unclosed quotes\n");
+        ft_error("minishell", NULL, ": Unclosed quotes");
         opts->uncqu = 1;
+        opts->status = 511;
     }
 	return (quotes);
+}
+
+char	*trim_quotes(char *red)
+{
+	char *trim_red;
+	int i;
+	int old_len;
+
+	old_len = ft_strlen(red);
+	trim_red = malloc(sizeof(char) * old_len - 1);
+	i = 0;
+	int j = 1;
+	while (i < old_len - 1)
+	{
+		trim_red[i] = red[j];
+		i++;
+		j++;
+	}
+	trim_red[old_len - 2] = '\0';
+	free(red);
+	return (trim_red);
 }
