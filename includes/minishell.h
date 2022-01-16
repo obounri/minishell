@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/15 15:35:31 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/16 19:30:11 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_options
 	int     status;
 	char    *curr_dir;
 	char    **path;
+	char	**sh_env;
 	char	*home;
 	int		uncqu;
 }   t_options;
@@ -95,6 +96,8 @@ char	*ft_getenv(t_env *env, char *key);
 void	init_scmds(t_scmd *scmds, int n_scmds);
 void    unset(t_options *opts, char **args, int child);
 void    ft_exit(char **args, int *status);
+int		parse_input(t_options	*opts);
+void	exec(t_options *opts);
 
 void	export(char **args, t_env **env,int exit);
 void    add_var(char *key, char *value, t_env **env,int exp);

@@ -100,6 +100,8 @@ char	*trim_quotes(char *red)
 	int i;
 	int old_len;
 
+    if (red[0] != '"' && red[0] != '\'')
+        return (red);
 	old_len = ft_strlen(red);
 	trim_red = malloc(sizeof(char) * old_len - 1);
 	i = 0;
