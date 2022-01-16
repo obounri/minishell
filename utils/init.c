@@ -6,15 +6,15 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/16 19:28:53 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/16 19:35:07 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!s1 || !s2)
@@ -28,7 +28,7 @@ void	add_env(t_env **env, char **var)
 {
 	t_env	*new_env;
 	t_env	*tmp;
-	
+
 	new_env = malloc(sizeof(t_env) * 1);
 	new_env->key = var[0];
 	new_env->exp = 0;
@@ -48,7 +48,7 @@ void	add_env(t_env **env, char **var)
 	}
 }
 
-char *ft_getenv(t_env *env, char *key)
+char	*ft_getenv(t_env *env, char *key)
 {
 	while (env)
 	{
@@ -61,8 +61,8 @@ char *ft_getenv(t_env *env, char *key)
 
 void	init(t_options *opts, char **env)
 {
-	int i;
-	char **tmp;
+	int		i;
+	char	**tmp;
 
 	i = -1;
 	opts->env = NULL;
@@ -71,7 +71,7 @@ void	init(t_options *opts, char **env)
 	opts->home = getenv("HOME");
 	opts->prompt = NULL;
 	opts->cmd = malloc(sizeof(t_cmd));
-	opts->cmd->scmds  = NULL;
+	opts->cmd->scmds = NULL;
 	opts->uncqu = 0;
 	opts->sh_env = env;
 	while (env[++i])
@@ -83,7 +83,7 @@ void	init(t_options *opts, char **env)
 
 void	init_scmds(t_scmd *scmds, int n_scmds)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < n_scmds)

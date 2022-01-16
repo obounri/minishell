@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/16 19:30:11 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/16 19:38:28 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void    unset(t_options *opts, char **args, int child);
 void    ft_exit(char **args, int *status);
 int		parse_input(t_options	*opts);
 void	exec(t_options *opts);
+char	*trim_quotes(char *red);
 
 void	export(char **args, t_env **env,int exit);
 void    add_var(char *key, char *value, t_env **env,int exp);
@@ -106,14 +107,12 @@ int     already_exist(char *key, t_env **env);
 void    export_print(t_env *env);
 
 //Redirection
-// int		init_red(t_options *opts, char **split_scmd, int *i, int *order);
 int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env);
 int		redirect(char ***scmd, t_scmd *cmd, t_env *env);
 int		in(char *red, t_scmd *scmd);
 int		out(char *red, t_scmd *scmd);
 int 	heredoc(char *red, t_scmd *scmd, t_env *env);
 int 	append(char *red, t_scmd *scmd);
-int		new_alloc_size(char **cmd);
 void	new_alloc(char ***cmd);
 
 //Error checking
@@ -126,7 +125,5 @@ int		error_msg();
 int		check_scmds(char **scmds);
 int		is_empty(char *input);
 void	ft_error(char *prob, char *var, char *err);
-
-char	*trim_quotes(char *red);
 
 #endif
