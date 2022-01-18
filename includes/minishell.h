@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/16 19:38:28 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 14:03:12 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
 void	init_scmds(t_scmd *scmds, int n_scmds);
 void    unset(t_options *opts, char **args, int child);
-void    ft_exit(char **args, int *status);
+void    ft_exit(t_options *opts, char **args, int *status);
 int		parse_input(t_options	*opts);
 void	exec(t_options *opts);
 char	*trim_quotes(char *red);
@@ -125,5 +125,9 @@ int		error_msg();
 int		check_scmds(char **scmds);
 int		is_empty(char *input);
 void	ft_error(char *prob, char *var, char *err);
+
+void    dfree(char **str);
+void	free_scmds(t_scmd **scmds);
+void	clean_exit(t_options *opts, int code);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/11 12:24:53 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 13:50:15 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char   *set_var(char **var, t_env *env, int status)
     }
     else
     {
-        *var = ft_getenv(env, tmp);
+        *var = ft_strdup(ft_getenv(env, tmp));
         if (!*var)
             *var = ft_strdup("");
     }
@@ -59,6 +59,7 @@ char *expand(char **scmd, int j, t_env *env, int status)
     tmp_scmd = ft_strjoin(first, var);
     tmp_scmd = ft_strjoin(tmp_scmd, last);
     free(first);
+    free(var);
     free(last);
     return (tmp_scmd);
 }

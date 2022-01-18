@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 15:59:05 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 13:32:29 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	cd(char **args, t_options	*opts, int child)
 void	pwd(char *path)
 {
 	printf("%s\n", path);
-	// exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 void	env(t_env *env)
@@ -107,5 +107,5 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 	else if (ft_strcmp(scmd->name, "env") == 0)
 		env(opts->env);
 	else if (ft_strcmp(scmd->name, "exit") == 0)
-		ft_exit(&scmd->args[1], &opts->status);
+		ft_exit(opts, &scmd->args[1], &opts->status);
 }

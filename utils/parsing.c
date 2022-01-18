@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/16 17:46:20 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 14:07:33 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,14 @@ void	parse_scmds(t_options *opts, char **scmds)
 		if (!redirect(&split_scmd, &opts->cmd->scmds[i], opts->env))
 		{
 			opts->cmd->scmds[i].err = 1;
+			dfree(split_scmd);
 			continue ;
 		}
 		new_alloc(&split_scmd);
 		// if (!split_scmd) // ??
 		// 	break; // ??
 		init_for_exec(opts, i, split_scmd);
+		// dfree(split_scmd);
 	}
 }
 
@@ -109,5 +111,6 @@ int	parse_input(t_options *opts)
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
 	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
 	parse_scmds(opts, scmds);
+	dfree(scmds);
 	return (1);
 }

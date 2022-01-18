@@ -17,7 +17,8 @@ utils/utils.c \
 utils/export.c \
 utils/export_print.c \
 utils/parsing.c \
-utils/execution.c
+utils/execution.c \
+utils/clean.c
 OBJ_FILE = $(SRC_FILE:.c=.o)
 
 LIBFT_MAKEFILE_PATH = utils/libft/ 

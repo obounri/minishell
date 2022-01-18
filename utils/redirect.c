@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:36 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/10 17:39:03 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 13:57:48 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int		redirect(char ***scmd, t_scmd *cmd, t_env *env)
 	tmp = *scmd;
 	while (tmp[++i])
 	{
+		remains = NULL;
 		if(!in && !search_token(tmp[i]))
 			continue ;
 		remains = NULL;
@@ -108,9 +109,16 @@ int		redirect(char ***scmd, t_scmd *cmd, t_env *env)
 				return (0);
 		in = detect_redir(&tmp[i], cmd, &token, env);
 		if (in == -1)
+		{
+			if (remains)
+				free(remains);
 			return (0);
+		}
 		if (remains)
+		{
 			tmp[i] = ft_strdup(remains);
+			free(remains);
+		}
 	}
 	return (1);
 }

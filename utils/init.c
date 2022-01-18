@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/16 19:35:07 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 12:59:55 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	init(t_options *opts, char **env)
 	{
 		tmp = ft_split(env[i], '=');
 		add_env(&opts->env, tmp); // free
+		free(tmp);
 	}
 }
 

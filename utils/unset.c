@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 18:58:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 15:18:27 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 13:33:24 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void    unset(t_options *opts, char **args, int child)
         exit(EXIT_SUCCESS);
 }
 
-void    ft_exit(char **args, int *status)
+void    ft_exit(t_options *opts, char **args, int *status)
 {
     int i;
 
@@ -66,20 +66,20 @@ void    ft_exit(char **args, int *status)
     if (args[0] && args[0][i])
     {
         ft_error("minishell: exit: ", args[0], ": numeric argument required");
-        exit(255);
+        clean_exit(opts, 255);
     }
     i = 0;
     while (args[i])
         i++;
     if (i == 0)
-        exit(0);
+        clean_exit(opts, 0);
     else if (i > 1)
     {
         ft_error("minishell: exit", NULL, ": too many arguments");
         *status = 512;
     }
     else
-        exit(ft_atoi(args[0]));
+        clean_exit(opts, ft_atoi(args[0]));
 }
 
 void    ft_error(char *prob, char *var, char *err)
