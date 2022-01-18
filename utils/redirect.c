@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:36 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 13:57:48 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:47:31 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 	return (0);
 }
 
-int		redirect(char ***scmd, t_scmd *cmd, t_env *env)
+int		redirect(t_scmd *cmd, t_env *env)
 {
 	int i;
 	int in;
@@ -95,7 +95,7 @@ int		redirect(char ***scmd, t_scmd *cmd, t_env *env)
 
 	i = -1;
 	in = 0;
-	tmp = *scmd;
+	tmp = cmd->scmd;
 	while (tmp[++i])
 	{
 		remains = NULL;

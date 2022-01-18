@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 14:07:33 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 16:13:49 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,48 +41,43 @@ char	*find_exec_path(t_options *opts, char *name)
 	return (NULL);
 }
 
-void	init_for_exec(t_options *opts, int i, char **scmd)
+void	init_for_exec(t_options *opts, int i)
 {
 	int	h;
+	char **tmp;
 
+	tmp = opts->cmd->scmds[i].scmd;
 	h = -1;
-	while (scmd && scmd[++h])
-		scmd[h] = trim_quotes(scmd[h]);
-	opts->cmd->scmds[i].impld = is_impld(scmd[0]);
+	while (tmp && tmp[++h])
+		tmp[h] = trim_quotes(tmp[h]);
+	opts->cmd->scmds[i].impld = is_impld(tmp[0]);
 	if (opts->cmd->scmds[i].impld < 0)
 	{
-		if (open(scmd[0], O_RDONLY) != -1)
-			opts->cmd->scmds[i].exec_path = scmd[0];
+		if (open(tmp[0], O_RDONLY) != -1)
+			opts->cmd->scmds[i].exec_path = tmp[0];
 		else
-			opts->cmd->scmds[i].exec_path = find_exec_path(opts, scmd[0]);
+			opts->cmd->scmds[i].exec_path = find_exec_path(opts, tmp[0]);
 	}
-	opts->cmd->scmds[i].name = scmd[0];
-	opts->cmd->scmds[i].args = &scmd[0];
+	opts->cmd->scmds[i].name = tmp[0];
+	opts->cmd->scmds[i].args = &tmp[0];
 }
 
 void	parse_scmds(t_options *opts, char **scmds)
 {
 	int		i;
-	char	**split_scmd;
 
 	i = -1;
 	while (++i < opts->cmd->n_scmds)
 	{
-		split_scmd = ft_split(scmds[i], UNQSPACE);
-		// if (!split_scmd) // ??
-		// 	break; // ??
-		expand_vars(&split_scmd, opts->env, opts->status);
-		if (!redirect(&split_scmd, &opts->cmd->scmds[i], opts->env))
+		opts->cmd->scmds[i].scmd = ft_split(scmds[i], UNQSPACE);
+		expand_vars(&opts->cmd->scmds[i].scmd, opts->env, opts->status);
+		if (!redirect(&opts->cmd->scmds[i], opts->env))
 		{
 			opts->cmd->scmds[i].err = 1;
-			dfree(split_scmd);
 			continue ;
 		}
-		new_alloc(&split_scmd);
-		// if (!split_scmd) // ??
-		// 	break; // ??
-		init_for_exec(opts, i, split_scmd);
-		// dfree(split_scmd);
+		new_alloc(&opts->cmd->scmds[i].scmd);
+		init_for_exec(opts, i);
 	}
 }
 
@@ -105,7 +100,10 @@ int	parse_input(t_options *opts)
 		return (0);
 	scmds = ft_split(opts->input, PIPE);
 	if (check_scmds(scmds) == 0)
+	{
+		dfree(scmds);
 		return (0);
+	}
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;
 	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 14:03:12 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 16:30:11 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_cmd
 
 typedef struct s_scmd
 {
+	char **scmd;
 	char *name;
 	char *exec_path;
 	char **args;
@@ -108,7 +109,7 @@ void    export_print(t_env *env);
 
 //Redirection
 int		redirect_type(char *red, t_scmd *scmd, int type, t_env *env);
-int		redirect(char ***scmd, t_scmd *cmd, t_env *env);
+int		redirect(t_scmd *cmd, t_env *env);
 int		in(char *red, t_scmd *scmd);
 int		out(char *red, t_scmd *scmd);
 int 	heredoc(char *red, t_scmd *scmd, t_env *env);
@@ -127,7 +128,7 @@ int		is_empty(char *input);
 void	ft_error(char *prob, char *var, char *err);
 
 void    dfree(char **str);
-void	free_scmds(t_scmd **scmds);
+void	free_scmds(t_scmd **scmds, int n_scmds);
 void	clean_exit(t_options *opts, int code);
 
 #endif
