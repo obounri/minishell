@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 16:41:25 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 17:25:11 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	add_env(t_env **env, char **var)
 	t_env	*tmp;
 
 	new_env = malloc(sizeof(t_env) * 1);
-	new_env->key = var[0];
+	new_env->key = ft_strdup(var[0]);
 	new_env->exp = 0;
 	if (!var[1])
 		new_env->value = ft_strdup("");
 	else
-		new_env->value = var[1];
+		new_env->value = ft_strdup(var[1]);
 	new_env->next = NULL;
 	if (!*env)
 		*env = new_env;
@@ -78,8 +78,8 @@ void	init(t_options *opts, char **env)
 	while (env[++i])
 	{
 		tmp = ft_split(env[i], '=');
-		add_env(&opts->env, tmp); // free
-		free(tmp);
+		add_env(&opts->env, tmp);
+		dfree(tmp);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 13:32:29 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 17:31:45 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	cd(char **args, t_options	*opts, int child)
 	if (!tmp)
 		ft_error("cd: error retrieving current directory:", NULL, "getcwd: cannot access parent directories: No such file or directory");
 	else
-		opts->curr_dir = tmp;
+		opts->curr_dir = ft_strdup(tmp);
+	free(tmp);
 	opts->status = 0;
 	if (child)
 		exit(EXIT_SUCCESS);
