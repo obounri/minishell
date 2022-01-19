@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 16:46:47 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/19 11:25:49 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,29 @@
 
 void	prompt(t_options *opts)
 {
+	char *tmp;
+
 	if (WEXITSTATUS(opts->status) > 0 || WIFSIGNALED(opts->status))
 		opts->prompt = ft_strdup("\033[0;31m");
 	else
 		opts->prompt = ft_strdup("\033[0;32m");
-	opts->prompt = ft_strjoin(opts->prompt, "➤ \033[0m");
-	opts->prompt = ft_strjoin(opts->prompt, opts->curr_dir);
-	opts->prompt = ft_strjoin(opts->prompt, " ~ ");
+	tmp = ft_strdup(opts->prompt);
+	free(opts->prompt);
+	opts->prompt = ft_strjoin(tmp, "➤ \033[0m");
+	free(tmp);
+	tmp = ft_strdup(opts->prompt);
+	free(opts->prompt);
+	opts->prompt = ft_strjoin(tmp, opts->curr_dir);
+	free(tmp);
+	tmp = ft_strdup(opts->prompt);
+	free(opts->prompt);
+	opts->prompt = ft_strjoin(tmp, " ~ ");
+	free(tmp);
+	if (opts->input)
+		free(opts->input);
 	opts->input = readline(opts->prompt);
+	free(opts->prompt);
+	opts->prompt = NULL;
 }
 
 void	catch(int sig)

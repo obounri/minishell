@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 13:05:33 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 17:49:46 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/19 12:11:34 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,18 @@ void	clean_exit(t_options *opts, int code)
 		free(opts->input);
 	if (opts->curr_dir)
 		free(opts->curr_dir);
-	if (opts->path)
-		free(opts->path);
+	rl_clear_history();
 	exit(code);
+}
+
+void	free_quotes(t_quote *quotes)
+{
+	t_quote *next;
+
+	while (quotes)
+	{
+		next = quotes->next;
+		free(quotes);
+		quotes = next;
+	}
 }

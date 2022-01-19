@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obounri <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 15:12:40 by obounri           #+#    #+#             */
-/*   Updated: 2019/11/13 16:46:29 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/19 11:43:57 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ size_t	str_word_count(char const *s, char c)
 			i++;
 		i++;
 	}
+	free(trimmed);
 	return (wc);
 }
 

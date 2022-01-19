@@ -6,11 +6,24 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 16:13:49 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/19 12:15:03 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char *exec_path(DIR *dir, char **paths, int i, char *name)
+{
+	char *tmp;
+	char *ex_p;
+
+	tmp = ft_strjoin(paths[i], "/");
+	ex_p = ft_strjoin(tmp, name);
+	free(tmp);
+	dfree(paths);
+	closedir(dir);
+	return (ex_p);
+}
 
 char	*find_exec_path(t_options *opts, char *name)
 {
@@ -33,7 +46,7 @@ char	*find_exec_path(t_options *opts, char *name)
 		while (dirp != NULL)
 		{
 			if (ft_strcmp(dirp->d_name, name) == 0)
-				return (ft_strjoin(ft_strjoin(opts->path[i], "/"), name));
+				return (exec_path(dp, opts->path, i, name));
 			dirp = readdir(dp);
 		}
 		closedir(dp);
@@ -86,16 +99,17 @@ int	parse_input(t_options *opts)
 	t_quote	*quotes;
 	char	**scmds;
 
-	scmds = NULL;
 	if (!opts->input[0])
 		return (0);
 	add_history(opts->input);
 	quotes = check_quotes_pipes(opts);
 	if (opts->uncqu == 1)
 	{
+		free_quotes(quotes);
 		opts->uncqu = 0;
 		return (0);
 	}
+	free_quotes(quotes);
 	if (!check_errors(opts))
 		return (0);
 	scmds = ft_split(opts->input, PIPE);

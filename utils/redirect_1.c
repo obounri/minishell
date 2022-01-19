@@ -82,5 +82,6 @@ void	new_alloc(char ***cmd)
 	}
 	new[++j] = NULL;
 	free(*cmd);
+	*cmd = NULL;
 	*cmd = new;
 }

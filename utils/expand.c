@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:07 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 13:50:15 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/19 11:02:14 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char *expand(char **scmd, int j, t_env *env, int status)
     free(first);
     free(var);
     free(last);
+    // free(*scmd);
     return (tmp_scmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 16:30:11 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/18 19:21:29 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,6 @@ void	ft_error(char *prob, char *var, char *err);
 void    dfree(char **str);
 void	free_scmds(t_scmd **scmds, int n_scmds);
 void	clean_exit(t_options *opts, int code);
+void	free_quotes(t_quote *quotes);
 
 #endif
