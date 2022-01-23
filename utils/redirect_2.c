@@ -111,6 +111,7 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 			if (scmd->heredoc[i] == '$')
 				scmd->heredoc[i] = EXPAND;
 		t[0] = scmd->heredoc;
+		// printf("hd = [%s], t[0] = [%s]\n", scmd->heredoc, t[0]);
 		expand_vars(&t, env, 0);
 		scmd->heredoc = ft_strdup(t[0]);
 		free(t);
