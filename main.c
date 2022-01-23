@@ -41,7 +41,7 @@ void	prompt(t_options *opts)
 
 void	catch(int sig)
 {
-	(void)sig;
+	(void)sig; // comment
 	printf("\n");
 	rl_on_new_line ();
 	rl_replace_line("", 0);

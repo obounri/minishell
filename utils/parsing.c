@@ -67,7 +67,7 @@ void	init_for_exec(t_options *opts, int i)
 	if (opts->cmd->scmds[i].impld < 0)
 	{
 		if (open(tmp[0], O_RDONLY) != -1)
-			opts->cmd->scmds[i].exec_path = tmp[0];
+			opts->cmd->scmds[i].exec_path = ft_strdup(tmp[0]);
 		else
 			opts->cmd->scmds[i].exec_path = find_exec_path(opts, tmp[0]);
 	}

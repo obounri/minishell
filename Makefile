@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra
+# CFLAGS = -Wall -Werror -Wextra
 
 SRC_FILE = main.c \
 utils/check_errors.c \
@@ -28,10 +28,12 @@ LIBFT = utils/libft/libft.a
 all : $(NAME)
 
 %.o:%.c
-	$(CC) $(CFLAGS) -I$(shell brew --prefix readline)/include -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
+# -I$(shell brew --prefix readline)/include
 
 $(NAME) : $(OBJ_FILE) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ_FILE) -L$(shell brew --prefix readline)/lib $(LIBFT) -lreadline  -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ_FILE) $(LIBFT) -lreadline -o $(NAME)
+# -L$(shell brew --prefix readline)/lib
 
 $(LIBFT):
 	make -C $(LIBFT_MAKEFILE_PATH)
