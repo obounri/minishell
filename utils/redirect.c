@@ -77,7 +77,10 @@ int		detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 		while (tmp[i] && tmp[i] > -33)
 			i++;
 		if (!redirect_type(ft_substr(*str, 0, i), scmd, *token, env))
+		{
+			*str = ft_strdup("");
 			return (-1);
+		}
 		while (i--)
 			*str += 1;
 	}
@@ -98,7 +101,6 @@ int		redirect(t_scmd *cmd, t_env *env)
 	tmp = cmd->scmd;
 	while (tmp[++i])
 	{
-		remains = NULL;
 		if(!in && !search_token(tmp[i]))
 			continue ;
 		remains = NULL;
