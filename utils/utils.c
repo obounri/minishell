@@ -77,7 +77,7 @@ t_quote *check_quotes_pipes(t_options	*opts)
             opts->input[i] = PIPE;
         else if (opts->input[i] == ' ' && !quoted(quotes, 0))
             opts->input[i] = UNQSPACE;
-        else if (opts->input[i] == '$' && opts->input[i + 1] && (ft_isalnum(opts->input[i + 1]) || opts->input[i + 1] == '?') && !quoted(quotes, 1))
+        else if (opts->input[i] == '$' && opts->input[i + 1] && (ft_isalnum(opts->input[i + 1]) || opts->input[i + 1] == '?' || opts->input[i + 1] == '_') && !quoted(quotes, 1))
             opts->input[i] = EXPAND;
         else if (opts->input[i] == '<' && !quoted(quotes,0))
             opts->input[i] = IN;
