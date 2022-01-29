@@ -12,10 +12,10 @@
 
 #include "../includes/minishell.h"
 
-char *exec_path(DIR *dir, char **paths, int i, char *name)
+char	*exec_path(DIR *dir, char **paths, int i, char *name)
 {
-	char *tmp;
-	char *ex_p;
+	char	*tmp;
+	char	*ex_p;
 
 	tmp = ft_strjoin(paths[i], "/");
 	ex_p = ft_strjoin(tmp, name);
@@ -27,8 +27,8 @@ char *exec_path(DIR *dir, char **paths, int i, char *name)
 
 char	*find_exec_path(t_options *opts, char *name)
 {
-	int				i;
-	DIR				*dp;
+	int 			i;
+	DIR 			*dp;
 	struct dirent	*dirp;
 	char			*var;
 
@@ -41,7 +41,7 @@ char	*find_exec_path(t_options *opts, char *name)
 	{
 		dp = opendir(opts->path[i]);
 		if (!dp)
-			continue ;
+			continue;
 		dirp = readdir(dp);
 		while (dirp != NULL)
 		{
@@ -56,8 +56,8 @@ char	*find_exec_path(t_options *opts, char *name)
 
 void	init_for_exec(t_options *opts, int i)
 {
-	int	h;
-	char **tmp;
+	int		h;
+	char	**tmp;
 
 	tmp = opts->cmd->scmds[i].scmd;
 	h = -1;
@@ -75,10 +75,14 @@ void	init_for_exec(t_options *opts, int i)
 	opts->cmd->scmds[i].args = &tmp[0];
 }
 
-void	parse_scmds(t_options *opts, char **scmds)
+void parse_scmds(t_options *opts, char **scmds)
 {
-	int		i;
+	int	i;
 
+	while (scmds[opts->cmd->n_scmds])
+		opts->cmd->n_scmds++;
+	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
+	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
 	i = -1;
 	while (++i < opts->cmd->n_scmds)
 	{
@@ -87,7 +91,7 @@ void	parse_scmds(t_options *opts, char **scmds)
 		if (!redirect(&opts->cmd->scmds[i], opts->env))
 		{
 			opts->cmd->scmds[i].err = 1;
-			continue ;
+			continue;
 		}
 		new_alloc(&opts->cmd->scmds[i].scmd);
 		init_for_exec(opts, i);
@@ -118,10 +122,6 @@ int	parse_input(t_options *opts)
 		dfree(scmds);
 		return (0);
 	}
-	while (scmds[opts->cmd->n_scmds])
-		opts->cmd->n_scmds++;
-	opts->cmd->scmds = malloc(sizeof(t_scmd) * (opts->cmd->n_scmds));
-	init_scmds(opts->cmd->scmds, opts->cmd->n_scmds);
 	parse_scmds(opts, scmds);
 	dfree(scmds);
 	return (1);
