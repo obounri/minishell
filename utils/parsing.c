@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/19 12:15:03 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/30 19:24:19 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ char	*exec_path(DIR *dir, char **paths, int i, char *name)
 
 char	*find_exec_path(t_options *opts, char *name)
 {
-	int 			i;
-	DIR 			*dp;
+	int				i;
+	DIR				*dp;
 	struct dirent	*dirp;
 	char			*var;
 
@@ -41,7 +41,7 @@ char	*find_exec_path(t_options *opts, char *name)
 	{
 		dp = opendir(opts->path[i]);
 		if (!dp)
-			continue;
+			continue ;
 		dirp = readdir(dp);
 		while (dirp != NULL)
 		{
@@ -75,7 +75,7 @@ void	init_for_exec(t_options *opts, int i)
 	opts->cmd->scmds[i].args = &tmp[0];
 }
 
-void parse_scmds(t_options *opts, char **scmds)
+void	parse_scmds(t_options *opts, char **scmds)
 {
 	int	i;
 
@@ -91,7 +91,7 @@ void parse_scmds(t_options *opts, char **scmds)
 		if (!redirect(&opts->cmd->scmds[i], opts->env))
 		{
 			opts->cmd->scmds[i].err = 1;
-			continue;
+			continue ;
 		}
 		new_alloc(&opts->cmd->scmds[i].scmd);
 		init_for_exec(opts, i);

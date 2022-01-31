@@ -6,13 +6,13 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 16:56:42 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/30 19:21:52 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		in(char *red, t_scmd *scmd)
+int	in(char *red, t_scmd *scmd)
 {
 	int fd;
 	struct stat buffer;
@@ -25,12 +25,14 @@ int		in(char *red, t_scmd *scmd)
 		scmd->heredoc = NULL;
 	}
 	if (stat(red, &buffer) != -1)
+	{
 		if ((buffer.st_mode & S_IRUSR) == 0)
-			{
-				ft_error("minishell: ", red, ": Permission denied");
-				return (0);
-			}
-	fd = open(red,O_RDONLY);
+		{
+			ft_error("minishell: ", red, ": Permission denied");
+			return (0);
+		}
+	}
+	fd = open(red, O_RDONLY);
 	if (fd == -1)
 	{
 		ft_error("minishell: ", red, ": no such file or directory");
@@ -40,40 +42,42 @@ int		in(char *red, t_scmd *scmd)
 	return (1);
 }
 
-int		out(char *red, t_scmd *scmd)
+int	out(char *red, t_scmd *scmd)
 {
-	int fd;
-	struct stat buffer;
+	int			fd;
+	struct stat	buffer;
 
 	if (scmd->fd_outfile != -10)
 		close(scmd->fd_outfile);
 	if (stat(red, &buffer) != -1)
+	{
 		if ((buffer.st_mode & S_IWUSR) == 0)
 		{
 			ft_error("minishell: ", red, ": Permission denied");
 			return (0);
 		}
+	}
 	fd = open(red, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	scmd->fd_outfile = fd;
 	return (1);
 }
 
-int		prompt_heredoc(char *red, t_scmd *scmd)
+int	prompt_heredoc(char *red, t_scmd *scmd)
 {
-	char *heredoc;
-	char *tmp;
+	char	*heredoc;
+	char	*tmp;
 
 	heredoc = "";
 	tmp = NULL;
 	while (1)
 	{
 		tmp = readline(">");
-		if (ft_strcmp(red,tmp) == 0)
-			break;
+		if (ft_strcmp(red, tmp) == 0)
+			break ;
 		if (!tmp)
-			heredoc = ft_strjoin(heredoc,"");
+			heredoc = ft_strjoin(heredoc, "");
 		else
-			heredoc = ft_strjoin(ft_strjoin(heredoc,tmp),"\n");
+			heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
 	}
 	scmd->heredoc = heredoc;
 	return (0);
@@ -81,8 +85,10 @@ int		prompt_heredoc(char *red, t_scmd *scmd)
 
 int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 {
-	char *new_red;
-	int q;
+	char	*new_red;
+	int		q;
+	int		i;
+	char	**t;
 
 	if (scmd->fd_infile != -10)
 		close(scmd->fd_infile);
@@ -102,9 +108,7 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 	prompt_heredoc(new_red, scmd);
 	if (!q)
 	{
-		int i = -1;
-		char **t;
-
+		i = -1;
 		t = malloc(sizeof (char *) * 2);
 		t[1] = NULL;
 		while (scmd->heredoc[++i])
@@ -118,19 +122,21 @@ int 	heredoc(char *red, t_scmd *scmd, t_env *env)
 	return (0);
 }
 
-int 	append(char *red, t_scmd *scmd)
+int	append(char *red, t_scmd *scmd)
 {
-	int fd;
-	struct stat buffer;
+	int			fd;
+	struct stat	buffer;
 
 	if (scmd->fd_outfile != -10)
 		close(scmd->fd_outfile);
 	if (stat(red, &buffer) != -1)
+	{
 		if ((buffer.st_mode & S_IWUSR) == 0)
 		{
 			ft_error("minishell: ", red, ": Permission denied");
 			return (0);
 		}
+	}
 	fd = open(red, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	scmd->fd_outfile = fd;
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:36 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 15:47:31 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/30 19:17:55 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 int	search_token(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
 		if (str[i] <= -33)
-			return(1);
+			return (1);
 	return (0);
 }
 
-char *save_remains(char **str)
+char	*save_remains(char **str)
 {
-	int i;
-	char *remains;
-	char *tmp;
+	int		i;
+	char	*remains;
+	char	*tmp;
 
 	tmp = *str;
 	i = 0;
@@ -90,18 +90,18 @@ int		detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 
 int		redirect(t_scmd *cmd, t_env *env)
 {
-	int i;
-	int in;
-	char **tmp;
-	char *remains;
-	int token;
+	int		i;
+	int		in;
+	char	**tmp;
+	char	*remains;
+	int		token;
 
 	i = -1;
 	in = 0;
 	tmp = cmd->scmd;
 	while (tmp[++i])
 	{
-		if(!in && !search_token(tmp[i]))
+		if (!in && !search_token(tmp[i]))
 			continue ;
 		remains = NULL;
 		if (!in)

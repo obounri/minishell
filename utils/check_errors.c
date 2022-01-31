@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_errors.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/30 19:38:38 by obounri           #+#    #+#             */
+/*   Updated: 2022/01/30 19:41:03 by obounri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-int		cmp(char c, int token)
+int	cmp(char c, int token)
 {
 	if (c == (char)token)
 		return (1);
 	return (0);
 }
 
-int		is_empty(char *input)
+int	is_empty(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input && input[i] == UNQSPACE)
@@ -19,7 +31,7 @@ int		is_empty(char *input)
 	return (1);
 }
 
-int		check_errors(t_options *opts)
+int	check_errors(t_options *opts)
 {
 	if (is_empty(opts->input) == 0)
 		return (0);
@@ -32,11 +44,11 @@ int		check_errors(t_options *opts)
 	return (1);
 }
 
-int		check_out_errors(t_options *opts)
+int	check_out_errors(t_options *opts)
 {
-	int i;
-	int j;
-	int out_counter;
+	int	i;
+	int	j;
+	int	out_counter;
 
 	i = 0;
 	j = 0;
@@ -46,20 +58,20 @@ int		check_out_errors(t_options *opts)
 		{
 			out_counter = 1;
 			j = i;
-			while (cmp(opts->input[++j],OUT))
+			while (cmp(opts->input[++j], OUT))
 				out_counter++;
 			if (out_counter > 2)
 				return (error_msg());
-			else if(out_counter == 2)
+			else if (out_counter == 2)
 			{
 				opts->input[i] = APPEND;
 				opts->input[i + 1] = UNQSPACE;
 			}
-			while (cmp(opts->input[j],UNQSPACE))
+			while (cmp(opts->input[j], UNQSPACE))
 				j++;
-			if (cmp(opts->input[j],OUT) && j != i + 1)
+			if (cmp(opts->input[j], OUT) && j != i + 1)
 				return (error_msg());
-			else if ((cmp(opts->input[j],PIPE) || cmp(opts->input[j],IN)))
+			else if ((cmp(opts->input[j], PIPE) || cmp(opts->input[j], IN)))
 				return (error_msg());
 		}
 		i++;
@@ -67,11 +79,11 @@ int		check_out_errors(t_options *opts)
 	return (1);
 }
 
-int		check_in_errors(t_options *opts)
+int	check_in_errors(t_options *opts)
 {
-	int i;
-	int j;
-	int in_counter;
+	int	i;
+	int	j;
+	int	in_counter;
 
 	i = 0;
 	j = 0;
@@ -81,7 +93,7 @@ int		check_in_errors(t_options *opts)
 		{
 			in_counter = 1;
 			j = i;
-			while (cmp(opts->input[++j],IN))
+			while (cmp(opts->input[++j], IN))
 				in_counter++;
 			if (in_counter > 2)
 				return (error_msg());
@@ -102,20 +114,21 @@ int		check_in_errors(t_options *opts)
 	return (1);
 }
 
-int		check_pipe_errors(t_options *opts)
+int	check_pipe_errors(t_options *opts)
 {
-	int len = ft_strlen(opts->input);
-	int i;
-	int j;
+	int	len;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
+	len = ft_strlen(opts->input);
 	while (i < len)
 	{
 		if (cmp(opts->input[i],PIPE))
 		{
 			j = i;
-			while (cmp(opts->input[++j],UNQSPACE));
+			while (cmp(opts->input[++j], UNQSPACE));
 			if (cmp(opts->input[j],PIPE) && j != i)
 				return (error_msg());
 		}
@@ -124,13 +137,13 @@ int		check_pipe_errors(t_options *opts)
 	if (cmp(opts->input[0],PIPE) || cmp(opts->input[len - 1],PIPE)
 		|| cmp(opts->input[len - 1],IN)
 		|| cmp(opts->input[len - 1],OUT))
-				return (error_msg());
+		return (error_msg());
 	return (1);
 }
 
-int		check_scmds(char **scmds)
+int	check_scmds(char **scmds)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!scmds)
@@ -144,7 +157,7 @@ int		check_scmds(char **scmds)
 	return (1);
 }
 
-int    error_msg()
+int	error_msg()
 {
 	ft_error("minishell", NULL, ": Parsing error");
 	return (0);

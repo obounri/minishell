@@ -14,7 +14,7 @@
 
 void	prompt(t_options *opts)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (WEXITSTATUS(opts->status) > 0 || WIFSIGNALED(opts->status))
 		opts->prompt = ft_strdup("\033[0;31m");

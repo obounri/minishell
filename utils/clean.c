@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 13:05:33 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/19 12:11:34 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/30 19:38:31 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	free_scmds(t_scmd **scmds, int n_scmds)
 
 void	clean_exit(t_options *opts, int code)
 {
-	t_env *next;
+	t_env	*next;
 
 	if (opts->cmd->scmds)
 		free_scmds(&opts->cmd->scmds, opts->cmd->n_scmds);
 	free(opts->cmd);
 	next = opts->env;
-	while(opts->env)
+	while (opts->env)
 	{
 		next = opts->env->next;
 		free(opts->env->key);
@@ -67,7 +67,7 @@ void	clean_exit(t_options *opts, int code)
 
 void	free_quotes(t_quote *quotes)
 {
-	t_quote *next;
+	t_quote	*next;
 
 	while (quotes)
 	{

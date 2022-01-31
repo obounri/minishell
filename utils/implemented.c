@@ -6,13 +6,13 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/18 17:31:45 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/30 19:29:44 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-int		is_impld(char *name)
+int	is_impld(char *name)
 {
 	int	i;
 
@@ -26,10 +26,11 @@ int		is_impld(char *name)
 	return (-1);
 }
 
-void    echo(char **args)
+void	echo(char **args)
 {
-	int	i, j;
-	int opt;
+	int	i; 
+	int	j;
+	int	opt;
 
 	i = 1;
 	opt = 0;
@@ -52,7 +53,7 @@ void    echo(char **args)
 
 void	cd(char **args, t_options	*opts, int child)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (!args[1])
 		chdir(opts->home);
@@ -102,7 +103,7 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		export(scmd->args,&opts->env,child);
+		export(scmd->args, &opts->env,child);
 	else if (ft_strcmp(scmd->name, "unset") == 0)
 		unset(opts, &scmd->args[1], child);
 	else if (ft_strcmp(scmd->name, "env") == 0)
