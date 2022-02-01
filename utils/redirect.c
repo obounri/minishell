@@ -43,8 +43,8 @@ char	*save_remains(char **str)
 
 int	handle_in(char **str, t_scmd *scmd, int token, t_env *env)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	tmp = *str;
@@ -57,10 +57,10 @@ int	handle_in(char **str, t_scmd *scmd, int token, t_env *env)
 	return (1);
 }
 
-int		detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
+int	detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	while (**str)
 	{
@@ -88,7 +88,7 @@ int		detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 	return (0);
 }
 
-int		redirect(t_scmd *cmd, t_env *env)
+int	redirect(t_scmd *cmd, t_env *env)
 {
 	int		i;
 	int		in;

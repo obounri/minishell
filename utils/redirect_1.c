@@ -89,7 +89,7 @@ void	new_alloc(char ***cmd)
 	new = malloc(sizeof(char *) * size + 1);
 	while ((*cmd)[++i])
 	{
-		if (ft_strcmp((*cmd)[i],""))
+		if (ft_strcmp((*cmd)[i], ""))
 			new[++j] = (*cmd)[i];
 		else
 			free((*cmd)[i]);

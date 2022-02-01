@@ -14,8 +14,8 @@
 
 int	in(char *red, t_scmd *scmd)
 {
-	int fd;
-	struct stat buffer;
+	int			fd;
+	struct stat	buffer;
 
 	if (scmd->fd_infile != -10)
 		close(scmd->fd_infile);
@@ -83,7 +83,7 @@ int	prompt_heredoc(char *red, t_scmd *scmd)
 	return (0);
 }
 
-int 	heredoc(char *red, t_scmd *scmd, t_env *env)
+int	heredoc(char *red, t_scmd *scmd, t_env *env)
 {
 	char	*new_red;
 	int		q;
