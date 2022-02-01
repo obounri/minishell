@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-int		ft_word_length(char const *s, char c)
+int	ft_word_length(char const *s, char c)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	if (!s)
 		return (0);

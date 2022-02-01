@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-size_t		ft_str_word_count(char const *s, char c)
+size_t	ft_str_word_count(char const *s, char c)
 {
 	char			*trimmed;
 	char			set[2];

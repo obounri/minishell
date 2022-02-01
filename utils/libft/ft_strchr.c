@@ -14,8 +14,8 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	unsigned int i;
-	unsigned int l;
+	unsigned int	i;
+	unsigned int	l;
 
 	i = 0;
 	l = ft_strlen((char *)s) + 1;

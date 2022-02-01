@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-int		word_length(char const *s, char c)
+int	word_length(char const *s, char c)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	if (!s)
 		return (0);
@@ -52,7 +52,7 @@ size_t	str_word_count(char const *s, char c)
 
 void	freetabs(char **splited, unsigned int index)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	i = 0;
 	while (i < index)
@@ -66,8 +66,8 @@ void	freetabs(char **splited, unsigned int index)
 
 char	**aammer(char **splited, char const *s, char c, unsigned int i)
 {
-	unsigned int index;
-	unsigned int len;
+	unsigned int	index;
+	unsigned int	len;
 
 	index = 0;
 	while (s[i] != '\0' && (index < str_word_count(s, c)))
@@ -75,7 +75,8 @@ char	**aammer(char **splited, char const *s, char c, unsigned int i)
 		while ((s[i] == c) && s[i] != '\0')
 			i++;
 		len = word_length(&s[i], c);
-		if (!(splited[index] = ft_substr(s, i, len)))
+		splited[index] = ft_substr(s, i, len);
+		if (!(splited))
 		{
 			freetabs(splited, index);
 			return (0);
@@ -92,11 +93,12 @@ char	**ft_split(char const *s, char c)
 	char			**splited;
 	unsigned int	i;
 
-	if (!s || !(splited = (char **)malloc((str_word_count(s, c) + 1)
-					* sizeof(char *))))
+	splited = (char **)malloc((str_word_count(s, c) + 1) * sizeof(char *));
+	if (!s || !(splited))
 		return (0);
 	i = 0;
-	if (!(splited = aammer(splited, s, c, i)))
+	splited = aammer(splited, s, c, i);
+	if (!(splited))
 		return (0);
 	return (splited);
 }
