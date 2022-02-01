@@ -53,4 +53,3 @@ int	check_errors(t_options *opts)
 		return (0);
 	return (1);
 }
-

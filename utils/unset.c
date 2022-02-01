@@ -61,7 +61,6 @@ void	ft_exit(t_options *opts, char **args, int *status)
 	int	i;
 
 	i = 0;
-
 	while (args[0] && ft_isdigit(args[0][i]))
 		i++;
 	if (args[0] && args[0][i])

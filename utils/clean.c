@@ -24,7 +24,7 @@ void	dfree(char **str)
 
 void	free_scmds(t_scmd **scmds, int n_scmds)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < n_scmds)

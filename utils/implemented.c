@@ -68,7 +68,8 @@ void	cd(char **args, t_options	*opts, int child)
 	}
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
-		ft_error("cd: error retrieving current directory:", NULL, "getcwd: cannot access parent directories: No such file or directory");
+		ft_error("cd: error retrieving current directory:",
+			NULL, "getcwd: cannot access parent directories: No such file or directory");
 	else
 		opts->curr_dir = ft_strdup(tmp);
 	free(tmp);
@@ -94,7 +95,7 @@ void	env(t_env *env)
 	exit(EXIT_SUCCESS);
 }
 
-void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
+void	exec_impld(t_scmd *scmd, t_options *opts, int child)
 {
 	if (ft_strcmp(scmd->name, "echo") == 0)
 		echo(scmd->args);
@@ -103,7 +104,7 @@ void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		export(scmd->args, &opts->env,child);
+		export(scmd->args, &opts->env, child);
 	else if (ft_strcmp(scmd->name, "unset") == 0)
 		unset(opts, &scmd->args[1], child);
 	else if (ft_strcmp(scmd->name, "env") == 0)

@@ -68,7 +68,7 @@ void	modify_var(char *key, char *value, t_env **env)
 
 int	check_export_args(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (arg && arg[0] == '=')
@@ -84,13 +84,13 @@ int	check_export_args(char *arg)
 	return (1);
 }
 
-void export(char **args, t_env **env, int child)
+void	export(char **args, t_env **env, int child)
 {
-	int i;
-	int j;
-	char *key;
-	char *value;
-	int equal;
+	int		i;
+	int		j;
+	char	*key;
+	char	*value;
+	int		equal;
 
 	i = 0;
 	if (!*env && child)

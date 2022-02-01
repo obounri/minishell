@@ -49,7 +49,8 @@ char	*expand(char **scmd, int j, t_env *env, int status)
 	if (tmp_scmd[j] == '?')
 		j++;
 	else
-		while (tmp_scmd[j] && (ft_isalnum(tmp_scmd[j]) == 1 || tmp_scmd[j] == '_'))
+		while (tmp_scmd[j] && (ft_isalnum(tmp_scmd[j]) == 1
+				|| tmp_scmd[j] == '_'))
 			j++;
 	var = ft_substr(tmp_scmd, tmp, j - tmp);
 	var = set_var(&var, env, status);
