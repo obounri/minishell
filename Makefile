@@ -14,7 +14,8 @@ utils/redirect_1.c \
 utils/redirect_2.c \
 utils/redirect_3.c \
 utils/unset.c \
-utils/utils.c \
+utils/quotes.c \
+utils/quotes_utils.c\
 utils/export.c \
 utils/export_print.c \
 utils/parsing.c \

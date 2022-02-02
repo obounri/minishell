@@ -100,6 +100,9 @@ void	ft_exit(t_options *opts, char **args, int *status);
 int		parse_input(t_options *opts);
 void	exec(t_options *opts);
 char	*trim_quotes(char *red);
+void	unclosed_quotes(t_quote *quotes, t_options *opts);
+int		condition(t_options *opts, int i, t_quote *quotes);
+int		quoted(t_quote *quotes, int i);
 
 void	export(char **args, t_env **env, int exit);
 void	add_var(char *key, char *value, t_env **env, int exp);

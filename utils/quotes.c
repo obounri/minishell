@@ -90,42 +90,21 @@ t_quote	*check_quotes_pipes(t_options *opts)
 			opts->input[i] = PIPE;
 		else if (opts->input[i] == ' ' && !quoted(quotes, 0))
 			opts->input[i] = UNQSPACE;
-		else if (opts->input[i] == '$' && opts->input[i + 1] && (ft_isalnum(opts->input[i + 1]) || opts->input[i + 1] == '?' || opts->input[i + 1] == '_') && !quoted(quotes, 1))
+		else if (condition(opts, i, quotes))
 			opts->input[i] = EXPAND;
 		else if (opts->input[i] == '<' && !quoted(quotes, 0))
 			opts->input[i] = IN;
 		else if (opts->input[i] == '>' && !quoted(quotes, 0))
 			opts->input[i] = OUT;
 	}
-	if (quoted(quotes, 0))
-	{
-		ft_error("minishell", NULL, ": Unclosed quotes");
-		opts->uncqu = 1;
-		opts->status = 511;
-	}
+	unclosed_quotes(quotes, opts);
 	return (quotes);
 }
 
-char	*trim_quotes(char *red)
+int	condition(t_options *opts, int i, t_quote *quotes)
 {
-	char	*trim_red;
-	int		i;
-	int		old_len;
-	int		j;
-
-	if (red[0] != '"' && red[0] != '\'')
-		return (red);
-	old_len = ft_strlen(red);
-	trim_red = malloc(sizeof(char) * old_len - 1);
-	i = 0;
-	j = 1;
-	while (i < old_len - 1)
-	{
-		trim_red[i] = red[j];
-		i++;
-		j++;
-	}
-	trim_red[old_len - 2] = '\0';
-	free(red);
-	return (trim_red);
+	return (opts->input[i] == '$' && opts->input[i + 1]
+		&& (ft_isalnum(opts->input[i + 1])
+			|| opts->input[i + 1] == '?'
+			|| opts->input[i + 1] == '_') && !quoted(quotes, 1));
 }

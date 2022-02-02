@@ -12,56 +12,36 @@
 
 #include "../includes/minishell.h"
 
-int	check_scmds(char **scmds)
+char	*trim_quotes(char *red)
 {
-	int	i;
+	char	*trim_red;
+	int		i;
+	int		old_len;
+	int		j;
 
+	if (red[0] != '"' && red[0] != '\'')
+		return (red);
+	old_len = ft_strlen(red);
+	trim_red = malloc(sizeof(char) * old_len - 1);
 	i = 0;
-	if (!scmds)
-		return (0);
-	while (scmds[i])
+	j = 1;
+	while (i < old_len - 1)
 	{
-		if (is_empty(scmds[i]) == 0)
-			return (error_msg());
+		trim_red[i] = red[j];
 		i++;
+		j++;
 	}
-	return (1);
+	trim_red[old_len - 2] = '\0';
+	free(red);
+	return (trim_red);
 }
 
-int	error_msg(void)
+void	unclosed_quotes(t_quote *quotes, t_options *opts)
 {
-	ft_error("minishell", NULL, ": Parsing error");
-	return (0);
-}
-
-int	cmp(char c, int token)
-{
-	if (c == (char)token)
-		return (1);
-	return (0);
-}
-
-int	is_empty(char *input)
-{
-	int	i;
-
-	i = 0;
-	while (input && input[i] == UNQSPACE)
-		i++;
-	if (!input[i])
-		return (0);
-	return (1);
-}
-
-int	check_errors(t_options *opts)
-{
-	if (is_empty(opts->input) == 0)
-		return (0);
-	if (check_pipe_errors(opts) == 0)
-		return (0);
-	if (check_in_errors(opts) == 0)
-		return (0);
-	if (check_out_errors(opts) == 0)
-		return (0);
-	return (1);
+	if (quoted(quotes, 0))
+	{
+		ft_error("minishell", NULL, ": Unclosed quotes");
+		opts->uncqu = 1;
+		opts->status = 511;
+	}
 }
