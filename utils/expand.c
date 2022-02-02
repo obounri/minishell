@@ -55,15 +55,19 @@ char	*expand(char **scmd, int j, t_env *env, int status)
 	var = ft_substr(tmp_scmd, tmp, j - tmp);
 	var = set_var(&var, env, status);
 	last = ft_substr(tmp_scmd, j, ft_strlen(tmp_scmd) - j);
-	free(tmp_scmd);
-	tmp_scmd = NULL;
-	tmp_scmd = ft_strjoin(first, var);
-	tmp_scmd = ft_strjoin(tmp_scmd, last);
-	free(first);
-	free(var);
-	free(last);
-	// free(*scmd);
+	expand_2(&tmp_scmd, &first, &var, &last);
 	return (tmp_scmd);
+}
+
+void	expand_2(char **tmp_scmd, char **first, char **var, char **last)
+{
+	free(*tmp_scmd);
+	*tmp_scmd = NULL;
+	*tmp_scmd = ft_strjoin(*first, *var);
+	*tmp_scmd = ft_strjoin(*tmp_scmd, *last);
+	free(*first);
+	free(*var);
+	free(*last);
 }
 
 void	expand_vars(char ***scmd, t_env *env, int status)

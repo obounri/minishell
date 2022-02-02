@@ -91,6 +91,7 @@ void	exec_impld(t_scmd *scmd, t_options *opts, int child);
 t_quote	*check_quotes_pipes(t_options *opts);
 void	expand_vars(char ***scmd, t_env *env, int status);
 char	*expand(char **scmd, int j, t_env *env, int status);
+void	expand_2(char **tmp_scmd, char **first, char **var, char **last);
 void	init(t_options *opts, char **env);
 char	*ft_getenv(t_env *env, char *key);
 void	init_scmds(t_scmd *scmds, int n_scmds);
