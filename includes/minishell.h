@@ -88,7 +88,7 @@ typedef struct s_env
 int		ft_strcmp(char *s1, char *s2);
 int		is_impld(char *name);
 void	exec_impld(t_scmd *scmd, t_options *opts, int child);
-t_quote	check_quotes_pipes(t_options *opts);
+t_quote	*check_quotes_pipes(t_options *opts);
 void	expand_vars(char ***scmd, t_env *env, int status);
 char	*expand(char **scmd, int j, t_env *env, int status);
 void	init(t_options *opts, char **env);
@@ -114,6 +114,7 @@ int		out(char *red, t_scmd *scmd);
 int		heredoc(char *red, t_scmd *scmd, t_env *env);
 int		append(char *red, t_scmd *scmd);
 void	new_alloc(char ***cmd);
+void	expand_heredoc(int q, t_scmd *scmd, t_env *env);
 
 //Error checking
 int		cmp(char c, int token);
@@ -130,5 +131,6 @@ void	dfree(char **str);
 void	free_scmds(t_scmd **scmds, int n_scmds);
 void	clean_exit(t_options *opts, int code);
 void	free_quotes(t_quote *quotes);
+void	free_char_array(char *p);
 
 #endif

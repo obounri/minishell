@@ -75,9 +75,9 @@ int	quoted(t_quote *quotes, int i)
 
 t_quote	*check_quotes_pipes(t_options *opts)
 {
-	t_quote *quotes;
-	int i;
-	int dq;
+	t_quote	*quotes;
+	int		i;
+	int		dq;
 
 	quotes = NULL;
 	dq = -1;
