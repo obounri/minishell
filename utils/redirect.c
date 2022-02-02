@@ -12,17 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int	search_token(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] <= -33)
-			return (1);
-	return (0);
-}
-
 char	*save_remains(char **str)
 {
 	int		i;
@@ -66,12 +55,8 @@ int	detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 	{
 		i = 0;
 		*token = **str;
-		if (ft_strlen(*str) == 1 && **str <= -33)
-		{
-			*str += 1;
-			*str = ft_strdup("");
+		if (trim_redir_token(str))
 			return (1);
-		}
 		*str += 1;
 		tmp = *str;
 		while (tmp[i] && tmp[i] > -33)
@@ -110,17 +95,24 @@ int	redirect(t_scmd *cmd, t_env *env)
 			if (!handle_in(&tmp[i], cmd, token, env))
 				return (0);
 		in = detect_redir(&tmp[i], cmd, &token, env);
-		if (in == -1)
-		{
-			if (remains)
-				free(remains);
+		if (remaining(in, remains, &tmp[i]) == 0)
 			return (0);
-		}
+	}
+	return (1);
+}
+
+int	remaining(int in, char *remains, char **tmp)
+{
+	if (in == -1)
+	{
 		if (remains)
-		{
-			tmp[i] = ft_strdup(remains);
 			free(remains);
-		}
+		return (0);
+	}
+	if (remains)
+	{
+		*tmp = ft_strdup(remains);
+		free(remains);
 	}
 	return (1);
 }

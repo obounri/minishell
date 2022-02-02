@@ -115,6 +115,9 @@ int		heredoc(char *red, t_scmd *scmd, t_env *env);
 int		append(char *red, t_scmd *scmd);
 void	new_alloc(char ***cmd);
 void	expand_heredoc(int q, t_scmd *scmd, t_env *env);
+int		remaining(int in, char *remains, char **tmp);
+int		trim_redir_token(char **str);
+int		search_token(char *str);
 
 //Error checking
 int		cmp(char c, int token);

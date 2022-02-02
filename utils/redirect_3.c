@@ -78,3 +78,25 @@ void	expand_heredoc(int q, t_scmd *scmd, t_env *env)
 		free(t);
 	}
 }
+
+int	trim_redir_token(char **str)
+{	
+	if (ft_strlen(*str) == 1 && **str <= -33)
+	{
+		*str += 1;
+		*str = ft_strdup("");
+		return (1);
+	}
+	return (0);
+}
+
+int	search_token(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] <= -33)
+			return (1);
+	return (0);
+}

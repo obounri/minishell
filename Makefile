@@ -12,6 +12,7 @@ utils/init.c \
 utils/redirect.c \
 utils/redirect_1.c \
 utils/redirect_2.c \
+utils/redirect_3.c \
 utils/unset.c \
 utils/utils.c \
 utils/export.c \
@@ -19,8 +20,7 @@ utils/export_print.c \
 utils/parsing.c \
 utils/execution.c \
 utils/clean.c \
-utils/error_utils.c \
-utils/redirect_heredoc.c
+utils/error_utils.c
 OBJ_FILE = $(SRC_FILE:.c=.o)
 
 LIBFT_MAKEFILE_PATH = utils/libft/ 
