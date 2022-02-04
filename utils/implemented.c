@@ -15,9 +15,9 @@
 int	is_impld(char *name)
 {
 	int		i;
-	char	impld[7][7];
+	char	impld[7][7] = {"echo", "env",
+		"pwd", "export", "unset", "cd", "exit"};
 
-	impld = {"echo", "env", "pwd", "export", "unset", "cd", "exit"};
 	i = 0;
 	while (i < 7)
 	{

@@ -139,4 +139,7 @@ void	clean_exit(t_options *opts, int code);
 void	free_quotes(t_quote *quotes);
 void	free_char_array(char *p);
 
+int		get_key_value(char *args, t_env **env);
+void	no_equal(int equal, char *key, char *args, t_env **env);
+
 #endif
