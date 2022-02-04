@@ -12,6 +12,18 @@
 
 #include "../includes/minishell.h"
 
+int	check_double_token(int tk_counter, int token, char *input, int i)
+{
+	if (tk_counter > 2)
+		return (1);
+	else if (tk_counter == 2)
+	{
+		input[i] = token;
+		input[i + 1] = UNQSPACE;
+	}
+	return (0);
+}
+
 int	check_out_errors(t_options *opts)
 {
 	int	i;
@@ -19,7 +31,6 @@ int	check_out_errors(t_options *opts)
 	int	out_counter;
 
 	i = 0;
-	j = 0;
 	while (opts->input[i])
 	{
 		if (cmp(opts->input[i], OUT))
@@ -28,13 +39,8 @@ int	check_out_errors(t_options *opts)
 			j = i;
 			while (cmp(opts->input[++j], OUT))
 				out_counter++;
-			if (out_counter > 2)
+			if (check_double_token(out_counter, APPEND, opts->input, i))
 				return (error_msg());
-			else if (out_counter == 2)
-			{
-				opts->input[i] = APPEND;
-				opts->input[i + 1] = UNQSPACE;
-			}
 			while (cmp(opts->input[j], UNQSPACE))
 				j++;
 			if (cmp(opts->input[j], OUT) && j != i + 1)
@@ -54,7 +60,6 @@ int	check_in_errors(t_options *opts)
 	int	in_counter;
 
 	i = 0;
-	j = 0;
 	while (opts->input[i])
 	{
 		if (cmp(opts->input[i], IN))
@@ -63,13 +68,8 @@ int	check_in_errors(t_options *opts)
 			j = i;
 			while (cmp(opts->input[++j], IN))
 				in_counter++;
-			if (in_counter > 2)
+			if (check_double_token(in_counter, HEREDOC, opts->input, i))
 				return (error_msg());
-			else if (in_counter == 2)
-			{
-				opts->input[i] = HEREDOC;
-				opts->input[i + 1] = UNQSPACE;
-			}
 			while (cmp(opts->input[j], UNQSPACE))
 				j++;
 			if (cmp(opts->input[j], IN) && j != i + 1)

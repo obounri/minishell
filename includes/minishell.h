@@ -133,6 +133,7 @@ int		error_msg(void);
 int		check_scmds(char **scmds);
 int		is_empty(char *input);
 void	ft_error(char *prob, char *var, char *err);
+int		check_double_token(int tk_counter, int token, char *input, int i);
 
 void	dfree(char **str);
 void	free_scmds(t_scmd **scmds, int n_scmds);
