@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:29:44 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/04 19:14:12 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	is_impld(char *name)
 {
-	int	i;
+	int		i;
+	char	impld[7][7];
 
+	impld = {"echo", "env", "pwd", "export", "unset", "cd", "exit"};
 	i = 0;
 	while (i < 7)
 	{
@@ -28,7 +30,7 @@ int	is_impld(char *name)
 
 void	echo(char **args)
 {
-	int	i; 
+	int	i;
 	int	j;
 	int	opt;
 
@@ -69,7 +71,8 @@ void	cd(char **args, t_options	*opts, int child)
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
 		ft_error("cd: error retrieving current directory:",
-			NULL, "getcwd: cannot access parent directories: No such file or directory");
+			NULL, "getcwd: cannot access parent \
+			directories: No such file or directory");
 	else
 		opts->curr_dir = ft_strdup(tmp);
 	free(tmp);
@@ -93,22 +96,4 @@ void	env(t_env *env)
 		env = env->next;
 	}
 	exit(EXIT_SUCCESS);
-}
-
-void	exec_impld(t_scmd *scmd, t_options *opts, int child)
-{
-	if (ft_strcmp(scmd->name, "echo") == 0)
-		echo(scmd->args);
-	else if (ft_strcmp(scmd->name, "cd") == 0)
-		cd(scmd->args, opts, child);
-	else if (ft_strcmp(scmd->name, "pwd") == 0)
-		pwd(opts->curr_dir);
-	else if (ft_strcmp(scmd->name, "export") == 0)
-		export(scmd->args, &opts->env, child);
-	else if (ft_strcmp(scmd->name, "unset") == 0)
-		unset(opts, &scmd->args[1], child);
-	else if (ft_strcmp(scmd->name, "env") == 0)
-		env(opts->env);
-	else if (ft_strcmp(scmd->name, "exit") == 0)
-		ft_exit(opts, &scmd->args[1], &opts->status);
 }

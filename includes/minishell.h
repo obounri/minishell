@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:50:02 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/04 19:11:24 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
 # define OUT -34
 # define APPEND -35
 # define HEREDOC -36
-
-static char impld[7][7] = {"echo", "env", "pwd", "export", "unset", "cd", "exit"};
 
 typedef struct s_options
 {

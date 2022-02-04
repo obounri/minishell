@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/19 11:25:49 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/04 19:13:59 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,24 @@ void	prompt(t_options *opts)
 	opts->input = readline(opts->prompt);
 	free(opts->prompt);
 	opts->prompt = NULL;
+}
+
+void	exec_impld(t_scmd *scmd, t_options *opts, int child)
+{
+	if (ft_strcmp(scmd->name, "echo") == 0)
+		echo(scmd->args);
+	else if (ft_strcmp(scmd->name, "cd") == 0)
+		cd(scmd->args, opts, child);
+	else if (ft_strcmp(scmd->name, "pwd") == 0)
+		pwd(opts->curr_dir);
+	else if (ft_strcmp(scmd->name, "export") == 0)
+		export(scmd->args, &opts->env, child);
+	else if (ft_strcmp(scmd->name, "unset") == 0)
+		unset(opts, &scmd->args[1], child);
+	else if (ft_strcmp(scmd->name, "env") == 0)
+		env(opts->env);
+	else if (ft_strcmp(scmd->name, "exit") == 0)
+		ft_exit(opts, &scmd->args[1], &opts->status);
 }
 
 void	catch(int sig)
