@@ -87,10 +87,6 @@ int	check_export_args(char *arg)
 void	export(char **args, t_env **env, int child)
 {
 	int		i;
-	int		j;
-	char	*key;
-	char	*value;
-	int		equal;
 
 	i = 0;
 	if (!*env && child)
@@ -99,39 +95,10 @@ void	export(char **args, t_env **env, int child)
 		export_print(*env);
 	while (args[++i])
 	{
-		j = 0;
-		equal = 0;
 		if (!check_export_args(args[i]))
-		{
-			ft_putstr_fd("minishell: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			//set exit status to 1
-		}
+			ft_error("minishell: `", args[i], "': not a valid identifier\n");
 		else
-		{
-			while (args[i][j])
-			{
-				if (args[i][j] == '=')
-				{
-					equal = 1;
-					key = ft_substr(args[i], 0, j);
-					value = ft_substr(args[i], j + 1, ft_strlen(args[i]));
-					if (value && (value[0] == '"' || value[0] == '\''))
-						value = trim_quotes(value);
-					if (!already_exist(key, env))
-						modify_var(key, value, env);
-					else
-						add_var(key, value, env, 0);
-				}
-				j++;
-			}
-			if (!equal)
-			{
-				if (already_exist(args[i], env))
-					add_var(args[i], NULL, env, 1);
-			}
-		}
+			get_key_value(args[i], env);
 	}
 	if (child)
 		exit(EXIT_SUCCESS);
