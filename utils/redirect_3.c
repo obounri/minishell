@@ -37,7 +37,6 @@ int	heredoc(char *red, t_scmd *scmd, t_env *env)
 {
 	char	*new_red;
 	int		q;
-	int		i;
 
 	if (scmd->fd_infile != -10)
 		close(scmd->fd_infile);

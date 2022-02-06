@@ -84,6 +84,10 @@ typedef struct s_env
 }	t_env;
 
 int		ft_strcmp(char *s1, char *s2);
+void	env(t_env *env);
+void	pwd(char *path);
+void	cd(char **args, t_options	*opts, int child);
+void	echo(char **args);
 int		is_impld(char *name);
 void	exec_impld(t_scmd *scmd, t_options *opts, int child);
 t_quote	*check_quotes_pipes(t_options *opts);
@@ -139,7 +143,7 @@ void	clean_exit(t_options *opts, int code);
 void	free_quotes(t_quote *quotes);
 void	free_char_array(char *p);
 
-int		get_key_value(char *args, t_env **env);
+void	get_key_value(char *args, t_env **env);
 void	no_equal(int equal, char *key, char *args, t_env **env);
 
 #endif

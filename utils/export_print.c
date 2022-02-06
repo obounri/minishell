@@ -24,7 +24,7 @@ void	export_print(t_env *env)
 	}
 }
 
-int	get_key_value(char *args, t_env **env)
+void	get_key_value(char *args, t_env **env)
 {
 	char	*key;
 	char	*value;
