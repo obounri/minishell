@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imannouc <imannouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/04 19:11:24 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/07 15:15:35 by imannouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	unclosed_quotes(t_quote *quotes, t_options *opts);
 int		condition(t_options *opts, int i, t_quote *quotes);
 int		quoted(t_quote *quotes, int i);
 
-void	export(char **args, t_env **env, int exit);
+void	export(t_options *opts, char **args, t_env **env, int exit);
 void	add_var(char *key, char *value, t_env **env, int exp);
 void	modify_var(char *key, char *value, t_env **env);
 int		already_exist(char *key, t_env **env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imannouc <imannouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:30:53 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:31:25 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/07 15:18:36 by imannouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	check_export_args(char *arg)
 	return (1);
 }
 
-void	export(char **args, t_env **env, int child)
+void	export(t_options *opts, char **args, t_env **env, int child)
 {
 	int		i;
 
@@ -96,7 +96,10 @@ void	export(char **args, t_env **env, int child)
 	while (args[++i])
 	{
 		if (!check_export_args(args[i]))
+		{
 			ft_error("minishell: `", args[i], "': not a valid identifier\n");
+			opts->status = 256;
+		}
 		else
 			get_key_value(args[i], env);
 	}

@@ -31,11 +31,11 @@ LIBFT = utils/libft/libft.a
 all : $(NAME)
 
 %.o:%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS)  -c $< -o $@ -I$(shell brew --prefix readline)/include
 # -I$(shell brew --prefix readline)/include
 
 $(NAME) : $(OBJ_FILE) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ_FILE) $(LIBFT) -lreadline -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ_FILE) $(LIBFT) -L$(shell brew --prefix readline)/lib -lreadline -o $(NAME)
 # -L$(shell brew --prefix readline)/lib
 
 $(LIBFT):

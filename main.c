@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: imannouc <imannouc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/04 19:13:59 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/07 15:14:50 by imannouc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	exec_impld(t_scmd *scmd, t_options *opts, int child)
 	else if (ft_strcmp(scmd->name, "pwd") == 0)
 		pwd(opts->curr_dir);
 	else if (ft_strcmp(scmd->name, "export") == 0)
-		export(scmd->args, &opts->env, child);
+		export(opts, scmd->args, &opts->env, child);
 	else if (ft_strcmp(scmd->name, "unset") == 0)
 		unset(opts, &scmd->args[1], child);
 	else if (ft_strcmp(scmd->name, "env") == 0)
