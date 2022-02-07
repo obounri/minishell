@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imannouc <imannouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:35:32 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/07 15:14:50 by imannouc         ###   ########.fr       */
+/*   Updated: 2022/02/07 16:07:53 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,9 @@ int	main(int ac, char **av, char **env)
 {
 	t_options	opts;
 
-	(void)ac;
 	(void)av;
+	if (ac != 1)
+		return (ft_error("minishell: ", NULL, "does not take args"));
 	init(&opts, env);
 	while (1)
 	{

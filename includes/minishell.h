@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imannouc <imannouc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/07 15:15:35 by imannouc         ###   ########.fr       */
+/*   Updated: 2022/02/07 16:08:01 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int		check_pipe_errors(t_options *opts);
 int		error_msg(void);
 int		check_scmds(char **scmds);
 int		is_empty(char *input);
-void	ft_error(char *prob, char *var, char *err);
+int		ft_error(char *prob, char *var, char *err);
 int		check_double_token(int tk_counter, int token, char *input, int i);
 
 void	dfree(char **str);

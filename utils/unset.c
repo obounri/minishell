@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 18:58:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:16:38 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/07 16:08:20 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ void	ft_exit(t_options *opts, char **args, int *status)
 		clean_exit(opts, ft_atoi(args[0]));
 }
 
-void	ft_error(char *prob, char *var, char *err)
+int	ft_error(char *prob, char *var, char *err)
 {
 	ft_putstr_fd(prob, 2);
 	if (var)
 		ft_putstr_fd(var, 2);
 	ft_putstr_fd(err, 2);
 	ft_putstr_fd("\n", 2);
+	return (0);
 }
