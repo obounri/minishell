@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/04 19:14:12 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/07 15:49:34 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_impld(char *name)
 {
-	int		i;
-	char	impld[7][7] = {"echo", "env",
+	int			i;
+	static char	impld[7][7] = {"echo", "env",
 		"pwd", "export", "unset", "cd", "exit"};
 
 	i = 0;
