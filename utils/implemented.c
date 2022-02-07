@@ -6,15 +6,17 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/13 15:59:05 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/07 15:49:34 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-int		is_impld(char *name)
+int	is_impld(char *name)
 {
-	int	i;
+	int			i;
+	static char	impld[7][7] = {"echo", "env",
+		"pwd", "export", "unset", "cd", "exit"};
 
 	i = 0;
 	while (i < 7)
@@ -26,10 +28,11 @@ int		is_impld(char *name)
 	return (-1);
 }
 
-void    echo(char **args)
+void	echo(char **args)
 {
-	int	i, j;
-	int opt;
+	int	i;
+	int	j;
+	int	opt;
 
 	i = 1;
 	opt = 0;
@@ -52,7 +55,7 @@ void    echo(char **args)
 
 void	cd(char **args, t_options	*opts, int child)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (!args[1])
 		chdir(opts->home);
@@ -67,9 +70,12 @@ void	cd(char **args, t_options	*opts, int child)
 	}
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
-		ft_error("cd: error retrieving current directory:", NULL, "getcwd: cannot access parent directories: No such file or directory");
+		ft_error("cd: error retrieving current directory:",
+			NULL, "getcwd: cannot access parent \
+			directories: No such file or directory");
 	else
-		opts->curr_dir = tmp;
+		opts->curr_dir = ft_strdup(tmp);
+	free(tmp);
 	opts->status = 0;
 	if (child)
 		exit(EXIT_SUCCESS);
@@ -78,7 +84,7 @@ void	cd(char **args, t_options	*opts, int child)
 void	pwd(char *path)
 {
 	printf("%s\n", path);
-	// exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 void	env(t_env *env)
@@ -90,22 +96,4 @@ void	env(t_env *env)
 		env = env->next;
 	}
 	exit(EXIT_SUCCESS);
-}
-
-void	exec_impld(t_scmd	*scmd, t_options	*opts, int child)
-{
-	if (ft_strcmp(scmd->name, "echo") == 0)
-		echo(scmd->args);
-	else if (ft_strcmp(scmd->name, "cd") == 0)
-		cd(scmd->args, opts, child);
-	else if (ft_strcmp(scmd->name, "pwd") == 0)
-		pwd(opts->curr_dir);
-	else if (ft_strcmp(scmd->name, "export") == 0)
-		export(scmd->args,&opts->env,child);
-	else if (ft_strcmp(scmd->name, "unset") == 0)
-		unset(opts, &scmd->args[1], child);
-	else if (ft_strcmp(scmd->name, "env") == 0)
-		env(opts->env);
-	else if (ft_strcmp(scmd->name, "exit") == 0)
-		ft_exit(&scmd->args[1], &opts->status);
 }

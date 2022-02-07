@@ -12,9 +12,9 @@
 
 int	ft_strl_longuest_word(char const *s, char c)
 {
-	unsigned int count;
-	unsigned int i;
-	unsigned int lw;
+	unsigned int	count;
+	unsigned int	i;
+	unsigned int	lw;
 
 	lw = 0;
 	i = 0;

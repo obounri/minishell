@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-int		size_of_n(long nbr)
+int	size_of_n(long nbr)
 {
-	int size;
+	int	size;
 
 	size = 1;
 	if (nbr < 0)
@@ -59,7 +59,8 @@ char	*ft_itoa(int n)
 	nbr = n;
 	p = size_of_n(nbr) + 1;
 	i = 0;
-	if (!(buffer = (char *)malloc(p * sizeof(char))))
+	buffer = (char *)malloc(p * sizeof(char));
+	if (!(buffer))
 		return (0);
 	if (n < 0)
 		*buffer = '-';

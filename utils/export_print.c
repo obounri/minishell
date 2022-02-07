@@ -1,50 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_print.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/30 19:31:58 by obounri           #+#    #+#             */
+/*   Updated: 2022/01/30 19:32:40 by obounri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-void    export_print(t_env *env)
+void	export_print(t_env *env)
 {
-    while(env)
-    {
-        if (!env->exp)
-            printf("declare -x %s=\"%s\"\n",env->key,env->value);
-        else
-            printf("declare -x %s\n",env->key);
-        env = env->next;
-    }
+	while (env)
+	{
+		if (!env->exp)
+			printf("declare -x %s=\"%s\"\n", env->key, env->value);
+		else
+			printf("declare -x %s\n", env->key);
+		env = env->next;
+	}
 }
 
-void    sort(t_env **en)
+void	get_key_value(char *args, t_env **env)
 {
-    char *tmp;
-    t_env *current_node;
+	char	*key;
+	char	*value;
+	int		j;
+	int		equal;
 
-    current_node = *en;
-    while (current_node && current_node->next)
-    {
-        if (ft_strcmp(current_node->key,current_node->next->key) > 0)
-        {
-            tmp = current_node->key;
-            current_node->key = current_node->next->key;
-            current_node->next->key = tmp;
-            tmp = current_node->value;
-            current_node->value = current_node->next->value;
-            current_node->next->value = tmp;
-        }
-        current_node = current_node->next;
-    }
+	equal = 0;
+	j = -1;
+	while (args[++j])
+	{
+		if (args[j] == '=')
+		{
+			equal = 1;
+			key = ft_substr(args, 0, j);
+			value = ft_substr(args, j + 1, ft_strlen(args));
+			if (value && (value[0] == '"' || value[0] == '\''))
+				value = trim_quotes(value);
+			if (!already_exist(key, env))
+				modify_var(key, value, env);
+			else
+				add_var(key, value, env, 0);
+		}
+	}
+	no_equal(equal, key, args, env);
 }
 
-void    export_no_args(t_env **en)
+void	no_equal(int equal, char *key, char *args, t_env **env)
 {
-    t_env *new;
-    t_env *current;
-
-    new = NULL;
-    current = *en;
-    while(current)
-    {
-        add_var(current->key,current->value,&new,current->exp);
-        sort(&new);
-        current = current->next;
-    }
-    export_print(new);//free after.
+	if (!equal)
+	{
+		key = ft_strdup(args);
+		if (already_exist(key, env))
+			add_var(key, NULL, env, 1);
+	}
 }
