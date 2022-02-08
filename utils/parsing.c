@@ -61,8 +61,13 @@ void	init_for_exec(t_options *opts, int i)
 
 	tmp = opts->cmd->scmds[i].scmd;
 	h = -1;
+	
 	while (tmp && tmp[++h])
+	{
+		// printf("Before : %s\n",tmp[h]);
 		tmp[h] = trim_quotes(tmp[h]);
+		// printf("After : %s\n",tmp[h]);
+	}
 	opts->cmd->scmds[i].impld = is_impld(tmp[0]);
 	if (opts->cmd->scmds[i].impld < 0)
 	{

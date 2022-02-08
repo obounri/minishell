@@ -12,26 +12,51 @@
 
 #include "../includes/minishell.h"
 
+int	new_size(char *red)
+{
+	int	i;
+	int	size;
+
+	size = 0;
+	i = 0;
+	while (red && red[i])
+	{
+		if (cmp(red[i], SQ) || cmp(red[i],DQ))
+		{
+			i++;
+			continue ;
+		}
+		size++;
+		i++;
+	}
+	// printf("NEW SIZE :%d\n",size);
+	return (size);
+}
+
 char	*trim_quotes(char *red)
 {
 	char	*trim_red;
 	int		i;
-	int		old_len;
 	int		j;
+	int		size;
 
-	if (red[0] != '"' && red[0] != '\'')
-		return (red);
-	old_len = ft_strlen(red);
-	trim_red = malloc(sizeof(char) * old_len - 1);
+	size = new_size(red);
+	trim_red = malloc(sizeof(char) * (size + 1));
 	i = 0;
-	j = 1;
-	while (i < old_len - 1)
+	j = 0;
+	while (j < size)
 	{
-		trim_red[i] = red[j];
-		i++;
+		if (cmp(red[i], SQ) || cmp(red[i], DQ))
+		{
+			i++;
+			continue;
+		}
+		trim_red[j] = red[i];
 		j++;
+		i++;
+		// printf("incrementing .. %d\n",j);
 	}
-	trim_red[old_len - 2] = '\0';
+	trim_red[j] = '\0';
 	free(red);
 	return (trim_red);
 }

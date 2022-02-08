@@ -36,23 +36,25 @@ void	new_quote(t_quote **quotes, int i, int on, int dq)
 	}
 }
 
-void	handle_quotes(t_quote **quotes, char quote, int i, int *dq)
+void	handle_quotes(t_quote **quotes, char *quote, int i, int *dq)
 {
-	if (quote == '"' && (*dq != 0))
+	if (quote[i] == '"' && (*dq != 0))
 	{
 		if (*dq == 1)
 			*dq = -1;
 		else if (*dq == -1)
 			*dq = 1;
 		new_quote(quotes, i, *dq, 1);
+		quote[i] = DQ;
 	}
-	else if (quote == '\'' && (*dq != 1))
+	else if (quote[i] == '\'' && (*dq != 1))
 	{
 		if (*dq == 0)
 			*dq = -1;
 		else if (*dq == -1)
 			*dq = 0;
 		new_quote(quotes, i, *dq, 0);
+		quote[i] = SQ;
 	}
 }
 
@@ -85,7 +87,7 @@ t_quote	*check_quotes_pipes(t_options *opts)
 	while (opts->input[++i])
 	{
 		if (opts->input[i] == '"' || opts->input[i] == '\'')
-			handle_quotes(&quotes, opts->input[i], i, &dq);
+			handle_quotes(&quotes, opts->input, i, &dq);
 		else if (opts->input[i] == '|' && !quoted(quotes, 0))
 			opts->input[i] = PIPE;
 		else if (opts->input[i] == ' ' && !quoted(quotes, 0))

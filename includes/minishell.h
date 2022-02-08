@@ -26,6 +26,8 @@
 # include <fcntl.h>
 # include <errno.h>
 
+# define SQ -28
+# define DQ -29
 # define PIPE -30
 # define UNQSPACE -31
 # define EXPAND -32
