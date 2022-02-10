@@ -17,7 +17,8 @@
         "keymaps.h": "c",
         "chardefs.h": "c",
         "tilde.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "signal.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

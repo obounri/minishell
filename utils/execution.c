@@ -6,20 +6,27 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 18:06:27 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/16 19:32:02 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/10 20:05:17 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	the_process(int in, int out, t_options *opts, int i)
+void	the_process(int in, int out, t_options *opts, int i, int fd)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	close(fd);
 	if (out != 1)
+	{
 		dup2(out, 1);
+		close(out);
+	}
 	if (in != 0)
+	{
 		dup2(in, 0);
+		close(in);
+	}
 	if (opts->cmd->scmds[i].impld >= 0)
 		exec_impld(&opts->cmd->scmds[i], opts, 1);
 	else if (opts->cmd->scmds[i].err)
@@ -73,14 +80,19 @@ void	exec(t_options *opts)
 		out = fd[1];
 		pid = assign_in_out_fork(opts, i, &in, &out);
 		if (pid == 0)
-			the_process(in, out, opts, i);
-		waitpid(pid, &opts->status, 0);
-		if (WIFSIGNALED(opts->status))
-		{
-			printf("\n");
-			break ;
-		}
+			the_process(in, out, opts, i, fd[0]);
+		if (in != 0)
+			close(in);
+		if (out != 1)
+			close(out);
 		close(fd[1]);
 		in = fd[0];
 	}
+	while (waitpid(-1, &opts->status, 0) != -1)
+		if (pid != -1 && WIFSIGNALED(opts->status) && (WTERMSIG(opts->status) == 2 || WTERMSIG(opts->status) == 3))
+		{
+			printf("\n");
+			pid = -1;
+		}
 }
+	
