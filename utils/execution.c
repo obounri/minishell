@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 18:06:27 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/10 20:05:17 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/10 22:28:02 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	assign_in_out_fork(t_options *opts, int i, int *in, int *out)
 		*out = 1;
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
+	if (pid != 0 && i == (opts->cmd->n_scmds - 1))
+		opts->pids[0] = pid;
 	return (pid);
 }
 
@@ -88,11 +90,16 @@ void	exec(t_options *opts)
 		close(fd[1]);
 		in = fd[0];
 	}
-	while (waitpid(-1, &opts->status, 0) != -1)
+	while ((pid = waitpid(-1, &opts->status, 0)) != -1)
+	{
+		if (pid == opts->pids[0])	
+			opts->pids[1] = opts->status;
 		if (pid != -1 && WIFSIGNALED(opts->status) && (WTERMSIG(opts->status) == 2 || WTERMSIG(opts->status) == 3))
 		{
 			printf("\n");
 			pid = -1;
 		}
+	}
+	opts->status = opts->pids[1];
 }
 	
