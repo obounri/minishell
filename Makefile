@@ -4,6 +4,9 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra
 
+HEADER = includes/minishell.h
+LIBFT_HEADER = utils/libft/libft.h
+
 SRC_FILE = main.c \
 utils/check_errors.c \
 utils/expand.c \
@@ -34,11 +37,11 @@ all : $(NAME)
 	$(CC) $(CFLAGS)  -c $< -o $@ -I$(shell brew --prefix readline)/include
 # -I$(shell brew --prefix readline)/include
 
-$(NAME) : $(OBJ_FILE) $(LIBFT)
+$(NAME) : $(OBJ_FILE) $(LIBFT) $(HEADER)
 	$(CC) $(CFLAGS) $(OBJ_FILE) $(LIBFT) -L$(shell brew --prefix readline)/lib -lreadline -o $(NAME)
 # -L$(shell brew --prefix readline)/lib
 
-$(LIBFT):
+$(LIBFT): $(LIBFT_HEADER)
 	make -C $(LIBFT_MAKEFILE_PATH)
 
 clean :
