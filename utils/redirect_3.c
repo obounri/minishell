@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/11 15:53:03 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:52:15 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,15 @@ int	prompt_heredoc(char *red, t_scmd *scmd)
 
 	heredoc = "";
 	tmp = NULL;
-	pid_t pid = fork();
-	int n;
-	if (pid == 0){
-		signal(SIGINT, SIG_DFL);
-		while (1)
-		{
-			tmp = readline(">");
-			if (ft_strcmp(red, tmp) == 0)
-				break ;
-			if (!tmp)
-				heredoc = ft_strjoin(heredoc, "");
-			else
-				heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
-		}
-		exit(0);
-		}
-	else
+	while (1)
 	{
-		signal(SIGINT, SIG_IGN);	
-		waitpid(pid, &n, 0);
-	}
-	if (WIFSIGNALED(n))
-	{
-		printf("\n");
-		return (0);
+		tmp = readline(">");
+		if (ft_strcmp(red, tmp) == 0)
+			break ;
+		if (!tmp)
+			heredoc = ft_strjoin(heredoc, "");
+		else
+			heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
 	}
 	scmd->heredoc = ft_strdup(heredoc);
 	return (1);

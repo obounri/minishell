@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   quotes_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:13:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:15:26 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:58:22 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	new_size(char *red)
 		size++;
 		i++;
 	}
-	// printf("NEW SIZE :%d\n",size);
 	return (size);
 }
 
@@ -54,7 +53,6 @@ char	*trim_quotes(char *red)
 		trim_red[j] = red[i];
 		j++;
 		i++;
-		// printf("incrementing .. %d\n",j);
 	}
 	trim_red[j] = '\0';
 	free(red);

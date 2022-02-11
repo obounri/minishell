@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:36 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/11 14:29:39 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 16:15:14 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	*save_remains(char **str)
 
 int	handle_in(char **str, t_scmd *scmd, int token, t_env *env)
 {
-	int		i, redir;
+	int		i;
+	int		redir;
 	char	*tmp;
 
 	i = 0;
@@ -51,7 +52,8 @@ int	handle_in(char **str, t_scmd *scmd, int token, t_env *env)
 
 int	detect_redir(char **str, t_scmd *scmd, int *token, t_env *env)
 {
-	int		i, redir;
+	int		i;
+	int		redir;
 	char	*tmp;
 
 	while (**str)
