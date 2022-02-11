@@ -6,7 +6,11 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/02/11 18:04:21 by obounri          ###   ########.fr       */
+=======
+/*   Updated: 2022/02/11 16:52:15 by obounri          ###   ########.fr       */
+>>>>>>> d2eb5b35b2e84337c45e468b11aa1d8f5b1f4e48
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +34,11 @@ int	prompt_heredoc(char *red, t_scmd *scmd)
 			heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
 	}
 	scmd->heredoc = ft_strdup(heredoc);
+<<<<<<< HEAD
 	return (0);
+=======
+	return (1);
+>>>>>>> d2eb5b35b2e84337c45e468b11aa1d8f5b1f4e48
 }
 
 int	heredoc(char *red, t_scmd *scmd, t_env *env)
@@ -46,16 +54,21 @@ int	heredoc(char *red, t_scmd *scmd, t_env *env)
 		scmd->heredoc = NULL;
 	}
 	q = 0;
+<<<<<<< HEAD
 	if (cmp(red[0], SQ) || cmp(red[0], DQ))
+=======
+	if (red[0] == SQ || red[0] == DQ)
+>>>>>>> d2eb5b35b2e84337c45e468b11aa1d8f5b1f4e48
 	{
 		new_red = trim_quotes(red);
 		q = 1;
 	}
 	else
 		new_red = red;
-	prompt_heredoc(new_red, scmd);
+	if (!prompt_heredoc(new_red, scmd))
+		return (0);
 	expand_heredoc(q, scmd, env);
-	return (0);
+	return (1);
 }
 
 void	expand_heredoc(int q, t_scmd *scmd, t_env *env)

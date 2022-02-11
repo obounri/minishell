@@ -6,7 +6,11 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 18:06:27 by obounri           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/02/11 18:28:52 by obounri          ###   ########.fr       */
+=======
+/*   Updated: 2022/02/11 16:13:16 by obounri          ###   ########.fr       */
+>>>>>>> d2eb5b35b2e84337c45e468b11aa1d8f5b1f4e48
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +104,11 @@ void	exec(t_options *opts)
 		pipe(fd);
 		out = fd[1];
 		pid = assign_in_out_fork(opts, i, &in, &out);
+<<<<<<< HEAD
 		if (pid == 0 && !close(fd[0]))
+=======
+		if ((pid == 0) && !close(fd[0]))
+>>>>>>> d2eb5b35b2e84337c45e468b11aa1d8f5b1f4e48
 			the_process(in, out, opts, i);
 		if (in != 0)
 			close(in);
