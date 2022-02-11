@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:24:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 15:53:34 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,7 @@ void	init_for_exec(t_options *opts, int i)
 	h = -1;
 	
 	while (tmp && tmp[++h])
-	{
-		// printf("Before : %s\n",tmp[h]);
 		tmp[h] = trim_quotes(tmp[h]);
-		// printf("After : %s\n",tmp[h]);
-	}
 	opts->cmd->scmds[i].impld = is_impld(tmp[0]);
 	if (opts->cmd->scmds[i].impld < 0)
 	{
@@ -80,9 +76,9 @@ void	init_for_exec(t_options *opts, int i)
 	opts->cmd->scmds[i].args = &tmp[0];
 }
 
-void	parse_scmds(t_options *opts, char **scmds)
+int	parse_scmds(t_options *opts, char **scmds)
 {
-	int	i;
+	int	i, tmp;
 
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;
@@ -93,14 +89,21 @@ void	parse_scmds(t_options *opts, char **scmds)
 	{
 		opts->cmd->scmds[i].scmd = ft_split(scmds[i], UNQSPACE);
 		expand_vars(&opts->cmd->scmds[i].scmd, opts->env, opts->status);
-		if (!redirect(&opts->cmd->scmds[i], opts->env))
+		tmp = redirect(&opts->cmd->scmds[i], opts->env);
+		if (tmp <= 0)
 		{
 			opts->cmd->scmds[i].err = 1;
+			if (tmp == -1)
+			{
+				opts->status = 256;
+				return (0);
+			}
 			continue ;
 		}
 		new_alloc(&opts->cmd->scmds[i].scmd);
 		init_for_exec(opts, i);
 	}
+	return (1);
 }
 
 int	parse_input(t_options *opts)
@@ -127,7 +130,8 @@ int	parse_input(t_options *opts)
 		dfree(scmds);
 		return (0);
 	}
-	parse_scmds(opts, scmds);
+	if (!parse_scmds(opts, scmds))
+		return (0);
 	dfree(scmds);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/09 13:24:10 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 14:24:13 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+void	catch(int sig);
 int		ft_strcmp(char *s1, char *s2);
 void	env(t_env *env);
 void	pwd(char *path);

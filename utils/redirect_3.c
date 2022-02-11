@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect_2.c                                       :+:      :+:    :+:   */
+/*   redirect_3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:21:52 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 15:53:03 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,34 @@ int	prompt_heredoc(char *red, t_scmd *scmd)
 
 	heredoc = "";
 	tmp = NULL;
-	while (1)
+	pid_t pid = fork();
+	int n;
+	if (pid == 0){
+		signal(SIGINT, SIG_DFL);
+		while (1)
+		{
+			tmp = readline(">");
+			if (ft_strcmp(red, tmp) == 0)
+				break ;
+			if (!tmp)
+				heredoc = ft_strjoin(heredoc, "");
+			else
+				heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
+		}
+		exit(0);
+		}
+	else
 	{
-		tmp = readline(">");
-		if (ft_strcmp(red, tmp) == 0)
-			break ;
-		if (!tmp)
-			heredoc = ft_strjoin(heredoc, "");
-		else
-			heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
+		signal(SIGINT, SIG_IGN);	
+		waitpid(pid, &n, 0);
 	}
-	scmd->heredoc = heredoc;
-	return (0);
+	if (WIFSIGNALED(n))
+	{
+		printf("\n");
+		return (0);
+	}
+	scmd->heredoc = ft_strdup(heredoc);
+	return (1);
 }
 
 int	heredoc(char *red, t_scmd *scmd, t_env *env)
@@ -46,16 +62,17 @@ int	heredoc(char *red, t_scmd *scmd, t_env *env)
 		scmd->heredoc = NULL;
 	}
 	q = 0;
-	if (red[0] == '\'' || red[0] == '"')
+	if (red[0] == SQ || red[0] == DQ)
 	{
 		new_red = trim_quotes(red);
 		q = 1;
 	}
 	else
 		new_red = red;
-	prompt_heredoc(new_red, scmd);
+	if (!prompt_heredoc(new_red, scmd))
+		return (0);
 	expand_heredoc(q, scmd, env);
-	return (0);
+	return (1);
 }
 
 void	expand_heredoc(int q, t_scmd *scmd, t_env *env)
