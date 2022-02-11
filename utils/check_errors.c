@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:38:38 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:41:03 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:05:30 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	check_double_token(int tk_counter, int token, char *input, int i)
 		input[i] = token;
 		input[i + 1] = UNQSPACE;
 	}
+	while (input[++i] == UNQSPACE)
+		;
+	if (input[i] == '\0')
+		return (1);
 	return (0);
 }
 

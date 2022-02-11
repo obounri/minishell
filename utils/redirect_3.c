@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirect_2.c                                       :+:      :+:    :+:   */
+/*   redirect_3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:21:52 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:04:21 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	prompt_heredoc(char *red, t_scmd *scmd)
 		else
 			heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
 	}
-	scmd->heredoc = heredoc;
+	scmd->heredoc = ft_strdup(heredoc);
 	return (0);
 }
 
@@ -46,7 +46,7 @@ int	heredoc(char *red, t_scmd *scmd, t_env *env)
 		scmd->heredoc = NULL;
 	}
 	q = 0;
-	if (red[0] == '\'' || red[0] == '"')
+	if (cmp(red[0], SQ) || cmp(red[0], DQ))
 	{
 		new_red = trim_quotes(red);
 		q = 1;

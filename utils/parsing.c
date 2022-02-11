@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/01/30 19:24:19 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:11:11 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,8 @@ void	init_for_exec(t_options *opts, int i)
 
 	tmp = opts->cmd->scmds[i].scmd;
 	h = -1;
-	
 	while (tmp && tmp[++h])
-	{
-		// printf("Before : %s\n",tmp[h]);
 		tmp[h] = trim_quotes(tmp[h]);
-		// printf("After : %s\n",tmp[h]);
-	}
 	opts->cmd->scmds[i].impld = is_impld(tmp[0]);
 	if (opts->cmd->scmds[i].impld < 0)
 	{

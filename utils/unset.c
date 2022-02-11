@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 18:58:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/07 16:08:20 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 20:06:53 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,20 @@ void	unset_var(t_env **env, char *arg)
 	t_env	*prev;
 
 	tmp_env = *env;
+	prev = NULL;
 	while (tmp_env)
 	{
 		if (ft_strcmp(tmp_env->key, arg) == 0)
 		{
-			prev->next = tmp_env->next;
-			free(tmp_env);
+			if (prev)
+				prev->next = tmp_env->next;
+			else
+			{
+				if (tmp_env->next)
+					*env = tmp_env->next;
+				else
+					*env = NULL;
+			}
 			return ;
 		}
 		prev = tmp_env;

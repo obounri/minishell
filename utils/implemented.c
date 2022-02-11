@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:43 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/07 15:49:34 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:39:43 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ void	echo(char **args)
 		opt = 1;
 		i++;
 	}
-	while (args[i])
+	while (args[i] && args[i + 1])
 		printf("%s ", args[i++]);
+	if (args[i])
+		printf("%s", args[i]);
 	if (!opt)
 		printf("\n");
 	exit(EXIT_SUCCESS);
