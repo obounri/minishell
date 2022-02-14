@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 16:50:49 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/11 16:57:39 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 19:42:35 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,46 +150,3 @@ void	get_key_value(char *args, t_env **env);
 void	no_equal(int equal, char *key, char *args, t_env **env);
 
 #endif
-
-// int	heredoc_parent(pid_t pid)
-// {
-// 	int	n;
-
-// 	signal(SIGINT, SIG_IGN);
-// 	waitpid(pid, &n, 0);
-// 	if (WIFSIGNALED(n))
-// 	{
-// 		printf("\n");
-// 		return (0);
-// 	}
-// 	return (1);
-// }
-
-// int	prompt_heredoc(char *red, t_scmd *scmd)
-// {
-// 	char	*heredoc;
-// 	char	*tmp;
-// 	pid_t	pid;
-
-// 	heredoc = "";
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		signal(SIGINT, SIG_DFL);
-// 		while (1)
-// 		{
-// 			tmp = readline(">");
-// 			if (ft_strcmp(red, tmp) == 0)
-// 				break ;
-// 			if (!tmp)
-// 				heredoc = ft_strjoin(heredoc, "");
-// 			else
-// 				heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
-// 		}
-// 		scmd->heredoc = ft_strdup(heredoc);
-// 		exit(0);
-// 	}
-// 	else
-// 		return (heredoc_parent(pid));
-// 	return (1);
-// }

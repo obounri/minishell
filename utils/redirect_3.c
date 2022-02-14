@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 16:42:54 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/11 16:52:15 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:04:21 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	prompt_heredoc(char *red, t_scmd *scmd)
 			heredoc = ft_strjoin(ft_strjoin(heredoc, tmp), "\n");
 	}
 	scmd->heredoc = ft_strdup(heredoc);
-	return (1);
+	return (0);
 }
 
 int	heredoc(char *red, t_scmd *scmd, t_env *env)
@@ -46,17 +46,16 @@ int	heredoc(char *red, t_scmd *scmd, t_env *env)
 		scmd->heredoc = NULL;
 	}
 	q = 0;
-	if (red[0] == SQ || red[0] == DQ)
+	if (cmp(red[0], SQ) || cmp(red[0], DQ))
 	{
 		new_red = trim_quotes(red);
 		q = 1;
 	}
 	else
 		new_red = red;
-	if (!prompt_heredoc(new_red, scmd))
-		return (0);
+	prompt_heredoc(new_red, scmd);
 	expand_heredoc(q, scmd, env);
-	return (1);
+	return (0);
 }
 
 void	expand_heredoc(int q, t_scmd *scmd, t_env *env)

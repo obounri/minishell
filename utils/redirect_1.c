@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 19:22:12 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/11 14:08:47 by obounri          ###   ########.fr       */
+/*   Updated: 2022/01/30 19:23:44 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	redirect_type(char *red, t_scmd *scmd, int type, t_env *env)
 			return (0);
 	}
 	else if (type == HEREDOC)
-	{
-		if (!heredoc(red, scmd, env))
-			return (-1);
-	}
+		heredoc(red, scmd, env);
 	else if (type == APPEND)
 	{
 		if (!append(red, scmd))

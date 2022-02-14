@@ -6,7 +6,7 @@
 /*   By: obounri <obounri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 16:57:23 by obounri           #+#    #+#             */
-/*   Updated: 2022/02/11 15:57:46 by obounri          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:11:11 by obounri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	init_for_exec(t_options *opts, int i)
 	opts->cmd->scmds[i].args = &tmp[0];
 }
 
-int	parse_scmds(t_options *opts, char **scmds)
+void	parse_scmds(t_options *opts, char **scmds)
 {
-	int	i, tmp;
+	int	i;
 
 	while (scmds[opts->cmd->n_scmds])
 		opts->cmd->n_scmds++;
@@ -88,21 +88,14 @@ int	parse_scmds(t_options *opts, char **scmds)
 	{
 		opts->cmd->scmds[i].scmd = ft_split(scmds[i], UNQSPACE);
 		expand_vars(&opts->cmd->scmds[i].scmd, opts->env, opts->status);
-		tmp = redirect(&opts->cmd->scmds[i], opts->env);
-		if (tmp <= 0)
+		if (!redirect(&opts->cmd->scmds[i], opts->env))
 		{
 			opts->cmd->scmds[i].err = 1;
-			if (tmp == -1)
-			{
-				opts->status = 256;
-				return (0);
-			}
 			continue ;
 		}
 		new_alloc(&opts->cmd->scmds[i].scmd);
 		init_for_exec(opts, i);
 	}
-	return (1);
 }
 
 int	parse_input(t_options *opts)
@@ -129,8 +122,7 @@ int	parse_input(t_options *opts)
 		dfree(scmds);
 		return (0);
 	}
-	if (!parse_scmds(opts, scmds))
-		return (0);
+	parse_scmds(opts, scmds);
 	dfree(scmds);
 	return (1);
 }
